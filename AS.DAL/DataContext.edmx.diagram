@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="111308ed0d7a4642ac584e71dd070b4c" Name="Diagram1" ZoomLevel="105">
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.DepositeWallet" Width="1.5" PointX="5.25" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.MenuNotification" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.RefralCommision" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.WebhockHistoryTokenView" Width="1.5" PointX="5.25" PointY="36" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminAction" Width="1.5" PointX="3.75" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminRoleAction" Width="1.5" PointX="6" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminRole" Width="1.5" PointX="3.75" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminUserHistory" Width="1.5" PointX="8.25" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminUser" Width="1.5" PointX="6" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Affiliate" Width="1.5" PointX="0.75" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Currency" Width="1.5" PointX="3.75" PointY="28.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.CurrencyPriceHistory" Width="1.5" PointX="6" PointY="28.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.DealRequest" Width="1.5" PointX="8.25" PointY="33.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Domain" Width="1.5" PointX="3" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.DoucumentUserWithdraw" Width="1.5" PointX="8.25" PointY="26.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.HelpPage" Width="1.5" PointX="8.25" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.MarketingChannelClick" Width="1.5" PointX="5.25" PointY="51.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.MarketingChannel" Width="1.5" PointX="3" PointY="51.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Setting" Width="1.5" PointX="3" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.sysdiagram" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.TicketItem" Width="1.5" PointX="10.5" PointY="42.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Ticket" Width="1.5" PointX="5.25" PointY="40.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.TicketSubject" Width="1.5" PointX="3" PointY="48.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.TicketTemplate" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Transaction" Width="1.5" PointX="8.25" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.UserBankCard" Width="1.5" PointX="8.25" PointY="29.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.UserHistory" Width="1.5" PointX="5.25" PointY="44" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.UserRelatedAccount" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.User" Width="1.5" PointX="3" PointY="35.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.UserVerificationDoc" Width="1.5" PointX="11.25" PointY="37.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.UserWithdraw" Width="1.5" PointX="10.5" PointY="32.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Wallet" Width="1.5" PointX="3" PointY="44.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.WebhockHisory" Width="1.5" PointX="5.25" PointY="61" IsExpanded="true" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DepositeWallets_Affiliates" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DepositeWallets_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_WebhockHistoryTokenView_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminRoleAction_AdminAction" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminRoleAction_AdminRole" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminUser_AdminRole" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminUserHistory_AdminUser" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_CurrencyPriceHistory_AdminUser" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DealRequest_AdminUser" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_HelpPage_AdminUser" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_TicketItem_AdminUser" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Transaction_AdminUser" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserBankCards_AdminUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserVerificationDoc_AdminUser" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWithdraws_AdminUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DealRequest_Affiliate" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Domain_Affiliate" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Settings_Affiliates" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_User_Affiliate" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserBankCards_Affiliates" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWithdraws_Affiliates" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Wallets_Affiliates" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_CurrencyPriceHistory_Currency" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DealRequest_CurrencyPriceHistory" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DealRequest_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DealRequests_Wallets" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWithdraws_DoucumentUserWithdraws" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_MarketingChannelClick_MarketingChannel" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserHistory_MarketingChannel" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_TicketItem_Ticket" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Ticket_TicketSubject" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Ticket_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Transaction_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserBankCards_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWithdraws_UserBankCards" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserHistory_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserVerificationDoc_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWithdraws_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_WebhockHisory_WebhockHisory" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.BotCardsWithraw" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.BotInfoWithraw" Width="1.5" PointX="2.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.BotWithrawType" Width="1.5" PointX="13.125" PointY="33.25" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.LifeLogBotWithraw" Width="1.5" PointX="4.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.OptBotWithraw" Width="1.5" PointX="6.75" PointY="6.75" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_BotWithrawType_UserWithdraws" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.ReservationWallet" Width="1.5" PointX="5.25" PointY="54.625" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_ReservationWallet_Wallets" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.TransactionId" Width="1.5" PointX="5.25" PointY="49" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_TransactionIds_Wallets" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.WithdrawCrypto" Width="1.5" PointX="10.5" PointY="28.75" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_WithdrawCrypto_DealRequests" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminSMSVerification" Width="1.5" PointX="8.25" PointY="12.125" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.SMSSender" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.LogUserWallet" Width="1.5" PointX="8.25" PointY="46" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_LogUserWallet_Users" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_LogUserWallet_Wallets" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Wallets_Users" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.UserWalletReservation" Width="1.5" PointX="5.25" PointY="65.25" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWalletReservations_Wallets" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
