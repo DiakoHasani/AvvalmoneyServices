@@ -20,7 +20,7 @@ namespace AS.BL
         protected const string TetherlandUrl = "https://service.tetherland.com/";
         protected const string TronScanUrl = "https://apilist.tronscan.org/";
         protected const string TronScanUrl2 = "https://apilist.tronscanapi.com/";
-        protected const string WithdrawApiUrl = "http://avvalex.ir/";
+        protected const string WithdrawApiUrl = "https://avvalex.panel.avvalmoney.co/";
 
         protected async Task<HttpResponseMessage> Post(string url, Dictionary<string, string> parameters)
         {

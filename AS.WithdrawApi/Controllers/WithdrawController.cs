@@ -151,7 +151,8 @@ namespace AS.WithdrawApi.Controllers
             catch (Exception ex)
             {
                 _logger.Error(ex.Message, ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "");
+                //return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "");
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 

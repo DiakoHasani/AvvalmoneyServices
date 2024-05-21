@@ -28,13 +28,14 @@ namespace AS.Model.General
         public static double CryptoGatewayInterval { get; } = 30000;
         public static double PaymentWithdrawInterval { get; } = 20000;
         public static double PaymentCryptoInterval { get; } = 20000;
-        public static double DelayRunCryptoBot { get; } = 60;
+        public static double DelayRunCryptoBot { get; } = 120;
         public static double DepositTransactionTime { get; } = -20;
         public static string KavenegarApiKey { get; } = "57566D423532347844614D47442B6D666146325A6337737331574157305A65373844367467576A723971633D";
         public static string KavenegarNumber { get; } = "10009090900999";
         public static List<string> SupportNumbers { get; } = new List<string> { "09189799357", "09378456436" };
-        public static DateTime WithdrawTimeLogin { get; } = DateTime.Now.AddMinutes(1);
-        public static string WithdrawIssuer { get; } = "http://localhost";
+        public static DateTime WithdrawTimeLogin { get; } = DateTime.Now.AddMonths(1);
+        public static string WithdrawIssuer { get; } = "http://localhost/";
+        public static string AudienceSecret { get; } = "qMCdFDQuF23RV1Y-1Gq9L3cF3VmuFwVbam4fMTdAfpo";
         public static int WithdrawTimeLoginNumber { get; } = 60;
         public static int DelayCryptoGateway { get; } = 5000;
     }

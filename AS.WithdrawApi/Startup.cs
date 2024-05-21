@@ -1,6 +1,7 @@
 ﻿using AS.Model.General;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Owin;
 using System;
@@ -21,10 +22,19 @@ namespace AS.WithdrawApi
                 AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
                 TokenValidationParameters = new TokenValidationParameters()
                 {
+                    //ValidateIssuer = true,
+                    ////ValidateAudience = true,
+                    //ValidateIssuerSigningKey = true,
+                    //ValidIssuer = ServiceKeys.WithdrawIssuer,
+                    ////ValidAudience = ServiceKeys.WithdrawIssuer,
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ServiceKeys.WithdrawJwtSecretKey)),
+                    //ValidateLifetime=true,
+                    //ClockSkew = TimeSpan.Zero
+
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = ServiceKeys.WithdrawIssuer,
+                    ValidIssuer = ServiceKeys.WithdrawIssuer, //some string, normally web url,  
                     ValidAudience = ServiceKeys.WithdrawIssuer,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ServiceKeys.WithdrawJwtSecretKey))
                 }
