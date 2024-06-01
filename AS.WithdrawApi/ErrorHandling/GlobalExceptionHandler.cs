@@ -21,29 +21,29 @@ namespace AS.WithdrawApi.ErrorHandling
         {
             _logger = logger;
         }
-        public override Task HandleAsync(ExceptionHandlerContext context, CancellationToken cancellationToken)
-        {
-            var st = new StackTrace(context.Exception, true);
-            if (st.GetFrames().Length != 0)
-            {
-                _logger.Error("Get Exception in GlobalExceptionHandler", context.Exception, GetFileName(st), GetLineNumber(st), GetMethodName(st));
-            }
-            else
-            {
-                _logger.Error("Get Exception in GlobalExceptionHandler", context.Exception);
-            }
+        //public override Task HandleAsync(ExceptionHandlerContext context, CancellationToken cancellationToken)
+        //{
+        //    var st = new StackTrace(context.Exception, true);
+        //    if (st.GetFrames().Length != 0)
+        //    {
+        //        _logger.Error("Get Exception in GlobalExceptionHandler", context.Exception, GetFileName(st), GetLineNumber(st), GetMethodName(st));
+        //    }
+        //    else
+        //    {
+        //        _logger.Error("Get Exception in GlobalExceptionHandler", context.Exception);
+        //    }
 
-            const string errorMessage = "An unexpected error occured";
-            var response = context.Request.CreateResponse(HttpStatusCode.InternalServerError,
-                new
-                {
-                    Message = errorMessage
-                });
-            response.Headers.Add("X-Error", errorMessage);
-            context.Result = new ResponseMessageResult(response);
+        //    const string errorMessage = "An unexpected error occured";
+        //    var response = context.Request.CreateResponse(HttpStatusCode.InternalServerError,
+        //        new
+        //        {
+        //            Message = errorMessage
+        //        });
+        //    response.Headers.Add("X-Error", errorMessage);
+        //    context.Result = new ResponseMessageResult(response);
 
-            return base.HandleAsync(context, cancellationToken);
-        }
+        //    return base.HandleAsync(context, cancellationToken);
+        //}
 
         private string GetFileName(StackTrace st)
         {

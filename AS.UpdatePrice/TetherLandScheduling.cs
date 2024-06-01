@@ -55,23 +55,23 @@ namespace AS.UpdatePrice
                 {
                     _logger.Information("responseTetherland value is", responseTetherland);
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
-                    {
-                        AdmUsr_Id = ServiceKeys.AdmUsr_Id,
-                        CPH_BuyPrice = responseTetherland.Data.FirstOrDefault(o => o.Symbol == "USDT").TomanAmount.ToDouble(),
-                        CPH_SellPrice = responseTetherland.Data.FirstOrDefault(o => o.Symbol == "USDT").TomanAmount.ToDouble(),
-                        CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TetherCur_Id
-                    });
+                    //await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    //{
+                    //    AdmUsr_Id = ServiceKeys.AdmUsr_Id,
+                    //    CPH_BuyPrice = responseTetherland.Data.FirstOrDefault(o => o.Symbol == "USDT").TomanAmount.ToDouble(),
+                    //    CPH_SellPrice = responseTetherland.Data.FirstOrDefault(o => o.Symbol == "USDT").TomanAmount.ToDouble(),
+                    //    CPH_CreateDate = DateTime.Now,
+                    //    Cur_Id = TetherCur_Id
+                    //});
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
-                    {
-                        AdmUsr_Id = ServiceKeys.AdmUsr_Id,
-                        CPH_BuyPrice = responseTetherland.Data.FirstOrDefault(o => o.Symbol == "TRX").TomanAmount.ToDouble(),
-                        CPH_SellPrice = responseTetherland.Data.FirstOrDefault(o => o.Symbol == "TRX").TomanAmount.ToDouble(),
-                        CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TronCur_Id
-                    });
+                    //await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    //{
+                    //    AdmUsr_Id = ServiceKeys.AdmUsr_Id,
+                    //    CPH_BuyPrice = responseTetherland.Data.FirstOrDefault(o => o.Symbol == "TRX").TomanAmount.ToDouble(),
+                    //    CPH_SellPrice = responseTetherland.Data.FirstOrDefault(o => o.Symbol == "TRX").TomanAmount.ToDouble(),
+                    //    CPH_CreateDate = DateTime.Now,
+                    //    Cur_Id = TronCur_Id
+                    //});
 
                     _logger.Information("added Price to database");
                 }

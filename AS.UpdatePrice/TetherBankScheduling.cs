@@ -54,25 +54,25 @@ namespace AS.UpdatePrice
                 {
                     _logger.Information("responseTetherBank value is", responseTetherBank);
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
-                    {
-                        AdmUsr_Id = ServiceKeys.AdmUsr_Id,
-                        CPH_BuyPrice = responseTetherBank.Currencies.FirstOrDefault(o => o.Symbol == "USDT").TomanPrice.ToPrice(),
-                        CPH_SellPrice = responseTetherBank.Currencies.FirstOrDefault(o => o.Symbol == "USDT").TomanPrice.ToPrice() - 200,
-                        CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TetherCur_Id
-                    });
+                    //await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    //{
+                    //    AdmUsr_Id = ServiceKeys.AdmUsr_Id,
+                    //    CPH_BuyPrice = responseTetherBank.Currencies.FirstOrDefault(o => o.Symbol == "USDT").TomanPrice.ToPrice(),
+                    //    CPH_SellPrice = responseTetherBank.Currencies.FirstOrDefault(o => o.Symbol == "USDT").TomanPrice.ToPrice() - 200,
+                    //    CPH_CreateDate = DateTime.Now,
+                    //    Cur_Id = TetherCur_Id
+                    //});
 
-                    _logger.Information("added Tether to Database");
+                    //_logger.Information("added Tether to Database");
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
-                    {
-                        AdmUsr_Id = ServiceKeys.AdmUsr_Id,
-                        CPH_BuyPrice = responseTetherBank.Currencies.FirstOrDefault(o => o.Symbol == "TRX").TomanPrice.ToPrice(),
-                        CPH_SellPrice = responseTetherBank.Currencies.FirstOrDefault(o => o.Symbol == "TRX").TomanPrice.ToPrice() - 100,
-                        CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TronCur_Id
-                    });
+                    //await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    //{
+                    //    AdmUsr_Id = ServiceKeys.AdmUsr_Id,
+                    //    CPH_BuyPrice = responseTetherBank.Currencies.FirstOrDefault(o => o.Symbol == "TRX").TomanPrice.ToPrice(),
+                    //    CPH_SellPrice = responseTetherBank.Currencies.FirstOrDefault(o => o.Symbol == "TRX").TomanPrice.ToPrice() - 100,
+                    //    CPH_CreateDate = DateTime.Now,
+                    //    Cur_Id = TronCur_Id
+                    //});
 
                     _logger.Information("added Tron to Database");
                 }

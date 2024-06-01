@@ -2,6 +2,7 @@
 using AS.DAL;
 using AS.DAL.Services;
 using AS.Log;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace AS.BL
             ConfigOthers(container);
             ConfigRepositories(container);
             ConfigBusiness(container);
+
             return container;
         }
 
@@ -26,6 +28,9 @@ namespace AS.BL
         {
             container.RegisterType<IClient, Client>();
             container.RegisterType<ILogger, Logger>();
+
+            var mapper = new AutoMapperConfig().Configure();
+            container.RegisterInstance(mapper);
         }
 
         private void ConfigRepositories(UnityContainer container)
@@ -87,6 +92,13 @@ namespace AS.BL
             container.RegisterType<IWithdrawApiService, WithdrawApiService>();
             container.RegisterType<IWithdrawCryptoApiService, WithdrawCryptoApiService>();
             container.RegisterType<IUserWalletReservationService, UserWalletReservationService>();
+            container.RegisterType<ICurrencyApiService, CurrencyApiService>();
+            container.RegisterType<ICurrencyPriceHistoryApiService, CurrencyPriceHistoryApiService>();
+            container.RegisterType<IReservationWalletApiService, ReservationWalletApiService>();
+            container.RegisterType<IWalletApiService, WalletApiService>();
+            container.RegisterType<ITransactionIdApiService, TransactionIdApiService>();
+            container.RegisterType<IDealRequestApiService, DealRequestApiService>();
+            container.RegisterType<IUserWalletReservationApiService, UserWalletReservationApiService>();
         }
 
     }

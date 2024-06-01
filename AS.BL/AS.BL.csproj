@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.1.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Kavenegar, Version=1.2.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Kavenegar.1.2.4\lib\net35\Kavenegar.dll</HintPath>
     </Reference>
@@ -103,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMapperConfig.cs" />
     <Compile Include="BaseApi.cs" />
     <Compile Include="DependencyInjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,10 +114,13 @@
     <Compile Include="Services\BotCardsWithdrawService.cs" />
     <Compile Include="Services\BotInfoWithdrawService.cs" />
     <Compile Include="Services\BotWithdrawTypeService.cs" />
+    <Compile Include="Services\CurrencyPriceHistoryApiService.cs" />
     <Compile Include="Services\CurrencyPriceHistoryService.cs" />
     <Compile Include="Services\CurrencyService.cs" />
+    <Compile Include="Services\DealRequestApiService.cs" />
     <Compile Include="Services\DealRequestService.cs" />
     <Compile Include="Services\Ex4IrService.cs" />
+    <Compile Include="Services\CurrencyApiService.cs" />
     <Compile Include="Services\IraniCardService.cs" />
     <Compile Include="Services\LifeLogBotWithdrawService.cs" />
     <Compile Include="Services\MenuNotificationService.cs" />
@@ -122,17 +129,21 @@
     <Compile Include="Services\Pay98Service.cs" />
     <Compile Include="Services\RamzinexService.cs" />
     <Compile Include="Services\RangePriceService.cs" />
+    <Compile Include="Services\ReservationWalletApiService.cs" />
     <Compile Include="Services\ReservationWalletService.cs" />
     <Compile Include="Services\SMSSenderService.cs" />
     <Compile Include="Services\TetherBankService.cs" />
     <Compile Include="Services\TetherlandService.cs" />
+    <Compile Include="Services\TransactionIdApiService.cs" />
     <Compile Include="Services\TransactionIdService.cs" />
     <Compile Include="Services\TransactionService.cs" />
     <Compile Include="Services\TronScanService.cs" />
     <Compile Include="Services\UserBankCardService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\UserWalletReservationApiService.cs" />
     <Compile Include="Services\UserWalletReservationService.cs" />
     <Compile Include="Services\UserWithdrawService.cs" />
+    <Compile Include="Services\WalletApiService.cs" />
     <Compile Include="Services\WalletService.cs" />
     <Compile Include="Services\WithdrawApiService.cs" />
     <Compile Include="Services\WithdrawCryptoApiService.cs" />

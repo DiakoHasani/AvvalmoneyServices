@@ -1,4 +1,7 @@
-﻿using AS.Log;
+﻿using AS.BL.Services;
+using AS.Log;
+using AS.Model.General;
+using AS.Model.PaymentWithdrawBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +15,21 @@ namespace CryptoGateway
         private readonly ILogger _logger;
         private readonly IUSDT_TRC20Gateway _usdtTRC20Gateway;
         private readonly ITronGateway _tronGateway;
+        private readonly IWithdrawApiService _withdrawApiService;
+
         private IPrint _print;
+
+        private string token = "";
+        private DateTime loginDate = DateTime.Now;
         public CryptoScheduling(ILogger logger,
             IUSDT_TRC20Gateway usdtTRC20Gateway,
-            ITronGateway tronGateway)
+            ITronGateway tronGateway,
+            IWithdrawApiService withdrawApiService)
         {
             _logger = logger;
             _usdtTRC20Gateway = usdtTRC20Gateway;
             _tronGateway = tronGateway;
+            _withdrawApiService = withdrawApiService;
             Start(Run);
         }
 
@@ -33,8 +43,24 @@ namespace CryptoGateway
             try
             {
                 Stop();
-                await _usdtTRC20Gateway.Call();
-                await _tronGateway.Call();
+                if (loginDate < DateTime.Now)
+                {
+                    do
+                    {
+                        var login = await Login();
+                        if (!string.IsNullOrEmpty(login))
+                        {
+                            token = login;
+                        }
+                        else
+                        {
+                            await Task.Delay(10000);
+                        }
+                    } while (string.IsNullOrWhiteSpace(token));
+                }
+
+                await _usdtTRC20Gateway.Call(token);
+                await _tronGateway.Call(token);
             }
             catch (Exception ex)
             {
@@ -45,6 +71,25 @@ namespace CryptoGateway
                 _print.Show("_______________________________________________");
                 Continue();
             }
+        }
+
+        private async Task<string> Login()
+        {
+            var message = await _withdrawApiService.Login(new RequestLoginModel
+            {
+                Fhlowk = ServiceKeys.WithdrawKey,
+                UserName = ServiceKeys.WithdrawUserName,
+                Password = ServiceKeys.WithdrawPassword,
+            });
+
+            if (message.Result)
+            {
+                _logger.Information(message.Message);
+                loginDate = DateTime.Now.AddDays(ServiceKeys.WithdrawTimeLoginCryptoGatewayNumber);
+                return message.Token;
+            }
+
+            return null;
         }
     }
 }

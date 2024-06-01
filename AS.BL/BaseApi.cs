@@ -34,6 +34,19 @@ namespace AS.BL
                 return await client.PostAsync(url, data);
             }
         }
+        protected async Task<HttpResponseMessage> Post(string url, Dictionary<string, string> parameters, string bearerToken)
+        {
+            using (var client = new HttpClient())
+            {
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
+                return await client.PostAsync(url, data);
+            }
+        }
 
         protected async Task<HttpResponseMessage> Post(string url, HttpRequestMessage message)
         {

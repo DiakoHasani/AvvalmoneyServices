@@ -1,5 +1,7 @@
 ﻿using AS.DAL;
 using AS.DAL.Services;
+using AS.Model.TransactionId;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,26 +13,26 @@ namespace AS.BL.Services
     public class TransactionIdService : ITransactionIdService
     {
         private readonly ITransactionIdRepository _transactionIdRepository;
-        public TransactionIdService(ITransactionIdRepository transactionIdRepository)
+        private readonly IMapper _mapper;
+        public TransactionIdService(ITransactionIdRepository transactionIdRepository,
+            IMapper mapper)
         {
             _transactionIdRepository = transactionIdRepository;
+            _mapper = mapper;
         }
 
-        public async Task<TransactionId> Add(string transactionIdCode, int walletId)
+        public async Task<TransactionIdModel> Add(TransactionIdModel model)
         {
-            var transactionId = new TransactionId
-            {
-                TransactionIdCode = transactionIdCode,
-                Wal_Id = walletId
-            };
+            var transactionId = _mapper.Map<TransactionId>(model);
             _transactionIdRepository.Add(transactionId);
             await _transactionIdRepository.SaveChangeAsync();
-            return transactionId;
+            model.Tx_Id = transactionId.Tx_Id;
+            return model;
         }
 
         public bool CheckExistTransactionIdCode(string transactionIdCode)
         {
-            return _transactionIdRepository.GetAll(o=>o.TransactionIdCode==transactionIdCode).Any();
+            return _transactionIdRepository.GetAll(o => o.TransactionIdCode == transactionIdCode).Any();
         }
 
         public string GetLastTxIdCodeByWalletId(int walletId)
@@ -41,7 +43,7 @@ namespace AS.BL.Services
     public interface ITransactionIdService
     {
         string GetLastTxIdCodeByWalletId(int walletId);
-        Task<TransactionId> Add(string transactionIdCode,int walletId);
+        Task<TransactionIdModel> Add(TransactionIdModel model);
         bool CheckExistTransactionIdCode(string transactionIdCode);
     }
 }

@@ -1,8 +1,10 @@
 ﻿using AS.BL.Services;
 using AS.Log;
+using AS.Model.DealRequest;
 using AS.Model.Enums;
 using AS.Model.General;
 using AS.Model.WithdrawCrypto;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +22,16 @@ namespace AS.WithdrawApi.Controllers
         private readonly ILogger _logger;
         private readonly IWithdrawCryptoService _withdrawCryptoService;
         private readonly IDealRequestService _dealRequestService;
+        private readonly IMapper _mapper;
         public CryptoWithdrawController(ILogger logger,
             IWithdrawCryptoService withdrawCryptoService,
-            IDealRequestService dealRequestService)
+            IDealRequestService dealRequestService,
+            IMapper mapper)
         {
             _logger = logger;
             _withdrawCryptoService = withdrawCryptoService;
             _dealRequestService = dealRequestService;
+            _mapper = mapper;
         }
 
         //fhlowk: WithdrawKey
@@ -134,13 +139,7 @@ namespace AS.WithdrawApi.Controllers
 
                 await _withdrawCryptoService.Update(cryptoWithdraw);
 
-                var dealRequest = _dealRequestService.GetById(cryptoWithdraw.Drq_Id);
-                if (dealRequest is null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "notfound dealRequest");
-                }
-                dealRequest.Txid = model.qwewr;
-                await _dealRequestService.Update(dealRequest);
+                await _dealRequestService.UpdateTxid(cryptoWithdraw.Drq_Id, model.qwewr);
 
                 return Request.CreateResponse(HttpStatusCode.OK, "The operation was done");
             }

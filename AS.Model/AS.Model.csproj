@@ -45,6 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrencyPriceHistory\CurrencyPriceHistoryModel.cs" />
+    <Compile Include="Currency\CurrencyModel.cs" />
+    <Compile Include="DealRequest\DealRequestGatewayModel.cs" />
+    <Compile Include="DealRequest\DealRequestModel.cs" />
     <Compile Include="DealRequest\RequestDealModel.cs" />
     <Compile Include="Enums\CheckWithdrawPaymentStatus.cs" />
     <Compile Include="Enums\CryptoType.cs" />
@@ -89,16 +93,19 @@
     <Compile Include="Ramzinex\RamzinexSymbolModel.cs" />
     <Compile Include="Ramzinex\ResponseRamzinexDataModel.cs" />
     <Compile Include="Ramzinex\ResponseRamzinexModel.cs" />
+    <Compile Include="ReservationWallet\ReservationWalletModel.cs" />
     <Compile Include="TetherBank\ResponseTetherBankCurrencyModel.cs" />
     <Compile Include="TetherBank\ResponseTetherBankModel.cs" />
     <Compile Include="Tetherland\ResponseTetherlandDataModel.cs" />
     <Compile Include="Tetherland\ResponseTetherlandModel.cs" />
+    <Compile Include="TransactionId\TransactionIdModel.cs" />
     <Compile Include="Transaction\RequestTransactionModel.cs" />
     <Compile Include="TronScan\ResponseTronScanTrxDataModel.cs" />
     <Compile Include="TronScan\ResponseTronScanTrxModel.cs" />
     <Compile Include="TronScan\RessponseTronScanTrc20Model.cs" />
     <Compile Include="TronScan\TronScanTrc20TokenTransferModel.cs" />
     <Compile Include="UserWalletReservation\UserWalletReservationModel.cs" />
+    <Compile Include="Wallet\WalletModel.cs" />
     <Compile Include="WithdrawApi\BotAvailableModel.cs" />
     <Compile Include="WithdrawApi\BotCardsWithdrawResponseModel.cs" />
     <Compile Include="WithdrawApi\LastWithrawResponseModel.cs" />

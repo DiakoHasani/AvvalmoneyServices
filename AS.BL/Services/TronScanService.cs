@@ -81,7 +81,7 @@ namespace AS.BL.Services
         {
             try
             {
-                var response = await Get($"{TronScanUrl2}api/trx/transfer?sort=-timestamp&count=true&limit=20&start=0&toAddress={walletAddress}&relatedAddress={walletAddress}");
+                var response = await Get($"{TronScanUrl}api/trx/transfer?sort=-timestamp&count=true&limit=20&start=0&toAddress={walletAddress}&relatedAddress={walletAddress}");
                 if (response.IsSuccessStatusCode)
                 {
                     return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseTronScanTrxModel>(await response.Content.ReadAsStringAsync());

@@ -33,6 +33,7 @@ namespace PaymentCryptoBot
         private string token = "";
         private DateTime loginDate = DateTime.Now;
         bool appiumRun = false;
+        int restartCounter = 0;
 
         public void SetPrint(IPrint print)
         {
@@ -46,28 +47,37 @@ namespace PaymentCryptoBot
                 Stop();
                 if (!appiumRun)
                 {
-                    if (loginDate < DateTime.Now)
+                    if (restartCounter < ServiceKeys.RestartCunterPaymentCryptoBot)
                     {
-                        do
+                        restartCounter++;
+
+                        if (loginDate < DateTime.Now)
                         {
-                            var login = await Login();
-                            if (!string.IsNullOrEmpty(login))
+                            do
                             {
-                                token = login;
-                                FileUtility.WriteTextToDataFile($"Bearer {token}", GetFilePath());
-                            }
-                            else
-                            {
-                                await Task.Delay(10000);
-                            }
-                        } while (string.IsNullOrWhiteSpace(token));
+                                var login = await Login();
+                                if (!string.IsNullOrEmpty(login))
+                                {
+                                    token = login;
+                                    FileUtility.WriteTextToDataFile($"Bearer {token}", GetFilePath());
+                                }
+                                else
+                                {
+                                    await Task.Delay(10000);
+                                }
+                            } while (string.IsNullOrWhiteSpace(token));
+                        }
+                        _logger.Information("call GetAvailable");
+                        var responseAvailable = await _withdrawCryptoApiService.GetAvailable(ServiceKeys.WithdrawKey, token);
+                        if (responseAvailable)
+                        {
+                            System.Diagnostics.Process.Start(@"C:\Users\payam\Downloads\test\automation\appiumrun.bat");
+                            appiumRun = true;
+                        }
                     }
-                    _logger.Information("call GetAvailable");
-                    var responseAvailable =await _withdrawCryptoApiService.GetAvailable(ServiceKeys.WithdrawKey, token);
-                    if (responseAvailable)
+                    else
                     {
-                        System.Diagnostics.Process.Start(@"C:\Users\batamani\Downloads\test\automation\appiumrun.bat");
-                        appiumRun = true;
+                        System.Diagnostics.Process.Start(@"C:\Users\payam\Downloads\test\automation\Reset.bat");
                     }
                 }
             }

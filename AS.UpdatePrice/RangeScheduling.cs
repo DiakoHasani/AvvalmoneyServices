@@ -58,25 +58,25 @@ namespace AS.UpdatePrice
                 {
                     _logger.Information("cryptoPrices value is", cryptoPrices);
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
-                    {
-                        AdmUsr_Id = ServiceKeys.AdmUsr_Id,
-                        CPH_BuyPrice = cryptoPrices.BuyTether,
-                        CPH_SellPrice = cryptoPrices.SellTether,
-                        CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TetherCur_Id
-                    });
+                    //await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    //{
+                    //    AdmUsr_Id = ServiceKeys.AdmUsr_Id,
+                    //    CPH_BuyPrice = cryptoPrices.BuyTether,
+                    //    CPH_SellPrice = cryptoPrices.SellTether,
+                    //    CPH_CreateDate = DateTime.Now,
+                    //    Cur_Id = TetherCur_Id
+                    //});
 
-                    _logger.Information("added Tether to Database");
+                    //_logger.Information("added Tether to Database");
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
-                    {
-                        AdmUsr_Id = ServiceKeys.AdmUsr_Id,
-                        CPH_BuyPrice = cryptoPrices.BuyTron,
-                        CPH_SellPrice = cryptoPrices.SellTron,
-                        CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TronCur_Id
-                    });
+                    //await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    //{
+                    //    AdmUsr_Id = ServiceKeys.AdmUsr_Id,
+                    //    CPH_BuyPrice = cryptoPrices.BuyTron,
+                    //    CPH_SellPrice = cryptoPrices.SellTron,
+                    //    CPH_CreateDate = DateTime.Now,
+                    //    Cur_Id = TronCur_Id
+                    //});
 
                     _logger.Information("added Tron to Database");
                 }

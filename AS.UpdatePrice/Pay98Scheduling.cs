@@ -1,6 +1,7 @@
 ﻿using AS.BL.Services;
 using AS.DAL;
 using AS.Log;
+using AS.Model.CurrencyPriceHistory;
 using AS.Model.Enums;
 using AS.Model.General;
 using AS.Utility.Helpers;
@@ -15,26 +16,22 @@ namespace AS.UpdatePrice
     public class Pay98Scheduling : Scheduling
     {
         private readonly ILogger _logger;
-        private readonly ICurrencyService _currencyService;
-        private readonly ICurrencyPriceHistoryService _currencyPriceHistoryService;
         private readonly IPay98Service _pay98Service;
-
+        private readonly ICurrencyApiService _currencyApiService;
+        private readonly ICurrencyPriceHistoryApiService _currencyPriceHistoryApiService;
         private IPrint _print;
         int TetherCur_Id, TronCur_Id = 0;
         double tronSellAmount, tronBuyAmount, tetherBuyAmount, tetherSellAmount = 0;
 
         public Pay98Scheduling(ILogger logger,
-            ICurrencyService currencyService,
-            ICurrencyPriceHistoryService currencyPriceHistoryService,
-            IPay98Service pay98Service)
+            IPay98Service pay98Service,
+            ICurrencyApiService currencyApiService,
+            ICurrencyPriceHistoryApiService currencyPriceHistoryApiService)
         {
             _logger = logger;
-            _currencyService = currencyService;
-            _currencyPriceHistoryService = currencyPriceHistoryService;
             _pay98Service = pay98Service;
-
-            TetherCur_Id = _currencyService.GetCur_IdByISOCode(ISOCode.Tether_TRC20.GetDescription());
-            TronCur_Id = _currencyService.GetCur_IdByISOCode(ISOCode.Tron.GetDescription());
+            _currencyApiService = currencyApiService;
+            _currencyPriceHistoryApiService = currencyPriceHistoryApiService;
 
             Start(Run);
         }
@@ -60,26 +57,26 @@ namespace AS.UpdatePrice
 
                 if (tetherSellAmount != 0 && tetherBuyAmount != 0)
                 {
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    await _currencyPriceHistoryApiService.Add(new CurrencyPriceHistoryModel
                     {
                         AdmUsr_Id = ServiceKeys.AdmUsr_Id,
                         CPH_BuyPrice = tetherBuyAmount,
                         CPH_SellPrice = tetherSellAmount,
                         CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TetherCur_Id
+                        Cur_Id = await GetTetherCur_Id()
                     });
                     _logger.Information("added Tether to Database");
                 }
 
                 if (tronSellAmount != 0 && tronBuyAmount != 0)
                 {
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    await _currencyPriceHistoryApiService.Add(new CurrencyPriceHistoryModel
                     {
                         AdmUsr_Id = ServiceKeys.AdmUsr_Id,
                         CPH_BuyPrice = tronBuyAmount,
                         CPH_SellPrice = tronSellAmount,
                         CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TronCur_Id
+                        Cur_Id = await GetTronCur_Id()
                     });
                     _logger.Information("added Tron to Database");
                 }
@@ -93,6 +90,20 @@ namespace AS.UpdatePrice
                 _print.Show("_______________________________________________");
                 Continue();
             }
+        }
+
+        private async Task<int> GetTetherCur_Id()
+        {
+            if (TetherCur_Id <= 0)
+                TetherCur_Id = await _currencyApiService.GetCur_IdByISOCode(ISOCode.Tether_TRC20.GetDescription());
+            return TetherCur_Id;
+        }
+
+        private async Task<int> GetTronCur_Id()
+        {
+            if (TronCur_Id <= 0)
+                TronCur_Id = await _currencyApiService.GetCur_IdByISOCode(ISOCode.Tron.GetDescription());
+            return TronCur_Id;
         }
     }
 }

@@ -4,7 +4,10 @@ using AS.Log;
 using AS.Model.Enums;
 using AS.Model.General;
 using AS.Model.Transaction;
+using AS.Model.TransactionId;
 using AS.Model.TronScan;
+using AS.Model.UserWalletReservation;
+using AS.Model.Wallet;
 using AS.Utility.Helpers;
 using System;
 using System.Collections.Generic;
@@ -18,46 +21,39 @@ namespace CryptoGatewayReservation
     {
         private readonly ILogger _logger;
         private readonly ITronScanService _tronScanService;
-        private readonly IUserWalletReservationService _userWalletReservationService;
-        private readonly IWalletService _walletService;
-        private readonly ITransactionIdService _transactionIdService;
-        private readonly IDealRequestService _dealRequestService;
-        private readonly IUserService _userService;
-        private readonly ITransactionService _transactionService;
-        private readonly ICurrencyPriceHistoryService _currencyPriceHistoryService;
+        private readonly IUserWalletReservationApiService _userWalletReservationApiService;
+        private readonly IWalletApiService _walletApiService;
+        private readonly ITransactionIdApiService _transactionIdApiService;
+        private readonly IDealRequestApiService _dealRequestApiService;
+        private readonly ICurrencyPriceHistoryApiService _currencyPriceHistoryApiService;
 
-        List<UserWalletReservation> userWalletReservations;
+        List<UserWalletReservationModel> userWalletReservations;
         ResponseTronScanTrxDataModel lastTrx;
-        Wallet wallet;
+        WalletModel wallet;
         int cur_Id = 50;
 
         public TronGateway(ILogger logger,
             ITronScanService tronScanService,
-            IUserWalletReservationService userWalletReservationService,
-            IWalletService walletService,
-            ITransactionIdService transactionIdService,
-            IDealRequestService dealRequestService,
-            IUserService userService,
-            ITransactionService transactionService,
-            ICurrencyPriceHistoryService currencyPriceHistoryService)
+            IUserWalletReservationApiService userWalletReservationApiService,
+            IWalletApiService walletApiService,
+            ITransactionIdApiService transactionIdApiService,
+            IDealRequestApiService dealRequestApiService,
+            ICurrencyPriceHistoryApiService currencyPriceHistoryApiService)
         {
             _logger = logger;
             _tronScanService = tronScanService;
-            _userWalletReservationService = userWalletReservationService;
-            _walletService = walletService;
-            _transactionIdService = transactionIdService;
-            _dealRequestService = dealRequestService;
-            _userService = userService;
-            _transactionService = transactionService;
-            _currencyPriceHistoryService = currencyPriceHistoryService;
+            _userWalletReservationApiService = userWalletReservationApiService;
+            _walletApiService = walletApiService;
+            _transactionIdApiService = transactionIdApiService;
+            _dealRequestApiService = dealRequestApiService;
+            _currencyPriceHistoryApiService = currencyPriceHistoryApiService;
         }
 
-        public async Task Call()
+        public async Task Call(string token)
         {
             try
             {
-                await Task.Delay(ServiceKeys.DelayCryptoGateway);
-                userWalletReservations = _userWalletReservationService.GetUserWalletReservations(CurrencyType.Tron);
+                userWalletReservations = await _userWalletReservationApiService.GetUserWalletReservations(CurrencyType.Tron,token);
                 if (userWalletReservations.Count == 0)
                 {
                     _logger.Information("userWalletReservations.Count is 0");
@@ -68,7 +64,9 @@ namespace CryptoGatewayReservation
 
                 foreach (var userWalletReservation in userWalletReservations)
                 {
-                    wallet = await _walletService.GetWalletById(userWalletReservation.Wal_Id);
+                    await Task.Delay(ServiceKeys.DelayCryptoGateway);
+                    wallet = await _walletApiService.GetWalletById(userWalletReservation.Wal_Id,token);
+                    _logger.Information("get wallet "+wallet.Address);
                     lastTrx = await _tronScanService.GetLastTRX(wallet.Address);
 
                     if (lastTrx is null)
@@ -84,37 +82,57 @@ namespace CryptoGatewayReservation
                         continue;
                     }
 
-                    await _transactionIdService.Add(lastTrx.TransactionHash, wallet.Wal_Id);
+                    var resultAddTransactionId = await _transactionIdApiService.Add(new TransactionIdModel { TransactionIdCode = lastTrx.TransactionHash, Wal_Id = wallet.Wal_Id }, token);
+
+                    if (resultAddTransactionId != null)
+                    {
+                        _logger.Information("added transactionId to Database", resultAddTransactionId);
+                    }
 
                     if (userWalletReservation.UWR_TransactionCount != 0)
                     {
-                        var currencyPriceHistory = _currencyPriceHistoryService.GetByCur_Id(cur_Id);
-                        var dealRequest = await _dealRequestService.Add(new AS.Model.DealRequest.RequestDealModel
+                        var currencyPriceHistory = await _currencyPriceHistoryApiService.GetByCur_Id(cur_Id,token);
+                        if (currencyPriceHistory is null)
+                        {
+                            _logger.Error("currencyPriceHistory is null");
+                            continue;
+                        }
+
+                        var dealRequest = await _dealRequestApiService.Add(new AS.Model.DealRequest.RequestDealModel
                         {
                             Aff_Id = wallet.Aff_Id,
                             CPH_Id = currencyPriceHistory.CPH_Id,
                             Cur_Id = cur_Id,
-                            DealRequestStatus = DealRequestStatus.Done,
-                            DealRequestType = DealRequestType.SellToAM,
-                            DealRequestVerificationStatus = DealRequestVerificationStatus.Accepted,
-                            DealRequestVerificationType = DealRequestVerificationType.Auto,
+                            Drq_Status = DealRequestStatus.Done,
+                            Drq_Type = DealRequestType.SellToAM,
+                            Drq_VerificationStatus = DealRequestVerificationStatus.Accepted,
+                            Drq_VerificationType = DealRequestVerificationType.Auto,
                             Drq_Amount = lastTrx.Amount.DivisionBy6Zero(),
                             Drq_Cur_Latest_Price = currencyPriceHistory.CPH_SellPrice,
                             Drq_TotalPrice = (long)(lastTrx.Amount.DivisionBy6Zero() * currencyPriceHistory.CPH_SellPrice),
                             Usr_Id = wallet.Usr_Id.Value,
                             Wal_Id = wallet.Wal_Id,
-                            Txid=lastTrx.TransactionHash
-                        });
+                            Txid=lastTrx.TransactionHash,
+                            Drq_CreateDate=DateTime.Now
+                        },token);
 
-                        if (dealRequest != null)
+                        if (dealRequest is null)
                         {
-                            await UpdateUserBalance(dealRequest.Drq_TotalPrice, dealRequest.Usr_Id.Value);
+                            _logger.Error("error in add dealRequest");
+                            continue;
                         }
+                        _logger.Information("get dealRequest", dealRequest);
                     }
 
-                    userWalletReservation.UWR_LastTxId = lastTrx.TransactionHash;
-                    userWalletReservation.UWR_TransactionCount++;
-                    await _userWalletReservationService.Update(userWalletReservation);
+                    var resultUpdateTxid = await _userWalletReservationApiService.UpdateTxid(userWalletReservation.UWR_Id, lastTrx.TransactionHash, token);
+                    if (resultUpdateTxid)
+                    {
+                        _logger.Information("updated userWalletReservation");
+                    }
+                    else
+                    {
+                        _logger.Information("error in update userWalletReservation");
+                    }
                 }
             }
             catch (Exception ex)
@@ -123,27 +141,10 @@ namespace CryptoGatewayReservation
             }
         }
 
-        private async Task<bool> UpdateUserBalance(double totalPrice, long userId)
-        {
-            var transaction = await _transactionService.AddTransacton(new RequestTransactionModel
-            {
-                AdminUserId = ServiceKeys.AdmUsr_Id,
-                Amount = totalPrice,
-                TransactionType = TransactionType.Sell,
-                UserId = userId
-            });
-            _logger.Information("added Transaction");
-
-            var user = await _userService.GetByIdAsync(userId);
-            user.Usr_BLNC_Balance = transaction.Tns_After;
-            await _userService.Update(user);
-            _logger.Information("updated userBalance");
-
-            return true;
-        }
+        
     }
     public interface ITronGateway
     {
-        Task Call();
+        Task Call(string token);
     }
 }

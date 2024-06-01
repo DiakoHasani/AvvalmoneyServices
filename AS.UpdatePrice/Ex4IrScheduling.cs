@@ -1,6 +1,7 @@
 ﻿using AS.BL.Services;
 using AS.DAL;
 using AS.Log;
+using AS.Model.CurrencyPriceHistory;
 using AS.Model.Enums;
 using AS.Model.Ex4Ir;
 using AS.Model.General;
@@ -17,9 +18,9 @@ namespace AS.UpdatePrice
     public class Ex4IrScheduling : Scheduling
     {
         private readonly ILogger _logger;
-        private readonly ICurrencyService _currencyService;
-        private readonly ICurrencyPriceHistoryService _currencyPriceHistoryService;
         private readonly IEx4IrService _ex4IrService;
+        private readonly ICurrencyApiService _currencyApiService;
+        private readonly ICurrencyPriceHistoryApiService _currencyPriceHistoryApiService;
         private IPrint _print;
 
 
@@ -27,17 +28,14 @@ namespace AS.UpdatePrice
         int TetherCur_Id, TronCur_Id = 0;
 
         public Ex4IrScheduling(ILogger logger,
-            ICurrencyService currencyService,
-            ICurrencyPriceHistoryService currencyPriceHistoryService,
-            IEx4IrService ex4IrService)
+            IEx4IrService ex4IrService,
+            ICurrencyApiService currencyApiService,
+            ICurrencyPriceHistoryApiService currencyPriceHistoryApiService)
         {
             _logger = logger;
-            _currencyService = currencyService;
-            _currencyPriceHistoryService = currencyPriceHistoryService;
             _ex4IrService = ex4IrService;
-
-            TetherCur_Id = _currencyService.GetCur_IdByISOCode(ISOCode.Tether_TRC20.GetDescription());
-            TronCur_Id = _currencyService.GetCur_IdByISOCode(ISOCode.Tron.GetDescription());
+            _currencyApiService = currencyApiService;
+            _currencyPriceHistoryApiService = currencyPriceHistoryApiService;
 
             Start(Run);
         }
@@ -58,24 +56,24 @@ namespace AS.UpdatePrice
                 {
                     _logger.Information("responseEx4Irs value is", responseEx4Irs);
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    await _currencyPriceHistoryApiService.Add(new CurrencyPriceHistoryModel
                     {
                         AdmUsr_Id = ServiceKeys.AdmUsr_Id,
                         CPH_BuyPrice = responseEx4Irs.FirstOrDefault(o => o.Symbol == "USDT").BuyPrice.ToDouble(),
                         CPH_SellPrice = responseEx4Irs.FirstOrDefault(o => o.Symbol == "USDT").SellPrice.ToDouble(),
                         CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TetherCur_Id
+                        Cur_Id = await GetTetherCur_Id()
                     });
 
                     _logger.Information("added Tether to Database");
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    await _currencyPriceHistoryApiService.Add(new CurrencyPriceHistoryModel
                     {
                         AdmUsr_Id = ServiceKeys.AdmUsr_Id,
                         CPH_BuyPrice = responseEx4Irs.FirstOrDefault(o => o.Symbol == "TRX").BuyPrice.ToDouble(),
                         CPH_SellPrice = responseEx4Irs.FirstOrDefault(o => o.Symbol == "TRX").SellPrice.ToDouble(),
                         CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TronCur_Id
+                        Cur_Id = await GetTronCur_Id()
                     });
 
                     _logger.Information("added Tron to Database");
@@ -94,6 +92,20 @@ namespace AS.UpdatePrice
                 _print.Show("_______________________________________________");
                 Continue();
             }
+        }
+
+        private async Task<int> GetTetherCur_Id()
+        {
+            if (TetherCur_Id <= 0)
+                TetherCur_Id = await _currencyApiService.GetCur_IdByISOCode(ISOCode.Tether_TRC20.GetDescription());
+            return TetherCur_Id;
+        }
+
+        private async Task<int> GetTronCur_Id()
+        {
+            if (TronCur_Id <= 0)
+                TronCur_Id = await _currencyApiService.GetCur_IdByISOCode(ISOCode.Tron.GetDescription());
+            return TronCur_Id;
         }
     }
 }

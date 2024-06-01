@@ -56,23 +56,23 @@ namespace AS.UpdatePrice
                 {
                     _logger.Information("responseRamzinex value is", responseRamzinex);
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
-                    {
-                        AdmUsr_Id = ServiceKeys.AdmUsr_Id,
-                        CPH_BuyPrice = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "usdt").Buy.RialToToman(),
-                        CPH_SellPrice = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "usdt").Sell.RialToToman(),
-                        CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TetherCur_Id
-                    });
+                    //await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    //{
+                    //    AdmUsr_Id = ServiceKeys.AdmUsr_Id,
+                    //    CPH_BuyPrice = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "usdt").Buy.RialToToman(),
+                    //    CPH_SellPrice = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "usdt").Sell.RialToToman(),
+                    //    CPH_CreateDate = DateTime.Now,
+                    //    Cur_Id = TetherCur_Id
+                    //});
 
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
-                    {
-                        AdmUsr_Id = ServiceKeys.AdmUsr_Id,
-                        CPH_BuyPrice = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "trx").Buy.RialToToman(),
-                        CPH_SellPrice = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "trx").Sell.RialToToman(),
-                        CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TronCur_Id
-                    });
+                    //await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    //{
+                    //    AdmUsr_Id = ServiceKeys.AdmUsr_Id,
+                    //    CPH_BuyPrice = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "trx").Buy.RialToToman(),
+                    //    CPH_SellPrice = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "trx").Sell.RialToToman(),
+                    //    CPH_CreateDate = DateTime.Now,
+                    //    Cur_Id = TronCur_Id
+                    //});
 
                     _logger.Information("added Price to database");
                 }

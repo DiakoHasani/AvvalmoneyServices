@@ -1,9 +1,11 @@
 ﻿using AS.BL.Services;
 using AS.DAL;
 using AS.Log;
+using AS.Model.CurrencyPriceHistory;
 using AS.Model.Enums;
 using AS.Model.General;
 using AS.Model.Nobitex;
+using AS.Model.PaymentWithdrawBot;
 using AS.Utility.Helpers;
 using System;
 using System.Collections.Generic;
@@ -18,26 +20,27 @@ namespace AS.UpdatePrice
     {
         private readonly ILogger _logger;
         private readonly INobitexService _nobitexService;
-        private readonly ICurrencyService _currencyService;
-        private readonly ICurrencyPriceHistoryService _currencyPriceHistoryService;
+        private readonly ICurrencyApiService _currencyApiService;
+        private readonly ICurrencyPriceHistoryApiService _currencyPriceHistoryApiService;
+        private readonly IWithdrawApiService _withdrawApiService;
         private IPrint _print;
 
-
+        private string token = "";
+        private DateTime loginDate = DateTime.Now;
         double tetherAmount, tronAmount = 0;
         int TetherCur_Id, TronCur_Id = 0;
 
         public NobitexScheduling(ILogger logger,
             INobitexService nobitexService,
-            ICurrencyService currencyService,
-            ICurrencyPriceHistoryService currencyPriceHistoryService)
+            ICurrencyApiService currencyApiService,
+            ICurrencyPriceHistoryApiService currencyPriceHistoryApiService,
+            IWithdrawApiService withdrawApiService)
         {
             _logger = logger;
             _nobitexService = nobitexService;
-            _currencyService = currencyService;
-            _currencyPriceHistoryService = currencyPriceHistoryService;
-
-            TetherCur_Id = _currencyService.GetCur_IdByISOCode(ISOCode.Tether_TRC20.GetDescription());
-            TronCur_Id = _currencyService.GetCur_IdByISOCode(ISOCode.Tron.GetDescription());
+            _currencyApiService = currencyApiService;
+            _currencyPriceHistoryApiService = currencyPriceHistoryApiService;
+            _withdrawApiService = withdrawApiService;
 
             Start(Run);
         }
@@ -53,6 +56,23 @@ namespace AS.UpdatePrice
             try
             {
                 Stop();
+
+                if (loginDate < DateTime.Now)
+                {
+                    do
+                    {
+                        var login = await Login();
+                        if (!string.IsNullOrEmpty(login))
+                        {
+                            token = login;
+                        }
+                        else
+                        {
+                            await Task.Delay(10000);
+                        }
+                    } while (string.IsNullOrWhiteSpace(token));
+                }
+
                 tetherAmount = await _nobitexService.GetTetherAmount();
                 _logger.Information($"tetherAmount Nobitex is {tetherAmount}");
 
@@ -61,27 +81,27 @@ namespace AS.UpdatePrice
 
                 if (tetherAmount > 0)
                 {
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    await _currencyPriceHistoryApiService.Add(new CurrencyPriceHistoryModel
                     {
                         AdmUsr_Id = ServiceKeys.AdmUsr_Id,
                         CPH_BuyPrice = tetherAmount + 500,
                         CPH_SellPrice = tetherAmount - 300,
                         CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TetherCur_Id
-                    });
+                        Cur_Id = await GetTetherCur_Id()
+                    }, token);
                     _logger.Information("added Tether to Database");
                 }
 
                 if (tronAmount > 0)
                 {
-                    await _currencyPriceHistoryService.Add(new CurrencyPriceHistory
+                    await _currencyPriceHistoryApiService.Add(new CurrencyPriceHistoryModel
                     {
                         AdmUsr_Id = ServiceKeys.AdmUsr_Id,
                         CPH_BuyPrice = tronAmount + 100,
                         CPH_SellPrice = tronAmount - 100,
                         CPH_CreateDate = DateTime.Now,
-                        Cur_Id = TronCur_Id
-                    });
+                        Cur_Id = await GetTronCur_Id()
+                    }, token);
                     _logger.Information("added Tron to Database");
                 }
             }
@@ -94,6 +114,39 @@ namespace AS.UpdatePrice
                 _print.Show("_______________________________________________");
                 Continue();
             }
+        }
+
+        private async Task<int> GetTetherCur_Id()
+        {
+            if (TetherCur_Id <= 0)
+                TetherCur_Id = await _currencyApiService.GetCur_IdByISOCode(ISOCode.Tether_TRC20.GetDescription(),token);
+            return TetherCur_Id;
+        }
+
+        private async Task<int> GetTronCur_Id()
+        {
+            if (TronCur_Id <= 0)
+                TronCur_Id = await _currencyApiService.GetCur_IdByISOCode(ISOCode.Tron.GetDescription(), token);
+            return TronCur_Id;
+        }
+
+        private async Task<string> Login()
+        {
+            var message = await _withdrawApiService.Login(new RequestLoginModel
+            {
+                Fhlowk = ServiceKeys.WithdrawKey,
+                UserName = ServiceKeys.WithdrawUserName,
+                Password = ServiceKeys.WithdrawPassword,
+            });
+
+            if (message.Result)
+            {
+                _logger.Information(message.Message);
+                loginDate = DateTime.Now.AddDays(ServiceKeys.WithdrawTimeLoginUpdatePriceNumber);
+                return message.Token;
+            }
+
+            return null;
         }
     }
 }
