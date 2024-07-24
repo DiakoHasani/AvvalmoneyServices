@@ -85,9 +85,11 @@
   <ItemGroup>
     <Compile Include="CryptoScheduling.cs" />
     <Compile Include="IPrint.cs" />
+    <Compile Include="NotCoinGateway.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduling.cs" />
+    <Compile Include="TonGateway.cs" />
     <Compile Include="TronGateway.cs" />
     <Compile Include="USDT_TRC20Gateway.cs" />
   </ItemGroup>

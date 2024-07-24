@@ -15,6 +15,8 @@ namespace CryptoGateway
             var container = new DependencyInjection().Config();
             container.RegisterType<IUSDT_TRC20Gateway, USDT_TRC20Gateway>();
             container.RegisterType<ITronGateway, TronGateway>();
+            container.RegisterType<ITonGateway, TonGateway>();
+            container.RegisterType<INotCoinGateway, NotCoinGateway>();
 
             new Gateway(container);
             Console.ReadKey();

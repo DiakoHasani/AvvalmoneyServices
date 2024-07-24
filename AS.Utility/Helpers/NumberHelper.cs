@@ -60,6 +60,16 @@ namespace AS.Utility.Helpers
             return amount / 1000000;
         }
 
+        public static double DivisionBy9Zero(this string quant)
+        {
+            return ToDouble(quant) / 1000000000;
+        }
+
+        public static double DivisionBy9Zero(this double amount)
+        {
+            return amount / 1000000000;
+        }
+
         public static long RemoveDecimalNumber(this double number)
         {
             return (long)number;

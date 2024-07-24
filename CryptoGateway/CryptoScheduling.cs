@@ -16,6 +16,8 @@ namespace CryptoGateway
         private readonly IUSDT_TRC20Gateway _usdtTRC20Gateway;
         private readonly ITronGateway _tronGateway;
         private readonly IWithdrawApiService _withdrawApiService;
+        private readonly ITonGateway _tonGateway;
+        private readonly INotCoinGateway _notCoinGateway;
 
         private IPrint _print;
 
@@ -24,12 +26,16 @@ namespace CryptoGateway
         public CryptoScheduling(ILogger logger,
             IUSDT_TRC20Gateway usdtTRC20Gateway,
             ITronGateway tronGateway,
-            IWithdrawApiService withdrawApiService)
+            IWithdrawApiService withdrawApiService,
+            ITonGateway tonGateway,
+            INotCoinGateway notCoinGateway)
         {
             _logger = logger;
             _usdtTRC20Gateway = usdtTRC20Gateway;
             _tronGateway = tronGateway;
             _withdrawApiService = withdrawApiService;
+            _tonGateway = tonGateway;
+            _notCoinGateway = notCoinGateway;
             Start(Run);
         }
 
@@ -60,7 +66,15 @@ namespace CryptoGateway
                 }
 
                 await _usdtTRC20Gateway.Call(token);
+                _print.Show("___________");
+
                 await _tronGateway.Call(token);
+                _print.Show("___________");
+
+                await _tonGateway.Call(token);
+                _print.Show("___________");
+
+                await _notCoinGateway.Call(token);
             }
             catch (Exception ex)
             {

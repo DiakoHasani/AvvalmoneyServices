@@ -99,6 +99,7 @@ namespace AS.BL
             container.RegisterType<ITransactionIdApiService, TransactionIdApiService>();
             container.RegisterType<IDealRequestApiService, DealRequestApiService>();
             container.RegisterType<IUserWalletReservationApiService, UserWalletReservationApiService>();
+            container.RegisterType<ITonScanService, TonScanService>();
         }
 
     }

@@ -21,6 +21,8 @@ namespace AS.BL
         protected const string TronScanUrl = "https://apilist.tronscan.org/";
         protected const string TronScanUrl2 = "https://apilist.tronscanapi.com/";
         protected const string WithdrawApiUrl = "https://avvalex.panel.avvalmoney.co/";
+        //protected const string WithdrawApiUrl = "https://localhost:44304/";
+        protected const string TonScanUrl = "https://tonapi.io/v2/";
 
         protected async Task<HttpResponseMessage> Post(string url, Dictionary<string, string> parameters)
         {

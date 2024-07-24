@@ -42,6 +42,8 @@ namespace AS.Model.General
         public static int DelayCryptoGateway { get; } = 5000;
         public static double AmountDifferenceTether { get; } = 5;
         public static double AmountDifferenceTron { get; } = 10;
+        public static double AmountDifferenceTon { get; } = 3;
+        public static double AmountDifferenceNotCoin { get; } = 10;
         public static double RestartCunterPaymentCryptoBot { get; } = 18;
     }
 }

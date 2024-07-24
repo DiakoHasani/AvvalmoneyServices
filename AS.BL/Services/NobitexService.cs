@@ -14,10 +14,62 @@ namespace AS.BL.Services
         private readonly ILogger _logger;
         private ResponseNobitexTetherModel responseTether;
         private ResponseNobitexTronModel responseTron;
+        private ResponseNobitexTonModel responseTon;
+        private ResponseNobitexNotCoinModel responseNotCoin;
+
         public NobitexService(ILogger logger)
         {
             _logger = logger;
         }
+
+        public async Task<ResponseNobitexNotCoinModel> GetNotCoin()
+        {
+            try
+            {
+                var parameters = new Dictionary<string, string> {
+                    { "srcCurrency", "not" },
+                    { "dstCurrency", "rls" }
+                };
+                var response = await Post(NobitexUrl + "market/stats", parameters);
+                if (response.IsSuccessStatusCode)
+                {
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseNobitexNotCoinModel>(await response.Content.ReadAsStringAsync());
+                }
+
+                _logger.Error("response.IsSuccessStatusCode is false", await response.Content.ReadAsStringAsync());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception in NobitexService.GetNotCoin", ex);
+                return null;
+            }
+        }
+
+        public async Task<double> GetNotCoinAmount()
+        {
+            responseNotCoin = await GetNotCoin();
+
+            if (responseNotCoin is null)
+            {
+                _logger.Error("responseNotCoin is null");
+                return 0;
+            }
+
+            if (responseNotCoin.Status != "ok")
+            {
+                _logger.Error($"responseTether.Status is {responseNotCoin.Status}", responseNotCoin);
+                return 0;
+            }
+
+            if (responseNotCoin.Stats.Not.IsClosed)
+            {
+                _logger.Error("nobitex NotCoin is Closed", responseNotCoin);
+            }
+
+            return responseNotCoin.Stats.Not.Latest.ToDouble().RialToToman();
+        }
+
         public async Task<ResponseNobitexTetherModel> GetTether()
         {
             try
@@ -66,6 +118,55 @@ namespace AS.BL.Services
             }
 
             return responseTether.Stats.USDT.Latest.ToDouble().RialToToman();
+        }
+
+        public async Task<ResponseNobitexTonModel> GetTon()
+        {
+            try
+            {
+                var parameters = new Dictionary<string, string> {
+                    { "srcCurrency", "ton" },
+                    { "dstCurrency", "rls" }
+                };
+
+                var response = await Post(NobitexUrl + "market/stats", parameters);
+                if (response.IsSuccessStatusCode)
+                {
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseNobitexTonModel>(await response.Content.ReadAsStringAsync());
+                }
+
+                _logger.Error("response.IsSuccessStatusCode is false", await response.Content.ReadAsStringAsync());
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception in NobitexService.GetTether", ex);
+                return null;
+            }
+        }
+
+        public async Task<double> GetTonAmount()
+        {
+            responseTon = await GetTon();
+            if (responseTon is null)
+            {
+                _logger.Error("responseTon is null");
+                return 0;
+            }
+
+            if (responseTon.Status != "ok")
+            {
+                _logger.Error($"responseTon.Status is {responseTon.Status}", responseTon);
+                return 0;
+            }
+
+            if (responseTon.Stats.Ton.IsClosed)
+            {
+                _logger.Error("nobitex Ton is Closed", responseTon);
+            }
+
+            return responseTon.Stats.Ton.Latest.ToDouble().RialToToman();
         }
 
         public async Task<ResponseNobitexTronModel> GetTron()
@@ -122,5 +223,9 @@ namespace AS.BL.Services
         Task<double> GetTetherAmount();
         Task<ResponseNobitexTronModel> GetTron();
         Task<double> GetTronAmount();
+        Task<ResponseNobitexTonModel> GetTon();
+        Task<double> GetTonAmount();
+        Task<ResponseNobitexNotCoinModel> GetNotCoin();
+        Task<double> GetNotCoinAmount();
     }
 }

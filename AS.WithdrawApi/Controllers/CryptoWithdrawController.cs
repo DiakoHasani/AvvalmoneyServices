@@ -49,6 +49,16 @@ namespace AS.WithdrawApi.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
                 }
 
+                var undecideds = _withdrawCryptoService.GetUndecided();
+                if (undecideds.Any())
+                {
+                    foreach (var undecided in undecideds)
+                    {
+                        undecided.WC_Status = (int)WithdrawCryptoStatus.Pending;
+                        await _withdrawCryptoService.Update(undecided);
+                    }
+                }
+
                 var cryptoWithdrawModel = _withdrawCryptoService.GetPendingWithdraw(WithdrawCryptoStatus.Pending);
                 if (cryptoWithdrawModel is null)
                 {
@@ -92,6 +102,7 @@ namespace AS.WithdrawApi.Controllers
                 withdrawCrypto.WC_Status = (int)WithdrawCryptoStatus.RobotInProgress;
                 await _withdrawCryptoService.Update(withdrawCrypto);
 
+                withdrawCrypto.WC_Amount = Math.Round(withdrawCrypto.WC_Amount, 2);
                 _logger.Information("get cryptoWithdraw", cryptoWithdrawModel);
                 return Request.CreateResponse(HttpStatusCode.OK, cryptoWithdrawModel);
             }

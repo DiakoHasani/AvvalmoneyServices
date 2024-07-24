@@ -13,6 +13,12 @@ namespace AS.Model.Enums
         Tether_TRC20 = 40,
 
         [Description("TRX")]
-        Tron = 50
+        Tron = 50,
+
+        [Description("TON")]
+        Ton = 130,
+
+        [Description("NOT")]
+        NotCoin=140
     }
 }

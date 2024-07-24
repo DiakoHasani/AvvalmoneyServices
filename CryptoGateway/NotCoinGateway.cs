@@ -1,11 +1,9 @@
 ﻿using AS.BL.Services;
-using AS.DAL;
 using AS.Log;
 using AS.Model.DealRequest;
 using AS.Model.Enums;
 using AS.Model.General;
 using AS.Model.ReservationWallet;
-using AS.Model.Transaction;
 using AS.Model.TransactionId;
 using AS.Model.Wallet;
 using AS.Utility.Helpers;
@@ -18,10 +16,10 @@ using System.Threading.Tasks;
 
 namespace CryptoGateway
 {
-    public class TronGateway : ITronGateway
+    public class NotCoinGateway : INotCoinGateway
     {
         private readonly ILogger _logger;
-        private readonly ITronScanService _tronScanService;
+        private readonly ITonScanService _tonScanService;
         private readonly IReservationWalletApiService _reservationWalletApiService;
         private readonly IWalletApiService _walletApiService;
         private readonly ITransactionIdApiService _transactionIdApiService;
@@ -31,8 +29,9 @@ namespace CryptoGateway
         List<ReservationWalletModel> reservationWallets;
         WalletModel wallet;
         DealRequestModel dealRequest;
-        public TronGateway(ILogger logger,
-            ITronScanService tronScanService,
+
+        public NotCoinGateway(ILogger logger,
+            ITonScanService tonScanService,
             IReservationWalletApiService reservationWalletApiService,
             IWalletApiService walletApiService,
             ITransactionIdApiService transactionIdApiService,
@@ -40,7 +39,7 @@ namespace CryptoGateway
             IMapper mapper)
         {
             _logger = logger;
-            _tronScanService = tronScanService;
+            _tonScanService = tonScanService;
             _reservationWalletApiService = reservationWalletApiService;
             _walletApiService = walletApiService;
             _transactionIdApiService = transactionIdApiService;
@@ -52,47 +51,43 @@ namespace CryptoGateway
         {
             try
             {
-                reservationWallets = await _reservationWalletApiService.GetReservations(DateTime.Now.AddMinutes(-20), DateTime.Now, CryptoType.Tron, token);
+                reservationWallets = await _reservationWalletApiService.GetReservations(DateTime.Now.AddMinutes(-20), DateTime.Now, CryptoType.Ton, token);
+
                 foreach (var reservationWallet in reservationWallets)
                 {
                     await Task.Delay(ServiceKeys.DelayCryptoGateway);
 
-                    _logger.Information("get reservationWallet", new { reservationWalletId = reservationWallet.Rw_Id });
+                    _logger.Information("get reservationWallet", new { reservationWallet = reservationWallet });
+
                     wallet = await _walletApiService.GetWalletById(reservationWallet.Wal_Id, token);
 
-                    var lastTrx = await _tronScanService.GetLastTRX(wallet.Address);
-                    if (lastTrx is null)
+                    var lastNotCoin = await _tonScanService.GetLastNotCoin(wallet.Address);
+                    if (lastNotCoin is null)
                     {
-                        _logger.Error("lastTrx is null");
+                        _logger.Error("lastNotCoin is null");
                         continue;
                     }
-                    _logger.Information("get lastTrx", lastTrx);
+                    _logger.Information("get lastNotCoin", lastNotCoin);
 
-                    if (await _transactionIdApiService.CheckExistTransactionIdCode(lastTrx.TransactionHash,token))
+                    if (await _transactionIdApiService.CheckExistTransactionIdCode(lastNotCoin.EventId, token))
                     {
                         continue;
                     }
 
-                    var resultAddTransactionId=await _transactionIdApiService.Add(new TransactionIdModel { TransactionIdCode = lastTrx.TransactionHash, Wal_Id = wallet.Wal_Id }, token);
+                    var resultAddTransactionId = await _transactionIdApiService.Add(new TransactionIdModel { TransactionIdCode = lastNotCoin.EventId, Wal_Id = wallet.Wal_Id }, token);
 
-
-                    dealRequest =await _dealRequestApiService.DepositDealRequest(lastTrx.Amount.DivisionBy6Zero(), wallet.Wal_Id, ServiceKeys.AmountDifferenceTron, token);
-
+                    dealRequest = await _dealRequestApiService.DepositDealRequest(lastNotCoin.Amount.DivisionBy9Zero(), wallet.Wal_Id, ServiceKeys.AmountDifferenceNotCoin, token);
                     if (dealRequest is null)
                     {
                         _logger.Error("dealRequest is null");
                         continue;
                     }
-                    _logger.Information("get dealRequest", new { dealRequestId = dealRequest.Drq_Id });
-
-                    if (lastTrx.ContractRet != "SUCCESS")
-                    {
-                        continue;
-                    }
+                    _logger.Information("get dealRequest", new { dealRequest = dealRequest });
 
                     dealRequest.Drq_Status = DealRequestStatus.Done;
-                    dealRequest.Txid = lastTrx.TransactionHash;
-                    dealRequest.Drq_Amount = lastTrx.Amount.DivisionBy6Zero();
+                    dealRequest.Txid = lastNotCoin.EventId;
+                    dealRequest.Drq_Amount = lastNotCoin.Amount.DivisionBy9Zero();
+
                     var resultUpdateDealRequest = await _dealRequestApiService.UpdateGateway(_mapper.Map<DealRequestGatewayModel>(dealRequest), token);
                     if (resultUpdateDealRequest is null)
                     {
@@ -119,7 +114,7 @@ namespace CryptoGateway
             }
         }
     }
-    public interface ITronGateway
+    public interface INotCoinGateway
     {
         Task Call(string token);
     }

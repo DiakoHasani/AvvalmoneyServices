@@ -59,7 +59,7 @@ namespace CryptoGateway
                 {
                     await Task.Delay(ServiceKeys.DelayCryptoGateway);
 
-                    _logger.Information("get reservationWallet", new { reservationWalletId = reservationWallet.Rw_Id });
+                    _logger.Information("get reservationWallet", new { reservationWallet = reservationWallet });
 
                     wallet = await _walletApiService.GetWalletById(reservationWallet.Wal_Id, token);
 
@@ -77,11 +77,6 @@ namespace CryptoGateway
                     }
 
                     var resultAddTransactionId = await _transactionIdApiService.Add(new TransactionIdModel { TransactionIdCode = lastTRC20.TransactionIdCode, Wal_Id = wallet.Wal_Id }, token);
-
-                    if (reservationWallet is null)
-                    {
-                        continue;
-                    }
 
                     dealRequest = await _dealRequestApiService.DepositDealRequest(lastTRC20.Quant.DivisionBy6Zero(), wallet.Wal_Id, ServiceKeys.AmountDifferenceTether, token);
 

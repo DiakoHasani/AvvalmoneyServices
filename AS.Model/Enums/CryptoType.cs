@@ -37,6 +37,9 @@ namespace AS.Model.Enums
         BitcoinCash = 110,
 
         [Description("BitcoinCashSV")]
-        BitcoinCashSV = 120
+        BitcoinCashSV = 120,
+
+        [Description("Ton")]
+        Ton = 130,
     }
 }

@@ -188,6 +188,7 @@
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\CurrencyPriceHistoryController.cs" />
     <Compile Include="Controllers\DealRequestController.cs" />
+    <Compile Include="Controllers\HamzehController.cs" />
     <Compile Include="Controllers\ReservationWalletController.cs" />
     <Compile Include="Controllers\TransactionIdController.cs" />
     <Compile Include="Controllers\UserController.cs" />

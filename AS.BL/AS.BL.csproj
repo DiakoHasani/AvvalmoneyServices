@@ -134,6 +134,7 @@
     <Compile Include="Services\SMSSenderService.cs" />
     <Compile Include="Services\TetherBankService.cs" />
     <Compile Include="Services\TetherlandService.cs" />
+    <Compile Include="Services\TonScanService.cs" />
     <Compile Include="Services\TransactionIdApiService.cs" />
     <Compile Include="Services\TransactionIdService.cs" />
     <Compile Include="Services\TransactionService.cs" />

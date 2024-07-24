@@ -14,5 +14,11 @@ namespace AS.Model.Enums
 
         [Description("Tron")]
         Tron = 50,
+
+        [Description("Ton")]
+        Ton = 130,
+
+        [Description("NotCoin")]
+        NotCoin = 140
     }
 }

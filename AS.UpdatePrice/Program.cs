@@ -14,6 +14,7 @@ namespace AS.UpdatePrice
         {
             // Web API configuration and services
             var container = new DependencyInjection().Config();
+            container.RegisterType<IStatics, Statics>();
             new GetPrices(container);
 
             Console.ReadKey();
