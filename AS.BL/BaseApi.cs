@@ -23,6 +23,7 @@ namespace AS.BL
         protected const string WithdrawApiUrl = "https://avvalex.panel.avvalmoney.co/";
         //protected const string WithdrawApiUrl = "https://localhost:44304/";
         protected const string TonScanUrl = "https://tonapi.io/v2/";
+        protected const string PaystarUrl = "https://core.paystar.ir/api/pardakht";
 
         protected async Task<HttpResponseMessage> Post(string url, Dictionary<string, string> parameters)
         {
@@ -66,6 +67,20 @@ namespace AS.BL
             using (var client = new HttpClient())
             {
                 return await client.SendAsync(new HttpRequestMessage(HttpMethod.Post, url) { Content = content });
+            }
+        }
+
+        protected async Task<HttpResponseMessage> Post(string url, string parameters, string bearerToken)
+        {
+            using (var client = new HttpClient())
+            {
+                var data = new StringContent(parameters, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
+
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                
+                return await client.PostAsync(url, data);
             }
         }
 

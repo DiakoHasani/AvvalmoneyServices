@@ -45,5 +45,10 @@ namespace AS.Model.General
         public static double AmountDifferenceTon { get; } = 3;
         public static double AmountDifferenceNotCoin { get; } = 10;
         public static double RestartCunterPaymentCryptoBot { get; } = 18;
+        public static int ExpireCatchByMinute { get; } = 10;
+        public static string GatewayEncriptionKey { get; } = "bGCw4YmGZNYp1VKw8Z/BYh2BtvlVtSpg";
+        public static string PaystarKey { get; } = "gnk388d50kw3lq";
+        public static string PaystarSignKey { get; } = "8617E135530BA16994437C2D9BD93B6B9B8B2FEF2A50D0BCDFCBCF60812E8968BBD47F776F30ECBD36A4D15F72BBD5303E65AE37E8278E21B7788A202D4D3245F3C79EAAA3DB725C950F11C2FFA93735A506A5D037AC538F3059A4266C6EABCD95288EC8C1AF29E4C5161390D3CD6860C87D9C5C20F9A63DF162280EF92A670B";
+        public static string PanelAvvalMoneyUrl { get; } = "https://panel.avvalmoney.co/";
     }
 }

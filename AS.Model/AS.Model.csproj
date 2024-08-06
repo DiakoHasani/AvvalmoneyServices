@@ -57,6 +57,7 @@
     <Compile Include="Enums\DealRequestType.cs" />
     <Compile Include="Enums\DealRequestVerificationStatus.cs" />
     <Compile Include="Enums\DealRequestVerificationType.cs" />
+    <Compile Include="Enums\GatewayTransactionType.cs" />
     <Compile Include="Enums\ISOCode.cs" />
     <Compile Include="Enums\DealType.cs" />
     <Compile Include="Enums\PaymentWithdrawStatus.cs" />
@@ -93,6 +94,13 @@
     <Compile Include="PaymentWithdrawBot\RequestLoginModel.cs" />
     <Compile Include="PaymentWithdrawBot\ResponseBotAvailableModel.cs" />
     <Compile Include="PaymentWithdrawBot\ResponseLoginModel.cs" />
+    <Compile Include="Paystar\CreateRequestPaystarModel.cs" />
+    <Compile Include="Paystar\CreateResponsePaystarModel.cs" />
+    <Compile Include="Paystar\PardakhtCreateDataPaystarModel.cs" />
+    <Compile Include="Paystar\PardakhtVerifyResponsePaystarModel.cs" />
+    <Compile Include="Paystar\PaystarCatchModel.cs" />
+    <Compile Include="Paystar\VerifyRequestPaystarModel.cs" />
+    <Compile Include="Paystar\VerifyResponsePaystarModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ramzinex\RamzinexSymbolModel.cs" />
     <Compile Include="Ramzinex\ResponseRamzinexDataModel.cs" />

@@ -53,7 +53,7 @@ namespace CryptoGatewayReservation
         {
             try
             {
-                userWalletReservations = await _userWalletReservationApiService.GetUserWalletReservations(CurrencyType.Tron,token);
+                userWalletReservations = await _userWalletReservationApiService.GetUserWalletReservations(CurrencyType.Tron, token);
                 if (userWalletReservations.Count == 0)
                 {
                     _logger.Information("userWalletReservations.Count is 0");
@@ -65,8 +65,8 @@ namespace CryptoGatewayReservation
                 foreach (var userWalletReservation in userWalletReservations)
                 {
                     await Task.Delay(ServiceKeys.DelayCryptoGateway);
-                    wallet = await _walletApiService.GetWalletById(userWalletReservation.Wal_Id,token);
-                    _logger.Information("get wallet "+wallet.Address);
+                    wallet = await _walletApiService.GetWalletById(userWalletReservation.Wal_Id, token);
+                    _logger.Information("get wallet " + wallet.Address);
                     lastTrx = await _tronScanService.GetLastTRX(wallet.Address);
 
                     if (lastTrx is null)
@@ -91,7 +91,7 @@ namespace CryptoGatewayReservation
 
                     if (userWalletReservation.UWR_TransactionCount != 0)
                     {
-                        var currencyPriceHistory = await _currencyPriceHistoryApiService.GetByCur_Id(cur_Id,token);
+                        var currencyPriceHistory = await _currencyPriceHistoryApiService.GetByCur_Id(cur_Id, token);
                         if (currencyPriceHistory is null)
                         {
                             _logger.Error("currencyPriceHistory is null");
@@ -112,9 +112,9 @@ namespace CryptoGatewayReservation
                             Drq_TotalPrice = (long)(lastTrx.Amount.DivisionBy6Zero() * currencyPriceHistory.CPH_SellPrice),
                             Usr_Id = wallet.Usr_Id.Value,
                             Wal_Id = wallet.Wal_Id,
-                            Txid=lastTrx.TransactionHash,
-                            Drq_CreateDate=DateTime.Now
-                        },token);
+                            Txid = lastTrx.TransactionHash,
+                            Drq_CreateDate = DateTime.Now
+                        }, token);
 
                         if (dealRequest is null)
                         {
@@ -141,7 +141,7 @@ namespace CryptoGatewayReservation
             }
         }
 
-        
+
     }
     public interface ITronGateway
     {

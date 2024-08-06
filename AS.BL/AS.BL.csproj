@@ -108,9 +108,11 @@
   <ItemGroup>
     <Compile Include="AutoMapperConfig.cs" />
     <Compile Include="BaseApi.cs" />
+    <Compile Include="Catches\PaystarCatch.cs" />
     <Compile Include="DependencyInjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\AESServices.cs" />
     <Compile Include="Services\BotCardsWithdrawService.cs" />
     <Compile Include="Services\BotInfoWithdrawService.cs" />
     <Compile Include="Services\BotWithdrawTypeService.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Services\NobitexService.cs" />
     <Compile Include="Services\OptBotWithdrawService.cs" />
     <Compile Include="Services\Pay98Service.cs" />
+    <Compile Include="Services\PaystarService.cs" />
     <Compile Include="Services\RamzinexService.cs" />
     <Compile Include="Services\RangePriceService.cs" />
     <Compile Include="Services\ReservationWalletApiService.cs" />

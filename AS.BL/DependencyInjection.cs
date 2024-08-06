@@ -1,4 +1,5 @@
-﻿using AS.BL.Services;
+﻿using AS.BL.Catches;
+using AS.BL.Services;
 using AS.DAL;
 using AS.DAL.Services;
 using AS.Log;
@@ -19,6 +20,7 @@ namespace AS.BL
             var container = new UnityContainer();
             ConfigOthers(container);
             ConfigRepositories(container);
+            ConfigCatch(container);
             ConfigBusiness(container);
 
             return container;
@@ -100,6 +102,13 @@ namespace AS.BL
             container.RegisterType<IDealRequestApiService, DealRequestApiService>();
             container.RegisterType<IUserWalletReservationApiService, UserWalletReservationApiService>();
             container.RegisterType<ITonScanService, TonScanService>();
+            container.RegisterType<IAESServices, AESServices>();
+            container.RegisterType<IPaystarService, PaystarService>();
+        }
+
+        private void ConfigCatch(UnityContainer container)
+        {
+            container.RegisterType<IPaystarCatch, PaystarCatch>();
         }
 
     }

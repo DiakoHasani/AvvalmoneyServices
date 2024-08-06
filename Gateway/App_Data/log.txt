@@ -1,0 +1,14 @@
+2024-08-03 10:37:53.940 +03:30 Invalid length for a Base-64 char array or string.
+System.FormatException: Invalid length for a Base-64 char array or string.
+   at System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   at System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   at System.Convert.FromBase64String(String s)
+   at AS.BL.Services.AESServices.Decrypt(String cipherTextBase64, String key) in C:\Projects\AvvalmoneyServices\AS.BL\Services\AESServices.cs:line 15
+   at Gateway.Controllers.PaystarController.<Payment>d__5.MoveNext() in C:\Projects\AvvalmoneyServices\Gateway\Controllers\PaystarController.cs:line 40
+2024-08-03 10:40:21.083 +03:30 Invalid length for a Base-64 char array or string.
+System.FormatException: Invalid length for a Base-64 char array or string.
+   at System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   at System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   at System.Convert.FromBase64String(String s)
+   at AS.BL.Services.AESServices.Decrypt(String cipherTextBase64, String key) in C:\Projects\AvvalmoneyServices\AS.BL\Services\AESServices.cs:line 15
+   at Gateway.Controllers.PaystarController.<Payment>d__5.MoveNext() in C:\Projects\AvvalmoneyServices\Gateway\Controllers\PaystarController.cs:line 40
