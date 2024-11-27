@@ -33,7 +33,6 @@ namespace AS.DAL
         public virtual DbSet<AdminRoleAction> AdminRoleActions { get; set; }
         public virtual DbSet<AdminRole> AdminRoles { get; set; }
         public virtual DbSet<AdminUserHistory> AdminUserHistories { get; set; }
-        public virtual DbSet<AdminUser> AdminUsers { get; set; }
         public virtual DbSet<Affiliate> Affiliates { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
         public virtual DbSet<CurrencyPriceHistory> CurrencyPriceHistories { get; set; }
@@ -66,9 +65,11 @@ namespace AS.DAL
         public virtual DbSet<ReservationWallet> ReservationWallets { get; set; }
         public virtual DbSet<TransactionId> TransactionIds { get; set; }
         public virtual DbSet<WithdrawCrypto> WithdrawCryptoes { get; set; }
-        public virtual DbSet<AdminSMSVerification> AdminSMSVerifications { get; set; }
         public virtual DbSet<SMSSender> SMSSenders { get; set; }
         public virtual DbSet<LogUserWallet> LogUserWallets { get; set; }
         public virtual DbSet<UserWalletReservation> UserWalletReservations { get; set; }
+        public virtual DbSet<AdminSMSVerification> AdminSMSVerifications { get; set; }
+        public virtual DbSet<Gateway> Gateways { get; set; }
+        public virtual DbSet<AdminUser> AdminUsers { get; set; }
     }
 }

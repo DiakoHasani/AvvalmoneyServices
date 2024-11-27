@@ -63,6 +63,12 @@ namespace CryptoGateway
 
                     wallet = await _walletApiService.GetWalletById(reservationWallet.Wal_Id, token);
 
+                    if (wallet is null)
+                    {
+                        _logger.Error($"this wallet id {reservationWallet.Wal_Id} is null");
+                        continue;
+                    }
+
                     var lastTRC20 = await _tronScanService.GetLastTRC20(wallet.Address);
                     if (lastTRC20 is null)
                     {

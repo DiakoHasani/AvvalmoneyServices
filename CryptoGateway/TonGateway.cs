@@ -60,6 +60,11 @@ namespace CryptoGateway
                     _logger.Information("get reservationWallet", new { reservationWallet = reservationWallet });
 
                     wallet = await _walletApiService.GetWalletById(reservationWallet.Wal_Id, token);
+                    if (wallet is null)
+                    {
+                        _logger.Error($"this wallet id {reservationWallet.Wal_Id} is null");
+                        continue;
+                    }
 
                     var lastTon = await _tonScanService.GetLastTon(wallet.Address);
                     if (lastTon is null)

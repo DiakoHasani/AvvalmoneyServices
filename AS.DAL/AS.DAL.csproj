@@ -113,6 +113,9 @@
     <Compile Include="DoucumentUserWithdraw.cs">
       <DependentUpon>DataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Gateway.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="HelpPage.cs">
       <DependentUpon>DataContext.tt</DependentUpon>
     </Compile>

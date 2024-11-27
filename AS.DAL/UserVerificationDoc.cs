@@ -27,7 +27,7 @@ namespace AS.DAL
         public string UVD_ImageExtention { get; set; }
         public string UVD_Description { get; set; }
     
-        public virtual AdminUser AdminUser { get; set; }
         public virtual User User { get; set; }
+        public virtual AdminUser AdminUser { get; set; }
     }
 }

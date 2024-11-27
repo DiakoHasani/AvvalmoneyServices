@@ -18,6 +18,7 @@ namespace AS.DAL
         public DealRequest()
         {
             this.WithdrawCryptoes = new HashSet<WithdrawCrypto>();
+            this.Gateways = new HashSet<Gateway>();
         }
     
         public System.Guid Drq_Id { get; set; }
@@ -42,12 +43,14 @@ namespace AS.DAL
         public string Drq_UsrWalletAddress { get; set; }
         public string Txid { get; set; }
     
-        public virtual AdminUser AdminUser { get; set; }
         public virtual Affiliate Affiliate { get; set; }
         public virtual CurrencyPriceHistory CurrencyPriceHistory { get; set; }
         public virtual User User { get; set; }
         public virtual Wallet Wallet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WithdrawCrypto> WithdrawCryptoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Gateway> Gateways { get; set; }
+        public virtual AdminUser AdminUser { get; set; }
     }
 }

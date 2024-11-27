@@ -23,6 +23,11 @@ namespace AS.DAL
         public double Stg_MaximumDailyPurchase_Level1 { get; set; }
         public double Stg_MaximumDailyPurchase_Level2 { get; set; }
         public double Stg_MaximumDailyPurchase_Level3 { get; set; }
+        public bool Stg_BuyAccess { get; set; }
+        public bool Stg_SellAccess { get; set; }
+        public bool Stg_WithdrawAccess { get; set; }
+        public double Stg_MinimumTrx { get; set; }
+        public double Stg_MinimumUSDT_TRC20 { get; set; }
     
         public virtual Affiliate Affiliate { get; set; }
     }

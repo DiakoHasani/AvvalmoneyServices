@@ -23,15 +23,21 @@ namespace AS.WithdrawApi.Controllers
         private readonly IWithdrawCryptoService _withdrawCryptoService;
         private readonly IDealRequestService _dealRequestService;
         private readonly IMapper _mapper;
+        private readonly IAESServices _aesServices;
+        private readonly ISMSSenderService _smsSenderService;
         public CryptoWithdrawController(ILogger logger,
             IWithdrawCryptoService withdrawCryptoService,
             IDealRequestService dealRequestService,
-            IMapper mapper)
+            IMapper mapper,
+            IAESServices aesServices,
+            ISMSSenderService smsSenderService)
         {
             _logger = logger;
             _withdrawCryptoService = withdrawCryptoService;
             _dealRequestService = dealRequestService;
             _mapper = mapper;
+            _aesServices = aesServices;
+            _smsSenderService = smsSenderService;
         }
 
         //fhlowk: WithdrawKey
@@ -47,16 +53,6 @@ namespace AS.WithdrawApi.Controllers
                     await Task.Delay(TimeSpan.FromSeconds(20));
                     _logger.Error("fhlowk is invalid.", new { fhlowk = fhlowk });
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
-                }
-
-                var undecideds = _withdrawCryptoService.GetUndecided();
-                if (undecideds.Any())
-                {
-                    foreach (var undecided in undecideds)
-                    {
-                        undecided.WC_Status = (int)WithdrawCryptoStatus.Pending;
-                        await _withdrawCryptoService.Update(undecided);
-                    }
                 }
 
                 var cryptoWithdrawModel = _withdrawCryptoService.GetPendingWithdraw(WithdrawCryptoStatus.Pending);
@@ -104,7 +100,18 @@ namespace AS.WithdrawApi.Controllers
 
                 withdrawCrypto.WC_Amount = Math.Round(withdrawCrypto.WC_Amount, 2);
                 _logger.Information("get cryptoWithdraw", cryptoWithdrawModel);
-                return Request.CreateResponse(HttpStatusCode.OK, cryptoWithdrawModel);
+
+                var createDate = withdrawCrypto.WC_CreateDate;
+
+                return Request.CreateResponse(HttpStatusCode.OK, new ResponseWithdrawCryptoEncryptedModel
+                {
+                    WC_Id=_aesServices.BotEncrypt(withdrawCrypto.WC_Id.ToString(),ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_Address=_aesServices.BotEncrypt(withdrawCrypto.WC_Address,ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_Amount=_aesServices.BotEncrypt(withdrawCrypto.WC_Amount.ToString(),ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_CryptoType=_aesServices.BotEncrypt(withdrawCrypto.WC_CryptoType.ToString(),ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_CreateDate=_aesServices.BotEncrypt($"{createDate.Year}-{createDate.Month}-{createDate.Day} {createDate.Hour}:{createDate.Minute}:{createDate.Second}",ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_Sign=withdrawCrypto.WC_Sign
+                });
             }
             catch (Exception ex)
             {

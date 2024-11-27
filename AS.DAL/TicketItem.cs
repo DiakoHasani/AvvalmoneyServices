@@ -21,7 +21,7 @@ namespace AS.DAL
         public Nullable<long> AdmUsr_Id { get; set; }
         public Nullable<bool> TikItm_IsLink { get; set; }
     
-        public virtual AdminUser AdminUser { get; set; }
         public virtual Ticket Ticket { get; set; }
+        public virtual AdminUser AdminUser { get; set; }
     }
 }

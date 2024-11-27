@@ -98,31 +98,42 @@ namespace Gateway.Controllers
                 var result = false;
                 var message = "";
                 var response = "";
+                var returnUrl = $"{ServiceKeys.PanelAvvalMoneyUrl}Geteway/";
 
                 var catchResult = _paystarCatch.Get(order_id);
                 if (catchResult is null)
                 {
-                    ViewBag.Message = "خطای رخ داده است به پشتیبانی اطلاع دهید "+ "catchResult is null";
-                    return View();
-                }
-
-                response = await _paystarService.Verify(new VerifyRequestPaystarModel
-                {
-                    Amount = catchResult.Amount,
-                    RefNum = catchResult.RefNum,
-                    Sign = _paystarService.GenerateVerifySign(catchResult.Amount, catchResult.RefNum, card_number, tracking_code)
-                });
-
-                result = true;
-
-                if (catchResult.GatewayTransactionType == GatewayTransactionType.Buy)
-                {
-                    return Redirect($"{ServiceKeys.PanelAvvalMoneyUrl}Geteway/PaystarVerify?input={_aesServices.Encrypt(_paystarService.GenerateVerifyResult(result, message, response, order_id), ServiceKeys.GatewayEncriptionKey)}");
+                    message = "خطای رخ داده است به پشتیبانی اطلاع دهید ";
                 }
                 else
                 {
-                    return Redirect("");
+                    if (string.IsNullOrWhiteSpace(card_number) && string.IsNullOrWhiteSpace(tracking_code))
+                    {
+                        message = "پرداخت انجام نشد";
+                    }
+                    else
+                    {
+                        response = await _paystarService.Verify(new VerifyRequestPaystarModel
+                        {
+                            Amount = catchResult.Amount,
+                            RefNum = catchResult.RefNum,
+                            Sign = _paystarService.GenerateVerifySign(catchResult.Amount, catchResult.RefNum, card_number, tracking_code)
+                        });
+
+                        result = true;
+                    }
                 }
+
+                if (catchResult.GatewayTransactionType == GatewayTransactionType.Buy)
+                {
+                    returnUrl += $"PaystarVerify?input={_aesServices.Encrypt(_paystarService.GenerateVerifyResult(result, message, response, order_id), ServiceKeys.GatewayEncriptionKey)}";
+                }
+                else
+                {
+                    returnUrl += $"PaystarDepositVerify?input={_aesServices.Encrypt(_paystarService.GenerateVerifyResult(result, message, response, order_id), ServiceKeys.GatewayEncriptionKey)}";
+                }
+
+                return Redirect(returnUrl);
             }
             catch (Exception ex)
             {

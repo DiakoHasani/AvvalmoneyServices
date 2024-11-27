@@ -13,7 +13,6 @@
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminRoleAction" Width="1.5" PointX="6" PointY="13.125" IsExpanded="true" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminRole" Width="1.5" PointX="3.75" PointY="18.25" IsExpanded="true" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminUserHistory" Width="1.5" PointX="8.25" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminUser" Width="1.5" PointX="6" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Affiliate" Width="1.5" PointX="0.75" PointY="24.625" IsExpanded="true" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Currency" Width="1.5" PointX="3.75" PointY="28.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.CurrencyPriceHistory" Width="1.5" PointX="6" PointY="28.25" IsExpanded="true" />
@@ -43,16 +42,6 @@
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_WebhockHistoryTokenView_Users" ManuallyRouted="false" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminRoleAction_AdminAction" ManuallyRouted="false" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminRoleAction_AdminRole" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminUser_AdminRole" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminUserHistory_AdminUser" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_CurrencyPriceHistory_AdminUser" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DealRequest_AdminUser" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_HelpPage_AdminUser" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_TicketItem_AdminUser" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Transaction_AdminUser" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserBankCards_AdminUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserVerificationDoc_AdminUser" ManuallyRouted="false" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWithdraws_AdminUsers" ManuallyRouted="false" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DealRequest_Affiliate" ManuallyRouted="false" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Domain_Affiliate" ManuallyRouted="false" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Settings_Affiliates" ManuallyRouted="false" />
@@ -89,8 +78,6 @@
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_TransactionIds_Wallets" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.WithdrawCrypto" Width="1.5" PointX="10.5" PointY="28.75" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_WithdrawCrypto_DealRequests" />
-        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminSMSVerification" Width="1.5" PointX="8.25" PointY="12.125" />
-        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.SMSSender" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.LogUserWallet" Width="1.5" PointX="8.25" PointY="46" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_LogUserWallet_Users" />
@@ -98,6 +85,22 @@
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Wallets_Users" />
         <EntityTypeShape EntityType="AvvalMoneyOriginalModel.UserWalletReservation" Width="1.5" PointX="5.25" PointY="65.25" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWalletReservations_Wallets" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminSMSVerification" Width="1.5" PointX="8.25" PointY="70" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.Gateway" Width="1.5" PointX="13.5" PointY="36.625" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.AdminUser" Width="1.5" PointX="6" PointY="68.625" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Gateways_DepositeWallets" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Gateways_DealRequests" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminUser_AdminRole" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_AdminUserHistory_AdminUser" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_CurrencyPriceHistory_AdminUser" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_DealRequest_AdminUser" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_HelpPage_AdminUser" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_TicketItem_AdminUser" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_Transaction_AdminUser" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserBankCards_AdminUsers" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserVerificationDoc_AdminUser" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWithdraws_AdminUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

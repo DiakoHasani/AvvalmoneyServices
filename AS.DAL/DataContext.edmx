@@ -10,7 +10,7 @@
             <PropertyRef Name="ASV_Id" />
           </Key>
           <Property Name="ASV_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ASV_Code" Type="int" Nullable="false" />
+          <Property Name="ASV_Code" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="ASV_Type" Type="int" Nullable="false" />
           <Property Name="AdmUsr_Id" Type="bigint" Nullable="false" />
           <Property Name="ASV_Used" Type="bit" Nullable="false" />
@@ -65,6 +65,18 @@
           <Property Name="Aff_Id" Type="int" Nullable="false" />
           <Property Name="Dpw_CreateDate" Type="datetime" Nullable="false" />
           <Property Name="Dpw_RefrenceID" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Gateways">
+          <Key>
+            <PropertyRef Name="GW_Id" />
+          </Key>
+          <Property Name="GW_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GW_RefId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="GW_Price" Type="float" Nullable="false" />
+          <Property Name="GW_CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="GW_Status" Type="int" Nullable="false" />
+          <Property Name="Drq_Id" Type="uniqueidentifier" />
+          <Property Name="Dpw_Id" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="LifeLogBotWithraw">
           <Key>
@@ -190,6 +202,7 @@
           <Property Name="WC_CryptoType" Type="int" Nullable="false" />
           <Property Name="Drq_Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="WC_CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="WC_Sign" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="AdminActions">
           <Key>
@@ -248,7 +261,7 @@
           <Property Name="AdmUsr_Email" Type="nvarchar" MaxLength="100" />
           <Property Name="AdmUsr_Phone" Type="nvarchar" MaxLength="100" />
           <Property Name="AdmUsr_IsActive" Type="bit" Nullable="false" />
-          <Property Name="AdmUsr_SMSCode" Type="int" />
+          <Property Name="AdmUsr_SMSCode" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Affiliates">
           <Key>
@@ -393,6 +406,11 @@
           <Property Name="Stg_MaximumDailyPurchase_Level1" Type="float" Nullable="false" />
           <Property Name="Stg_MaximumDailyPurchase_Level2" Type="float" Nullable="false" />
           <Property Name="Stg_MaximumDailyPurchase_Level3" Type="float" Nullable="false" />
+          <Property Name="Stg_BuyAccess" Type="bit" Nullable="false" />
+          <Property Name="Stg_SellAccess" Type="bit" Nullable="false" />
+          <Property Name="Stg_WithdrawAccess" Type="bit" Nullable="false" />
+          <Property Name="Stg_MinimumTrx" Type="float" Nullable="false" />
+          <Property Name="Stg_MinimumUSDT_TRC20" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -578,6 +596,7 @@
           <Property Name="MemoTag" Type="nvarchar" MaxLength="20" />
           <Property Name="Private" Type="bit" Nullable="false" />
           <Property Name="Usr_Id" Type="bigint" />
+          <Property Name="Wal_Key" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="WebhockHisory">
           <Key>
@@ -784,6 +803,30 @@
             </Principal>
             <Dependent Role="Domains">
               <PropertyRef Name="Aff_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gateways_DealRequests">
+          <End Role="DealRequests" Type="Self.DealRequests" Multiplicity="0..1" />
+          <End Role="Gateways" Type="Self.Gateways" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DealRequests">
+              <PropertyRef Name="Drq_Id" />
+            </Principal>
+            <Dependent Role="Gateways">
+              <PropertyRef Name="Drq_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gateways_DepositeWallets">
+          <End Role="DepositeWallets" Type="Self.DepositeWallets" Multiplicity="0..1" />
+          <End Role="Gateways" Type="Self.Gateways" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepositeWallets">
+              <PropertyRef Name="Dpw_Id" />
+            </Principal>
+            <Dependent Role="Gateways">
+              <PropertyRef Name="Dpw_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1177,6 +1220,7 @@
           <EntitySet Name="BotInfoWithraw" EntityType="Self.BotInfoWithraw" Schema="avval" store:Type="Tables" />
           <EntitySet Name="BotWithrawType" EntityType="Self.BotWithrawType" Schema="avval" store:Type="Tables" />
           <EntitySet Name="DepositeWallets" EntityType="Self.DepositeWallets" Schema="avval" store:Type="Tables" />
+          <EntitySet Name="Gateways" EntityType="Self.Gateways" Schema="avval" store:Type="Tables" />
           <EntitySet Name="LifeLogBotWithraw" EntityType="Self.LifeLogBotWithraw" Schema="avval" store:Type="Tables" />
           <EntitySet Name="LogUserWallet" EntityType="Self.LogUserWallet" Schema="avval" store:Type="Tables" />
           <EntitySet Name="MenuNotification" EntityType="Self.MenuNotification" Schema="avval" store:Type="Tables" />
@@ -1280,6 +1324,14 @@
           <AssociationSet Name="FK_Domain_Affiliate" Association="Self.FK_Domain_Affiliate">
             <End Role="Affiliates" EntitySet="Affiliates" />
             <End Role="Domains" EntitySet="Domains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gateways_DealRequests" Association="Self.FK_Gateways_DealRequests">
+            <End Role="DealRequests" EntitySet="DealRequests" />
+            <End Role="Gateways" EntitySet="Gateways" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gateways_DepositeWallets" Association="Self.FK_Gateways_DepositeWallets">
+            <End Role="DepositeWallets" EntitySet="DepositeWallets" />
+            <End Role="Gateways" EntitySet="Gateways" />
           </AssociationSet>
           <AssociationSet Name="FK_HelpPage_AdminUser" Association="Self.FK_HelpPage_AdminUser">
             <End Role="AdminUsers" EntitySet="AdminUsers" />
@@ -1427,6 +1479,7 @@
           <Property Name="Dpw_RefrenceID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Affiliate" Relationship="Self.FK_DepositeWallets_Affiliates" FromRole="DepositeWallets" ToRole="Affiliates" />
           <NavigationProperty Name="User" Relationship="Self.FK_DepositeWallets_Users" FromRole="DepositeWallets" ToRole="Users" />
+          <NavigationProperty Name="Gateways" Relationship="AvvalMoneyOriginalModel.FK_Gateways_DepositeWallets" FromRole="DepositeWallet" ToRole="Gateway" />
         </EntityType>
         <EntityType Name="MenuNotification">
           <Key>
@@ -1504,7 +1557,7 @@
           <Property Name="AdmRole_Id" Type="Guid" Nullable="false" />
           <Property Name="AdmRole_Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AdminRoleActions" Relationship="Self.FK_AdminRoleAction_AdminRole" FromRole="AdminRoles" ToRole="AdminRoleActions" />
-          <NavigationProperty Name="AdminUsers" Relationship="Self.FK_AdminUser_AdminRole" FromRole="AdminRoles" ToRole="AdminUsers" />
+          <NavigationProperty Name="AdminUsers" Relationship="AvvalMoneyOriginalModel.FK_AdminUser_AdminRole" FromRole="AdminRole" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="AdminUserHistory">
           <Key>
@@ -1519,33 +1572,7 @@
           <Property Name="AUH_Action" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="AUH_QuerString" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="AUH_Tag" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_AdminUserHistory_AdminUser" FromRole="AdminUserHistories" ToRole="AdminUsers" />
-        </EntityType>
-        <EntityType Name="AdminUser">
-          <Key>
-            <PropertyRef Name="AdmUsr_Id" />
-          </Key>
-          <Property Name="AdmUsr_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AdmUsr_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AdmRole_Id" Type="Guid" Nullable="false" />
-          <Property Name="AdmUsr_Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AdmUsr_Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AdmUsr_Fullname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AdmUsr_Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AdmUsr_Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AdmUsr_IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="AdminRole" Relationship="Self.FK_AdminUser_AdminRole" FromRole="AdminUsers" ToRole="AdminRoles" />
-          <NavigationProperty Name="AdminUserHistories" Relationship="Self.FK_AdminUserHistory_AdminUser" FromRole="AdminUsers" ToRole="AdminUserHistories" />
-          <NavigationProperty Name="CurrencyPriceHistories" Relationship="Self.FK_CurrencyPriceHistory_AdminUser" FromRole="AdminUsers" ToRole="CurrencyPriceHistories" />
-          <NavigationProperty Name="DealRequests" Relationship="Self.FK_DealRequest_AdminUser" FromRole="AdminUsers" ToRole="DealRequests" />
-          <NavigationProperty Name="HelpPages" Relationship="Self.FK_HelpPage_AdminUser" FromRole="AdminUsers" ToRole="HelpPages" />
-          <NavigationProperty Name="TicketItems" Relationship="Self.FK_TicketItem_AdminUser" FromRole="AdminUsers" ToRole="TicketItems" />
-          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transaction_AdminUser" FromRole="AdminUsers" ToRole="Transactions" />
-          <NavigationProperty Name="UserBankCards" Relationship="Self.FK_UserBankCards_AdminUsers" FromRole="AdminUsers" ToRole="UserBankCards" />
-          <NavigationProperty Name="UserVerificationDocs" Relationship="Self.FK_UserVerificationDoc_AdminUser" FromRole="AdminUsers" ToRole="UserVerificationDocs" />
-          <NavigationProperty Name="UserWithdraws" Relationship="Self.FK_UserWithdraws_AdminUsers" FromRole="AdminUsers" ToRole="UserWithdraws" />
-          <Property Name="AdmUsr_SMSCode" Type="Int32" />
-          <NavigationProperty Name="AdminSMSVerifications" Relationship="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers" FromRole="AdminUser" ToRole="AdminSMSVerification" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_AdminUserHistory_AdminUser" FromRole="AdminUserHistory" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="Affiliate">
           <Key>
@@ -1603,9 +1630,9 @@
           <Property Name="CPH_SellPrice" Type="Double" Nullable="false" />
           <Property Name="CPH_BuyPrice" Type="Double" Nullable="false" />
           <Property Name="AdmUsr_Id" Type="Int64" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_CurrencyPriceHistory_AdminUser" FromRole="CurrencyPriceHistories" ToRole="AdminUsers" />
           <NavigationProperty Name="Currency" Relationship="Self.FK_CurrencyPriceHistory_Currency" FromRole="CurrencyPriceHistories" ToRole="Currencies" />
           <NavigationProperty Name="DealRequests" Relationship="Self.FK_DealRequest_CurrencyPriceHistory" FromRole="CurrencyPriceHistories" ToRole="DealRequests" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_CurrencyPriceHistory_AdminUser" FromRole="CurrencyPriceHistory" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="DealRequest">
           <Key>
@@ -1632,12 +1659,13 @@
           <Property Name="Wal_Id" Type="Int32" />
           <Property Name="Drq_UsrWalletAddress" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="Txid" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_DealRequest_AdminUser" FromRole="DealRequests" ToRole="AdminUsers" />
           <NavigationProperty Name="Affiliate" Relationship="Self.FK_DealRequest_Affiliate" FromRole="DealRequests" ToRole="Affiliates" />
           <NavigationProperty Name="CurrencyPriceHistory" Relationship="Self.FK_DealRequest_CurrencyPriceHistory" FromRole="DealRequests" ToRole="CurrencyPriceHistories" />
           <NavigationProperty Name="User" Relationship="Self.FK_DealRequest_User" FromRole="DealRequests" ToRole="Users" />
           <NavigationProperty Name="Wallet" Relationship="Self.FK_DealRequests_Wallets" FromRole="DealRequests" ToRole="Wallets" />
           <NavigationProperty Name="WithdrawCryptoes" Relationship="AvvalMoneyOriginalModel.FK_WithdrawCrypto_DealRequests" FromRole="DealRequest" ToRole="WithdrawCrypto" />
+          <NavigationProperty Name="Gateways" Relationship="AvvalMoneyOriginalModel.FK_Gateways_DealRequests" FromRole="DealRequest" ToRole="Gateway" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_DealRequest_AdminUser" FromRole="DealRequest" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="Domain">
           <Key>
@@ -1676,7 +1704,7 @@
           <Property Name="Page_OrderIndex" Type="Int32" Nullable="false" />
           <Property Name="AdmUsr_Id" Type="Int64" Nullable="false" />
           <Property Name="Page_FileID" Type="Guid" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_HelpPage_AdminUser" FromRole="HelpPages" ToRole="AdminUsers" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_HelpPage_AdminUser" FromRole="HelpPage" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="MarketingChannelClick">
           <Key>
@@ -1715,6 +1743,11 @@
           <Property Name="Stg_MaximumDailyPurchase_Level1" Type="Double" Nullable="false" />
           <Property Name="Stg_MaximumDailyPurchase_Level2" Type="Double" Nullable="false" />
           <Property Name="Stg_MaximumDailyPurchase_Level3" Type="Double" Nullable="false" />
+          <Property Name="Stg_BuyAccess" Type="Boolean" Nullable="false" />
+          <Property Name="Stg_SellAccess" Type="Boolean" Nullable="false" />
+          <Property Name="Stg_WithdrawAccess" Type="Boolean" Nullable="false" />
+          <Property Name="Stg_MinimumTrx" Type="Double" Nullable="false" />
+          <Property Name="Stg_MinimumUSDT_TRC20" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -1736,8 +1769,8 @@
           <Property Name="TikItm_Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AdmUsr_Id" Type="Int64" />
           <Property Name="TikItm_IsLink" Type="Boolean" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_TicketItem_AdminUser" FromRole="TicketItems" ToRole="AdminUsers" />
           <NavigationProperty Name="Ticket" Relationship="Self.FK_TicketItem_Ticket" FromRole="TicketItems" ToRole="Tickets" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_TicketItem_AdminUser" FromRole="TicketItem" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="Ticket">
           <Key>
@@ -1786,8 +1819,8 @@
           <Property Name="Tns_Type" Type="Int32" Nullable="false" />
           <Property Name="Tns_Tag" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AdmUsr_Id" Type="Int64" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_Transaction_AdminUser" FromRole="Transactions" ToRole="AdminUsers" />
           <NavigationProperty Name="User" Relationship="Self.FK_Transaction_User" FromRole="Transactions" ToRole="Users" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_Transaction_AdminUser" FromRole="Transaction" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="UserBankCard">
           <Key>
@@ -1803,10 +1836,10 @@
           <Property Name="UBC_Bank" Type="Int32" Nullable="false" />
           <Property Name="UBC_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Aff_Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_UserBankCards_AdminUsers" FromRole="UserBankCards" ToRole="AdminUsers" />
           <NavigationProperty Name="Affiliate" Relationship="Self.FK_UserBankCards_Affiliates" FromRole="UserBankCards" ToRole="Affiliates" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserBankCards_Users" FromRole="UserBankCards" ToRole="Users" />
           <NavigationProperty Name="UserWithdraws" Relationship="Self.FK_UserWithdraws_UserBankCards" FromRole="UserBankCards" ToRole="UserWithdraws" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_UserBankCards_AdminUsers" FromRole="UserBankCard" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="UserHistory">
           <Key>
@@ -1895,8 +1928,8 @@
           <Property Name="AdmUsr_Id" Type="Int64" />
           <Property Name="UVD_ImageExtention" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UVD_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_UserVerificationDoc_AdminUser" FromRole="UserVerificationDocs" ToRole="AdminUsers" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserVerificationDoc_User" FromRole="UserVerificationDocs" ToRole="Users" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_UserVerificationDoc_AdminUser" FromRole="UserVerificationDoc" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="UserWithdraw">
           <Key>
@@ -1912,7 +1945,6 @@
           <Property Name="Usr_Id" Type="Int64" Nullable="false" />
           <Property Name="Aff_Id" Type="Int32" Nullable="false" />
           <Property Name="UBC_Id" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="AdminUser" Relationship="Self.FK_UserWithdraws_AdminUsers" FromRole="UserWithdraws" ToRole="AdminUsers" />
           <NavigationProperty Name="Affiliate" Relationship="Self.FK_UserWithdraws_Affiliates" FromRole="UserWithdraws" ToRole="Affiliates" />
           <NavigationProperty Name="DoucumentUserWithdraw" Relationship="Self.FK_UserWithdraws_DoucumentUserWithdraws" FromRole="UserWithdraws" ToRole="DoucumentUserWithdraws" />
           <NavigationProperty Name="UserBankCard" Relationship="Self.FK_UserWithdraws_UserBankCards" FromRole="UserWithdraws" ToRole="UserBankCards" />
@@ -1921,6 +1953,7 @@
           <Property Name="Try" Type="Int32" />
           <Property Name="SMS" Type="Boolean" />
           <Property Name="Bot" Type="Boolean" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_UserWithdraws_AdminUsers" FromRole="UserWithdraw" ToRole="AdminUser" />
         </EntityType>
         <EntityType Name="Wallet">
           <Key>
@@ -1942,6 +1975,7 @@
           <NavigationProperty Name="LogUserWallets" Relationship="AvvalMoneyOriginalModel.FK_LogUserWallet_Wallets" FromRole="Wallet" ToRole="LogUserWallet" />
           <NavigationProperty Name="User" Relationship="AvvalMoneyOriginalModel.FK_Wallets_Users" FromRole="Wallet" ToRole="User" />
           <NavigationProperty Name="UserWalletReservations" Relationship="AvvalMoneyOriginalModel.FK_UserWalletReservations_Wallets" FromRole="Wallet" ToRole="UserWalletReservation" />
+          <Property Name="Wal_Key" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="WebhockHisory">
           <Key>
@@ -2017,126 +2051,6 @@
             </Principal>
             <Dependent Role="AdminRoleActions">
               <PropertyRef Name="AdmRole_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AdminUser_AdminRole">
-          <End Role="AdminRoles" Type="Self.AdminRole" Multiplicity="1" />
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminRoles">
-              <PropertyRef Name="AdmRole_Id" />
-            </Principal>
-            <Dependent Role="AdminUsers">
-              <PropertyRef Name="AdmRole_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AdminUserHistory_AdminUser">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="1" />
-          <End Role="AdminUserHistories" Type="Self.AdminUserHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="AdminUserHistories">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CurrencyPriceHistory_AdminUser">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="0..1" />
-          <End Role="CurrencyPriceHistories" Type="Self.CurrencyPriceHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="CurrencyPriceHistories">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DealRequest_AdminUser">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="0..1" />
-          <End Role="DealRequests" Type="Self.DealRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="DealRequests">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HelpPage_AdminUser">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="1" />
-          <End Role="HelpPages" Type="Self.HelpPage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="HelpPages">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketItem_AdminUser">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="0..1" />
-          <End Role="TicketItems" Type="Self.TicketItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="TicketItems">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transaction_AdminUser">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="0..1" />
-          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="Transactions">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserBankCards_AdminUsers">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="0..1" />
-          <End Role="UserBankCards" Type="Self.UserBankCard" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="UserBankCards">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserVerificationDoc_AdminUser">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="0..1" />
-          <End Role="UserVerificationDocs" Type="Self.UserVerificationDoc" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="UserVerificationDocs">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserWithdraws_AdminUsers">
-          <End Role="AdminUsers" Type="Self.AdminUser" Multiplicity="0..1" />
-          <End Role="UserWithdraws" Type="Self.UserWithdraw" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUsers">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="UserWithdraws">
-              <PropertyRef Name="AdmUsr_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2437,7 +2351,6 @@
           <EntitySet Name="AdminRoleActions" EntityType="Self.AdminRoleAction" />
           <EntitySet Name="AdminRoles" EntityType="Self.AdminRole" />
           <EntitySet Name="AdminUserHistories" EntityType="Self.AdminUserHistory" />
-          <EntitySet Name="AdminUsers" EntityType="Self.AdminUser" />
           <EntitySet Name="Affiliates" EntityType="Self.Affiliate" />
           <EntitySet Name="Currencies" EntityType="Self.Currency" />
           <EntitySet Name="CurrencyPriceHistories" EntityType="Self.CurrencyPriceHistory" />
@@ -2481,46 +2394,6 @@
           <AssociationSet Name="FK_AdminRoleAction_AdminRole" Association="Self.FK_AdminRoleAction_AdminRole">
             <End Role="AdminRoles" EntitySet="AdminRoles" />
             <End Role="AdminRoleActions" EntitySet="AdminRoleActions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AdminUser_AdminRole" Association="Self.FK_AdminUser_AdminRole">
-            <End Role="AdminRoles" EntitySet="AdminRoles" />
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AdminUserHistory_AdminUser" Association="Self.FK_AdminUserHistory_AdminUser">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="AdminUserHistories" EntitySet="AdminUserHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CurrencyPriceHistory_AdminUser" Association="Self.FK_CurrencyPriceHistory_AdminUser">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="CurrencyPriceHistories" EntitySet="CurrencyPriceHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DealRequest_AdminUser" Association="Self.FK_DealRequest_AdminUser">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="DealRequests" EntitySet="DealRequests" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HelpPage_AdminUser" Association="Self.FK_HelpPage_AdminUser">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="HelpPages" EntitySet="HelpPages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketItem_AdminUser" Association="Self.FK_TicketItem_AdminUser">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="TicketItems" EntitySet="TicketItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transaction_AdminUser" Association="Self.FK_Transaction_AdminUser">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="Transactions" EntitySet="Transactions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserBankCards_AdminUsers" Association="Self.FK_UserBankCards_AdminUsers">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="UserBankCards" EntitySet="UserBankCards" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserVerificationDoc_AdminUser" Association="Self.FK_UserVerificationDoc_AdminUser">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="UserVerificationDocs" EntitySet="UserVerificationDocs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserWithdraws_AdminUsers" Association="Self.FK_UserWithdraws_AdminUsers">
-            <End Role="AdminUsers" EntitySet="AdminUsers" />
-            <End Role="UserWithdraws" EntitySet="UserWithdraws" />
           </AssociationSet>
           <AssociationSet Name="FK_DealRequest_Affiliate" Association="Self.FK_DealRequest_Affiliate">
             <End Role="Affiliates" EntitySet="Affiliates" />
@@ -2642,11 +2515,6 @@
             <End Role="DealRequest" EntitySet="DealRequests" />
             <End Role="WithdrawCrypto" EntitySet="WithdrawCryptoes" />
           </AssociationSet>
-          <EntitySet Name="AdminSMSVerifications" EntityType="AvvalMoneyOriginalModel.AdminSMSVerification" />
-          <AssociationSet Name="FK_AdminSMSVerification_AdminUsers" Association="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers">
-            <End Role="AdminUser" EntitySet="AdminUsers" />
-            <End Role="AdminSMSVerification" EntitySet="AdminSMSVerifications" />
-          </AssociationSet>
           <EntitySet Name="SMSSenders" EntityType="AvvalMoneyOriginalModel.SMSSender" />
           <EntitySet Name="LogUserWallets" EntityType="AvvalMoneyOriginalModel.LogUserWallet" />
           <AssociationSet Name="FK_LogUserWallet_Users" Association="AvvalMoneyOriginalModel.FK_LogUserWallet_Users">
@@ -2665,6 +2533,61 @@
           <AssociationSet Name="FK_UserWalletReservations_Wallets" Association="AvvalMoneyOriginalModel.FK_UserWalletReservations_Wallets">
             <End Role="Wallet" EntitySet="Wallets" />
             <End Role="UserWalletReservation" EntitySet="UserWalletReservations" />
+          </AssociationSet>
+          <EntitySet Name="AdminSMSVerifications" EntityType="AvvalMoneyOriginalModel.AdminSMSVerification" />
+          <EntitySet Name="Gateways" EntityType="AvvalMoneyOriginalModel.Gateway" />
+          <EntitySet Name="AdminUsers" EntityType="AvvalMoneyOriginalModel.AdminUser" />
+          <AssociationSet Name="FK_AdminSMSVerification_AdminUsers" Association="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="AdminSMSVerification" EntitySet="AdminSMSVerifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gateways_DepositeWallets" Association="AvvalMoneyOriginalModel.FK_Gateways_DepositeWallets">
+            <End Role="DepositeWallet" EntitySet="DepositeWallets" />
+            <End Role="Gateway" EntitySet="Gateways" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gateways_DealRequests" Association="AvvalMoneyOriginalModel.FK_Gateways_DealRequests">
+            <End Role="DealRequest" EntitySet="DealRequests" />
+            <End Role="Gateway" EntitySet="Gateways" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdminUser_AdminRole" Association="AvvalMoneyOriginalModel.FK_AdminUser_AdminRole">
+            <End Role="AdminRole" EntitySet="AdminRoles" />
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdminUserHistory_AdminUser" Association="AvvalMoneyOriginalModel.FK_AdminUserHistory_AdminUser">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="AdminUserHistory" EntitySet="AdminUserHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CurrencyPriceHistory_AdminUser" Association="AvvalMoneyOriginalModel.FK_CurrencyPriceHistory_AdminUser">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="CurrencyPriceHistory" EntitySet="CurrencyPriceHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DealRequest_AdminUser" Association="AvvalMoneyOriginalModel.FK_DealRequest_AdminUser">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="DealRequest" EntitySet="DealRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HelpPage_AdminUser" Association="AvvalMoneyOriginalModel.FK_HelpPage_AdminUser">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="HelpPage" EntitySet="HelpPages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketItem_AdminUser" Association="AvvalMoneyOriginalModel.FK_TicketItem_AdminUser">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="TicketItem" EntitySet="TicketItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transaction_AdminUser" Association="AvvalMoneyOriginalModel.FK_Transaction_AdminUser">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="Transaction" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserBankCards_AdminUsers" Association="AvvalMoneyOriginalModel.FK_UserBankCards_AdminUsers">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="UserBankCard" EntitySet="UserBankCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserVerificationDoc_AdminUser" Association="AvvalMoneyOriginalModel.FK_UserVerificationDoc_AdminUser">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="UserVerificationDoc" EntitySet="UserVerificationDocs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserWithdraws_AdminUsers" Association="AvvalMoneyOriginalModel.FK_UserWithdraws_AdminUsers">
+            <End Role="AdminUser" EntitySet="AdminUsers" />
+            <End Role="UserWithdraw" EntitySet="UserWithdraws" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="BotCardsWithraw">
@@ -2795,6 +2718,7 @@
           <Property Name="Drq_Id" Type="Guid" Nullable="false" />
           <Property Name="WC_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="DealRequest" Relationship="AvvalMoneyOriginalModel.FK_WithdrawCrypto_DealRequests" FromRole="WithdrawCrypto" ToRole="DealRequest" />
+          <Property Name="WC_Sign" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_WithdrawCrypto_DealRequests">
           <End Type="AvvalMoneyOriginalModel.DealRequest" Role="DealRequest" Multiplicity="1" />
@@ -2805,30 +2729,6 @@
             </Principal>
             <Dependent Role="WithdrawCrypto">
               <PropertyRef Name="Drq_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="AdminSMSVerification">
-          <Key>
-            <PropertyRef Name="ASV_Id" />
-          </Key>
-          <Property Name="ASV_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ASV_Code" Type="Int32" Nullable="false" />
-          <Property Name="ASV_Type" Type="Int32" Nullable="false" />
-          <Property Name="AdmUsr_Id" Type="Int64" Nullable="false" />
-          <Property Name="ASV_Used" Type="Boolean" Nullable="false" />
-          <Property Name="ASV_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers" FromRole="AdminSMSVerification" ToRole="AdminUser" />
-        </EntityType>
-        <Association Name="FK_AdminSMSVerification_AdminUsers">
-          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="1" />
-          <End Type="AvvalMoneyOriginalModel.AdminSMSVerification" Role="AdminSMSVerification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdminUser">
-              <PropertyRef Name="AdmUsr_Id" />
-            </Principal>
-            <Dependent Role="AdminSMSVerification">
-              <PropertyRef Name="AdmUsr_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2912,6 +2812,214 @@
             </Principal>
             <Dependent Role="UserWalletReservation">
               <PropertyRef Name="Wal_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AdminSMSVerification">
+          <Key>
+            <PropertyRef Name="ASV_Id" />
+          </Key>
+          <Property Name="ASV_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASV_Code" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ASV_Type" Type="Int32" Nullable="false" />
+          <Property Name="AdmUsr_Id" Type="Int64" Nullable="false" />
+          <Property Name="ASV_Used" Type="Boolean" Nullable="false" />
+          <Property Name="ASV_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers" FromRole="AdminSMSVerification" ToRole="AdminUser" />
+        </EntityType>
+        <EntityType Name="Gateway">
+          <Key>
+            <PropertyRef Name="GW_Id" />
+          </Key>
+          <Property Name="GW_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GW_RefId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GW_Price" Type="Double" Nullable="false" />
+          <Property Name="GW_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="GW_Status" Type="Int32" Nullable="false" />
+          <Property Name="Drq_Id" Type="Guid" />
+          <Property Name="Dpw_Id" Type="Guid" />
+          <NavigationProperty Name="DepositeWallet" Relationship="AvvalMoneyOriginalModel.FK_Gateways_DepositeWallets" FromRole="Gateway" ToRole="DepositeWallet" />
+          <NavigationProperty Name="DealRequest" Relationship="AvvalMoneyOriginalModel.FK_Gateways_DealRequests" FromRole="Gateway" ToRole="DealRequest" />
+        </EntityType>
+        <EntityType Name="AdminUser">
+          <Key>
+            <PropertyRef Name="AdmUsr_Id" />
+          </Key>
+          <Property Name="AdmUsr_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdmUsr_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AdmRole_Id" Type="Guid" Nullable="false" />
+          <Property Name="AdmUsr_Username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AdmUsr_Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AdmUsr_Fullname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AdmUsr_Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AdmUsr_Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AdmUsr_IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="AdmUsr_SMSCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AdminSMSVerifications" Relationship="AvvalMoneyOriginalModel.FK_AdminSMSVerification_AdminUsers" FromRole="AdminUser" ToRole="AdminSMSVerification" />
+          <NavigationProperty Name="AdminRole" Relationship="AvvalMoneyOriginalModel.FK_AdminUser_AdminRole" FromRole="AdminUser" ToRole="AdminRole" />
+          <NavigationProperty Name="AdminUserHistories" Relationship="AvvalMoneyOriginalModel.FK_AdminUserHistory_AdminUser" FromRole="AdminUser" ToRole="AdminUserHistory" />
+          <NavigationProperty Name="CurrencyPriceHistories" Relationship="AvvalMoneyOriginalModel.FK_CurrencyPriceHistory_AdminUser" FromRole="AdminUser" ToRole="CurrencyPriceHistory" />
+          <NavigationProperty Name="DealRequests" Relationship="AvvalMoneyOriginalModel.FK_DealRequest_AdminUser" FromRole="AdminUser" ToRole="DealRequest" />
+          <NavigationProperty Name="HelpPages" Relationship="AvvalMoneyOriginalModel.FK_HelpPage_AdminUser" FromRole="AdminUser" ToRole="HelpPage" />
+          <NavigationProperty Name="TicketItems" Relationship="AvvalMoneyOriginalModel.FK_TicketItem_AdminUser" FromRole="AdminUser" ToRole="TicketItem" />
+          <NavigationProperty Name="Transactions" Relationship="AvvalMoneyOriginalModel.FK_Transaction_AdminUser" FromRole="AdminUser" ToRole="Transaction" />
+          <NavigationProperty Name="UserBankCards" Relationship="AvvalMoneyOriginalModel.FK_UserBankCards_AdminUsers" FromRole="AdminUser" ToRole="UserBankCard" />
+          <NavigationProperty Name="UserVerificationDocs" Relationship="AvvalMoneyOriginalModel.FK_UserVerificationDoc_AdminUser" FromRole="AdminUser" ToRole="UserVerificationDoc" />
+          <NavigationProperty Name="UserWithdraws" Relationship="AvvalMoneyOriginalModel.FK_UserWithdraws_AdminUsers" FromRole="AdminUser" ToRole="UserWithdraw" />
+        </EntityType>
+        <Association Name="FK_AdminSMSVerification_AdminUsers">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="1" />
+          <End Type="AvvalMoneyOriginalModel.AdminSMSVerification" Role="AdminSMSVerification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="AdminSMSVerification">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gateways_DepositeWallets">
+          <End Type="AvvalMoneyOriginalModel.DepositeWallet" Role="DepositeWallet" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.Gateway" Role="Gateway" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepositeWallet">
+              <PropertyRef Name="Dpw_Id" />
+            </Principal>
+            <Dependent Role="Gateway">
+              <PropertyRef Name="Dpw_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gateways_DealRequests">
+          <End Type="AvvalMoneyOriginalModel.DealRequest" Role="DealRequest" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.Gateway" Role="Gateway" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DealRequest">
+              <PropertyRef Name="Drq_Id" />
+            </Principal>
+            <Dependent Role="Gateway">
+              <PropertyRef Name="Drq_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdminUser_AdminRole">
+          <End Type="AvvalMoneyOriginalModel.AdminRole" Role="AdminRole" Multiplicity="1" />
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminRole">
+              <PropertyRef Name="AdmRole_Id" />
+            </Principal>
+            <Dependent Role="AdminUser">
+              <PropertyRef Name="AdmRole_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdminUserHistory_AdminUser">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="1" />
+          <End Type="AvvalMoneyOriginalModel.AdminUserHistory" Role="AdminUserHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="AdminUserHistory">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CurrencyPriceHistory_AdminUser">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.CurrencyPriceHistory" Role="CurrencyPriceHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="CurrencyPriceHistory">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DealRequest_AdminUser">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.DealRequest" Role="DealRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="DealRequest">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HelpPage_AdminUser">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="1" />
+          <End Type="AvvalMoneyOriginalModel.HelpPage" Role="HelpPage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="HelpPage">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketItem_AdminUser">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.TicketItem" Role="TicketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="TicketItem">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_AdminUser">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserBankCards_AdminUsers">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.UserBankCard" Role="UserBankCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="UserBankCard">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserVerificationDoc_AdminUser">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.UserVerificationDoc" Role="UserVerificationDoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="UserVerificationDoc">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserWithdraws_AdminUsers">
+          <End Type="AvvalMoneyOriginalModel.AdminUser" Role="AdminUser" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.UserWithdraw" Role="UserWithdraw" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminUser">
+              <PropertyRef Name="AdmUsr_Id" />
+            </Principal>
+            <Dependent Role="UserWithdraw">
+              <PropertyRef Name="AdmUsr_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3024,22 +3132,6 @@
                 <ScalarProperty Name="AUH_Action" ColumnName="AUH_Action" />
                 <ScalarProperty Name="AUH_QuerString" ColumnName="AUH_QuerString" />
                 <ScalarProperty Name="AUH_Tag" ColumnName="AUH_Tag" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AdminUsers">
-            <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.AdminUser">
-              <MappingFragment StoreEntitySet="AdminUsers">
-                <ScalarProperty Name="AdmUsr_SMSCode" ColumnName="AdmUsr_SMSCode" />
-                <ScalarProperty Name="AdmUsr_Id" ColumnName="AdmUsr_Id" />
-                <ScalarProperty Name="AdmUsr_CreateDate" ColumnName="AdmUsr_CreateDate" />
-                <ScalarProperty Name="AdmRole_Id" ColumnName="AdmRole_Id" />
-                <ScalarProperty Name="AdmUsr_Username" ColumnName="AdmUsr_Username" />
-                <ScalarProperty Name="AdmUsr_Password" ColumnName="AdmUsr_Password" />
-                <ScalarProperty Name="AdmUsr_Fullname" ColumnName="AdmUsr_Fullname" />
-                <ScalarProperty Name="AdmUsr_Email" ColumnName="AdmUsr_Email" />
-                <ScalarProperty Name="AdmUsr_Phone" ColumnName="AdmUsr_Phone" />
-                <ScalarProperty Name="AdmUsr_IsActive" ColumnName="AdmUsr_IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3185,6 +3277,11 @@
           <EntitySetMapping Name="Settings">
             <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.Setting">
               <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="Stg_MinimumUSDT_TRC20" ColumnName="Stg_MinimumUSDT_TRC20" />
+                <ScalarProperty Name="Stg_MinimumTrx" ColumnName="Stg_MinimumTrx" />
+                <ScalarProperty Name="Stg_WithdrawAccess" ColumnName="Stg_WithdrawAccess" />
+                <ScalarProperty Name="Stg_SellAccess" ColumnName="Stg_SellAccess" />
+                <ScalarProperty Name="Stg_BuyAccess" ColumnName="Stg_BuyAccess" />
                 <ScalarProperty Name="Stg_MaximumDailyPurchase_Level3" ColumnName="Stg_MaximumDailyPurchase_Level3" />
                 <ScalarProperty Name="Stg_MaximumDailyPurchase_Level2" ColumnName="Stg_MaximumDailyPurchase_Level2" />
                 <ScalarProperty Name="Stg_MaximumDailyPurchase_Level1" ColumnName="Stg_MaximumDailyPurchase_Level1" />
@@ -3383,6 +3480,7 @@
           <EntitySetMapping Name="Wallets">
             <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.Wallet">
               <MappingFragment StoreEntitySet="Wallets">
+                <ScalarProperty Name="Wal_Key" ColumnName="Wal_Key" />
                 <ScalarProperty Name="Usr_Id" ColumnName="Usr_Id" />
                 <ScalarProperty Name="Private" ColumnName="Private" />
                 <ScalarProperty Name="Wal_Id" ColumnName="Wal_Id" />
@@ -3499,6 +3597,7 @@
           <EntitySetMapping Name="WithdrawCryptoes">
             <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.WithdrawCrypto">
               <MappingFragment StoreEntitySet="WithdrawCrypto">
+                <ScalarProperty Name="WC_Sign" ColumnName="WC_Sign" />
                 <ScalarProperty Name="WC_CreateDate" ColumnName="WC_CreateDate" />
                 <ScalarProperty Name="Drq_Id" ColumnName="Drq_Id" />
                 <ScalarProperty Name="WC_CryptoType" ColumnName="WC_CryptoType" />
@@ -3506,18 +3605,6 @@
                 <ScalarProperty Name="WC_Amount" ColumnName="WC_Amount" />
                 <ScalarProperty Name="WC_Address" ColumnName="WC_Address" />
                 <ScalarProperty Name="WC_Id" ColumnName="WC_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AdminSMSVerifications">
-            <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.AdminSMSVerification">
-              <MappingFragment StoreEntitySet="AdminSMSVerification">
-                <ScalarProperty Name="ASV_CreateDate" ColumnName="ASV_CreateDate" />
-                <ScalarProperty Name="ASV_Used" ColumnName="ASV_Used" />
-                <ScalarProperty Name="AdmUsr_Id" ColumnName="AdmUsr_Id" />
-                <ScalarProperty Name="ASV_Type" ColumnName="ASV_Type" />
-                <ScalarProperty Name="ASV_Code" ColumnName="ASV_Code" />
-                <ScalarProperty Name="ASV_Id" ColumnName="ASV_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3553,6 +3640,47 @@
                 <ScalarProperty Name="Wal_Id" ColumnName="Wal_Id" />
                 <ScalarProperty Name="UWR_CreateDate" ColumnName="UWR_CreateDate" />
                 <ScalarProperty Name="UWR_Id" ColumnName="UWR_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminSMSVerifications">
+            <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.AdminSMSVerification">
+              <MappingFragment StoreEntitySet="AdminSMSVerification">
+                <ScalarProperty Name="ASV_CreateDate" ColumnName="ASV_CreateDate" />
+                <ScalarProperty Name="ASV_Used" ColumnName="ASV_Used" />
+                <ScalarProperty Name="AdmUsr_Id" ColumnName="AdmUsr_Id" />
+                <ScalarProperty Name="ASV_Type" ColumnName="ASV_Type" />
+                <ScalarProperty Name="ASV_Code" ColumnName="ASV_Code" />
+                <ScalarProperty Name="ASV_Id" ColumnName="ASV_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gateways">
+            <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.Gateway">
+              <MappingFragment StoreEntitySet="Gateways">
+                <ScalarProperty Name="Dpw_Id" ColumnName="Dpw_Id" />
+                <ScalarProperty Name="Drq_Id" ColumnName="Drq_Id" />
+                <ScalarProperty Name="GW_Status" ColumnName="GW_Status" />
+                <ScalarProperty Name="GW_CreateDate" ColumnName="GW_CreateDate" />
+                <ScalarProperty Name="GW_Price" ColumnName="GW_Price" />
+                <ScalarProperty Name="GW_RefId" ColumnName="GW_RefId" />
+                <ScalarProperty Name="GW_Id" ColumnName="GW_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminUsers">
+            <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.AdminUser">
+              <MappingFragment StoreEntitySet="AdminUsers">
+                <ScalarProperty Name="AdmUsr_SMSCode" ColumnName="AdmUsr_SMSCode" />
+                <ScalarProperty Name="AdmUsr_IsActive" ColumnName="AdmUsr_IsActive" />
+                <ScalarProperty Name="AdmUsr_Phone" ColumnName="AdmUsr_Phone" />
+                <ScalarProperty Name="AdmUsr_Email" ColumnName="AdmUsr_Email" />
+                <ScalarProperty Name="AdmUsr_Fullname" ColumnName="AdmUsr_Fullname" />
+                <ScalarProperty Name="AdmUsr_Password" ColumnName="AdmUsr_Password" />
+                <ScalarProperty Name="AdmUsr_Username" ColumnName="AdmUsr_Username" />
+                <ScalarProperty Name="AdmRole_Id" ColumnName="AdmRole_Id" />
+                <ScalarProperty Name="AdmUsr_CreateDate" ColumnName="AdmUsr_CreateDate" />
+                <ScalarProperty Name="AdmUsr_Id" ColumnName="AdmUsr_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

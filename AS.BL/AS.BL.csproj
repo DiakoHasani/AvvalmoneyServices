@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="AutoMapperConfig.cs" />
     <Compile Include="BaseApi.cs" />
+    <Compile Include="Catches\NovinpalCatch.cs" />
     <Compile Include="Catches\PaystarCatch.cs" />
     <Compile Include="DependencyInjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Services\BotCardsWithdrawService.cs" />
     <Compile Include="Services\BotInfoWithdrawService.cs" />
     <Compile Include="Services\BotWithdrawTypeService.cs" />
+    <Compile Include="Services\ContradictionService.cs" />
     <Compile Include="Services\CurrencyPriceHistoryApiService.cs" />
     <Compile Include="Services\CurrencyPriceHistoryService.cs" />
     <Compile Include="Services\CurrencyService.cs" />
@@ -123,10 +125,12 @@
     <Compile Include="Services\DealRequestService.cs" />
     <Compile Include="Services\Ex4IrService.cs" />
     <Compile Include="Services\CurrencyApiService.cs" />
+    <Compile Include="Services\ContradictionApiService.cs" />
     <Compile Include="Services\IraniCardService.cs" />
     <Compile Include="Services\LifeLogBotWithdrawService.cs" />
     <Compile Include="Services\MenuNotificationService.cs" />
     <Compile Include="Services\NobitexService.cs" />
+    <Compile Include="Services\NovinpalService.cs" />
     <Compile Include="Services\OptBotWithdrawService.cs" />
     <Compile Include="Services\Pay98Service.cs" />
     <Compile Include="Services\PaystarService.cs" />

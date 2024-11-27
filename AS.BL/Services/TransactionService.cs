@@ -15,7 +15,7 @@ namespace AS.BL.Services
         private readonly ITransactionRepository _transactionRepository;
         public TransactionService(ITransactionRepository transactionRepository)
         {
-            _transactionRepository=transactionRepository;
+            _transactionRepository = transactionRepository;
         }
 
         public async Task<Transaction> AddTransacton(RequestTransactionModel request)
@@ -30,14 +30,19 @@ namespace AS.BL.Services
                 }
             }
 
-            double befor = 0;
+            long befor = 0;
             if (_transactionRepository.GetAll().Where(p => p.Usr_Id == request.UserId).Any())
             {
                 var s = _transactionRepository.GetAll().Where(p => p.Usr_Id == request.UserId).Select(p => p.Tns_Amount).ToList();
                 for (int i = 0; i < s.Count; i++)
                 {
-                    befor += s[i];
+                    befor += (long)s[i];
                 }
+            }
+
+            if (befor < 0 && befor > 500000000)
+            {
+                befor = 0;
             }
 
             var after = befor + request.Amount;

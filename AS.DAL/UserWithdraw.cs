@@ -34,12 +34,12 @@ namespace AS.DAL
         public Nullable<bool> SMS { get; set; }
         public Nullable<bool> Bot { get; set; }
     
-        public virtual AdminUser AdminUser { get; set; }
         public virtual Affiliate Affiliate { get; set; }
         public virtual DoucumentUserWithdraw DoucumentUserWithdraw { get; set; }
         public virtual UserBankCard UserBankCard { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BotWithrawType> BotWithrawTypes { get; set; }
+        public virtual AdminUser AdminUser { get; set; }
     }
 }

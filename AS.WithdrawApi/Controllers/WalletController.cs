@@ -1,4 +1,5 @@
 ﻿using AS.BL.Services;
+using AS.DAL;
 using AS.Log;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,15 @@ namespace AS.WithdrawApi.Controllers
     {
         private readonly ILogger _logger;
         private readonly IWalletService _walletService;
+        private readonly ISMSSenderService _smsSenderService;
 
         public WalletController(ILogger logger,
-            IWalletService walletService)
+            IWalletService walletService,
+            ISMSSenderService smsSenderService)
         {
             _logger = logger;
             _walletService = walletService;
+            _smsSenderService = smsSenderService;
         }
 
         [Route("GetWalletById/{Wal_Id}")]
@@ -29,6 +33,11 @@ namespace AS.WithdrawApi.Controllers
         {
             try
             {
+                if (! await _walletService.CheckWalletKey(Wal_Id))
+                {
+                    _smsSenderService.SendToSupports($"شناسه ولت با آیدی {Wal_Id} با اطلاعات ولت مطابقت ندارد");
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
+                }
                 return Request.CreateResponse(HttpStatusCode.OK, await _walletService.GetWalletById(Wal_Id));
             }
             catch (Exception ex)
@@ -40,10 +49,15 @@ namespace AS.WithdrawApi.Controllers
 
         [HttpGet]
         [Route("UpdateLastTransaction/{Wal_Id}")]
-        public async Task<HttpResponseMessage> UpdateLastTransaction(long Wal_Id)
+        public async Task<HttpResponseMessage> UpdateLastTransaction(int Wal_Id)
         {
             try
             {
+                if (!await _walletService.CheckWalletKey(Wal_Id))
+                {
+                    _smsSenderService.SendToSupports($"شناسه ولت با آیدی {Wal_Id} با اطلاعات ولت مطابقت ندارد");
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
+                }
                 return Request.CreateResponse(HttpStatusCode.OK, await _walletService.UpdateLastTransaction(Wal_Id));
             }
             catch (Exception ex)

@@ -15,7 +15,7 @@ namespace AS.DAL
     public partial class AdminSMSVerification
     {
         public int ASV_Id { get; set; }
-        public int ASV_Code { get; set; }
+        public string ASV_Code { get; set; }
         public int ASV_Type { get; set; }
         public long AdmUsr_Id { get; set; }
         public bool ASV_Used { get; set; }

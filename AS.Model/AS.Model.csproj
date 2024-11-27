@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contradiction\ContradictionModel.cs" />
     <Compile Include="CurrencyPriceHistory\CurrencyPriceHistoryModel.cs" />
     <Compile Include="Currency\CurrencyModel.cs" />
     <Compile Include="DealRequest\DealRequestGatewayModel.cs" />
@@ -88,6 +89,10 @@
     <Compile Include="Nobitex\ResponseNobitexTonModel.cs" />
     <Compile Include="Nobitex\ResponseNobitexTronModel.cs" />
     <Compile Include="Nobitex\RlsModel.cs" />
+    <Compile Include="Novinpal\NovinpalCatchModel.cs" />
+    <Compile Include="Novinpal\NovinpalRequestModel.cs" />
+    <Compile Include="Novinpal\NovinpalResponseModel.cs" />
+    <Compile Include="Novinpal\NovinpalVerifyResponseModel.cs" />
     <Compile Include="Pay98\ResponsePay98DataModel.cs" />
     <Compile Include="Pay98\ResponsePay98Model.cs" />
     <Compile Include="Pay98\ResponsePay98NoFeeModel.cs" />
@@ -139,6 +144,7 @@
     <Compile Include="WithdrawCryptoBot\RequestLoginModel.cs" />
     <Compile Include="WithdrawCryptoBot\ResponseLoginModel.cs" />
     <Compile Include="WithdrawCrypto\RequestPayWithdrawCryptoModel.cs" />
+    <Compile Include="WithdrawCrypto\ResponseWithdrawCryptoEncryptedModel.cs" />
     <Compile Include="WithdrawCrypto\ResponseWithdrawCryptoModel.cs" />
     <Compile Include="Zibal\ZibalCheckoutModel.cs" />
   </ItemGroup>

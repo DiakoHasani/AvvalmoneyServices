@@ -147,7 +147,7 @@ namespace AS.BL.Services
                 return null;
             }
             _mapper.Map(model, dealRequest);
-            dealRequest.Drq_TotalPrice = model.Drq_Amount * dealRequest.Drq_Cur_Latest_Price;
+            dealRequest.Drq_TotalPrice =(long) (model.Drq_Amount * dealRequest.Drq_Cur_Latest_Price);
             _dealRequestRepository.Update(dealRequest);
             await _dealRequestRepository.SaveChangeAsync();
             return _mapper.Map<DealRequestGatewayModel>(dealRequest);

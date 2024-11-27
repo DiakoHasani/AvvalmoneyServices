@@ -104,6 +104,10 @@ namespace AS.BL
             container.RegisterType<ITonScanService, TonScanService>();
             container.RegisterType<IAESServices, AESServices>();
             container.RegisterType<IPaystarService, PaystarService>();
+            container.RegisterType<INovinpalService, NovinpalService>();
+            container.RegisterType<INovinpalCatch, NovinpalCatch>();
+            container.RegisterType<IContradictionService, ContradictionService>();
+            container.RegisterType<IContradictionApiService, ContradictionApiService>();
         }
 
         private void ConfigCatch(UnityContainer container)

@@ -172,7 +172,8 @@
     <Content Include="Views\Paystar\Payment.cshtml" />
     <Content Include="Views\Paystar\Verify.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Novinpal\Pay.cshtml" />
+    <Content Include="Views\Novinpal\Payment.cshtml" />
+    <Content Include="Views\Novinpal\Verify.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

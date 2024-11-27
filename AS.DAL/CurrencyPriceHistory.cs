@@ -27,9 +27,9 @@ namespace AS.DAL
         public double CPH_BuyPrice { get; set; }
         public Nullable<long> AdmUsr_Id { get; set; }
     
-        public virtual AdminUser AdminUser { get; set; }
         public virtual Currency Currency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DealRequest> DealRequests { get; set; }
+        public virtual AdminUser AdminUser { get; set; }
     }
 }

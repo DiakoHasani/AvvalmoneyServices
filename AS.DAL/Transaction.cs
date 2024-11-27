@@ -24,7 +24,7 @@ namespace AS.DAL
         public string Tns_Tag { get; set; }
         public Nullable<long> AdmUsr_Id { get; set; }
     
-        public virtual AdminUser AdminUser { get; set; }
         public virtual User User { get; set; }
+        public virtual AdminUser AdminUser { get; set; }
     }
 }

@@ -13,5 +13,6 @@ namespace AS.Model.WithdrawCrypto
         public string WC_Address { get; set; }
         public double WC_Amount { get; set; }
         public CurrencyType WC_CryptoType { get; set; }
+        public string WC_Sign { get; set; }
     }
 }

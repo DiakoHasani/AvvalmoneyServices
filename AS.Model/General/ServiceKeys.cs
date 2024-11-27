@@ -26,6 +26,7 @@ namespace AS.Model.General
         public static double Interval { get; } = 10000;//600000;
         public static double UpdatePriceInterval { get; } = 60000;
         public static double CryptoGatewayInterval { get; } = 30000;
+        public static double ContradictionBotInterval { get; } = 60000;
         public static double PaymentWithdrawInterval { get; } = 20000;
         public static double PaymentCryptoInterval { get; } = 20000;
         public static double DelayRunCryptoBot { get; } = 60;
@@ -50,5 +51,8 @@ namespace AS.Model.General
         public static string PaystarKey { get; } = "gnk388d50kw3lq";
         public static string PaystarSignKey { get; } = "8617E135530BA16994437C2D9BD93B6B9B8B2FEF2A50D0BCDFCBCF60812E8968BBD47F776F30ECBD36A4D15F72BBD5303E65AE37E8278E21B7788A202D4D3245F3C79EAAA3DB725C950F11C2FFA93735A506A5D037AC538F3059A4266C6EABCD95288EC8C1AF29E4C5161390D3CD6860C87D9C5C20F9A63DF162280EF92A670B";
         public static string PanelAvvalMoneyUrl { get; } = "https://panel.avvalmoney.co/";
+        public static string NovinpalKey { get; } = "eff7c2c9-3dd4-47c0-aae4-d4f8d6df3cae";
+        public static string BotEncriptionKey { get; } = "u;a*hKDsv!bk658__haCVqeFL7%$hkaW";
+        public static string BotEncriptionIv { get; } = "fkO=Tus%(aQ!mnK;";
     }
 }

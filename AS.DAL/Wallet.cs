@@ -33,6 +33,7 @@ namespace AS.DAL
         public string MemoTag { get; set; }
         public bool Private { get; set; }
         public Nullable<long> Usr_Id { get; set; }
+        public string Wal_Key { get; set; }
     
         public virtual Affiliate Affiliate { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

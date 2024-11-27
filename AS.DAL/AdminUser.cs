@@ -17,6 +17,7 @@ namespace AS.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AdminUser()
         {
+            this.AdminSMSVerifications = new HashSet<AdminSMSVerification>();
             this.AdminUserHistories = new HashSet<AdminUserHistory>();
             this.CurrencyPriceHistories = new HashSet<CurrencyPriceHistory>();
             this.DealRequests = new HashSet<DealRequest>();
@@ -26,7 +27,6 @@ namespace AS.DAL
             this.UserBankCards = new HashSet<UserBankCard>();
             this.UserVerificationDocs = new HashSet<UserVerificationDoc>();
             this.UserWithdraws = new HashSet<UserWithdraw>();
-            this.AdminSMSVerifications = new HashSet<AdminSMSVerification>();
         }
     
         public long AdmUsr_Id { get; set; }
@@ -38,8 +38,10 @@ namespace AS.DAL
         public string AdmUsr_Email { get; set; }
         public string AdmUsr_Phone { get; set; }
         public bool AdmUsr_IsActive { get; set; }
-        public Nullable<int> AdmUsr_SMSCode { get; set; }
+        public string AdmUsr_SMSCode { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AdminSMSVerification> AdminSMSVerifications { get; set; }
         public virtual AdminRole AdminRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdminUserHistory> AdminUserHistories { get; set; }
@@ -59,7 +61,5 @@ namespace AS.DAL
         public virtual ICollection<UserVerificationDoc> UserVerificationDocs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserWithdraw> UserWithdraws { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AdminSMSVerification> AdminSMSVerifications { get; set; }
     }
 }

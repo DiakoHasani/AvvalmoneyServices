@@ -27,20 +27,6 @@ namespace AS.BL.Services
             return await _withdrawCryptoRepository.GetByIdAsync(id);
         }
 
-        public List<WithdrawCrypto> GetUndecided()
-        {
-            var nowDate = DateTime.Now;
-            var date = nowDate.AddMinutes(-10);
-
-            var withdrawCryptos = _withdrawCryptoRepository.GetAll(o => o.WC_Status == (int)WithdrawCryptoStatus.RobotInProgress
-              && o.WC_CreateDate >= date);
-
-            date = nowDate.AddMinutes(-5);
-            withdrawCryptos = withdrawCryptos.Where(o => o.WC_CreateDate <= nowDate);
-
-            return withdrawCryptos.ToList();
-        }
-
         public ResponseWithdrawCryptoModel GetPendingWithdraw(WithdrawCryptoStatus status)
         {
             var date = DateTime.Now.AddMinutes(-20);
@@ -50,7 +36,8 @@ namespace AS.BL.Services
                 WC_Id = o.WC_Id,
                 WC_Address = o.WC_Address,
                 WC_Amount = o.WC_Amount,
-                WC_CryptoType = (CurrencyType)o.WC_CryptoType
+                WC_CryptoType = (CurrencyType)o.WC_CryptoType,
+                WC_Sign=o.WC_Sign
             }).FirstOrDefault();
         }
 
@@ -84,6 +71,5 @@ namespace AS.BL.Services
         Task<WithdrawCrypto> GetById(long id);
         Task<WithdrawCrypto> Update(WithdrawCrypto model);
         Task<List<WithdrawCrypto>> UpdateRange(List<WithdrawCrypto> withdrawCryptos);
-        List<WithdrawCrypto> GetUndecided();
     }
 }

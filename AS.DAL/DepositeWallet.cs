@@ -14,6 +14,12 @@ namespace AS.DAL
     
     public partial class DepositeWallet
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DepositeWallet()
+        {
+            this.Gateways = new HashSet<Gateway>();
+        }
+    
         public System.Guid Dpw_Id { get; set; }
         public double Dpw_Amount { get; set; }
         public long Usr_Id { get; set; }
@@ -24,5 +30,7 @@ namespace AS.DAL
     
         public virtual Affiliate Affiliate { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Gateway> Gateways { get; set; }
     }
 }

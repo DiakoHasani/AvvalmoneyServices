@@ -66,6 +66,11 @@ namespace CryptoGatewayReservation
                 {
                     await Task.Delay(ServiceKeys.DelayCryptoGateway);
                     wallet = await _walletApiService.GetWalletById(userWalletReservation.Wal_Id, token);
+                    if (wallet is null)
+                    {
+                        _logger.Error($"this wallet id {userWalletReservation.Wal_Id} is null");
+                        continue;
+                    }
                     _logger.Information("get wallet " + wallet.Address);
 
                     lastTrc20 = await _tronScanService.GetLastTRC20(wallet.Address);

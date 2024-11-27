@@ -21,6 +21,7 @@ namespace AS.DAL
         public int WC_CryptoType { get; set; }
         public System.Guid Drq_Id { get; set; }
         public System.DateTime WC_CreateDate { get; set; }
+        public string WC_Sign { get; set; }
     
         public virtual DealRequest DealRequest { get; set; }
     }

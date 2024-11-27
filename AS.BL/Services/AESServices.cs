@@ -10,6 +10,38 @@ namespace AS.BL.Services
 {
     public class AESServices : IAESServices
     {
+        public string BotEncrypt(string plainText, string keyCode, string ivCode)
+        {
+            byte[] key = Encoding.UTF8.GetBytes(keyCode);
+
+            byte[] iv = Encoding.UTF8.GetBytes(ivCode);
+
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = key;
+                aesAlg.IV = iv;
+                aesAlg.Mode = CipherMode.CBC;
+                aesAlg.Padding = PaddingMode.PKCS7;
+
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                byte[] plaintext = Encoding.UTF8.GetBytes(plainText);
+                byte[] ciphertext;
+
+                using (var msEncrypt = new MemoryStream())
+                {
+                    using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        csEncrypt.Write(plaintext, 0, plaintext.Length);
+                        csEncrypt.FlushFinalBlock();
+                        ciphertext = msEncrypt.ToArray();
+                    }
+                }
+
+                return Convert.ToBase64String(ciphertext);
+            }
+        }
+
         public string Decrypt(string cipherText, string key)
         {
             cipherText = cipherText.Replace(" ", "+");
@@ -57,5 +89,6 @@ namespace AS.BL.Services
     {
         string Encrypt(string plainText, string key);
         string Decrypt(string cipherTextBase64, string key);
+        string BotEncrypt(string plainText, string keyCode, string ivCode);
     }
 }
