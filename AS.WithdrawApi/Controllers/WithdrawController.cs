@@ -64,6 +64,9 @@ namespace AS.WithdrawApi.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
                 }
 
+                await _lifeLogBotWithdrawService.Add(ServiceKeys.BotSamanHabibiKey);
+                _lifeLogBotWithdrawService.CheckLifeAllBots();
+
                 double amount = 0;
                 var withdraw = _userWithdrawService.GetLastWaitingWithdraw();
                 if (withdraw is null)
@@ -207,7 +210,6 @@ namespace AS.WithdrawApi.Controllers
                 }
                 else
                 {
-                    await _lifeLogBotWithdrawService.Add(xyz);
                     botInfo.LastSeen = DateTime.Now;
                     await _botInfoWithdrawService.Update(botInfo);
 

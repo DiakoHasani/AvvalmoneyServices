@@ -25,12 +25,15 @@ namespace AS.WithdrawApi.Controllers
         private readonly IMapper _mapper;
         private readonly IAESServices _aesServices;
         private readonly ISMSSenderService _smsSenderService;
+        private readonly ILifeLogBotWithdrawService _lifeLogBotWithdrawService;
+
         public CryptoWithdrawController(ILogger logger,
             IWithdrawCryptoService withdrawCryptoService,
             IDealRequestService dealRequestService,
             IMapper mapper,
             IAESServices aesServices,
-            ISMSSenderService smsSenderService)
+            ISMSSenderService smsSenderService,
+            ILifeLogBotWithdrawService lifeLogBotWithdrawService)
         {
             _logger = logger;
             _withdrawCryptoService = withdrawCryptoService;
@@ -38,6 +41,7 @@ namespace AS.WithdrawApi.Controllers
             _mapper = mapper;
             _aesServices = aesServices;
             _smsSenderService = smsSenderService;
+            _lifeLogBotWithdrawService = lifeLogBotWithdrawService;
         }
 
         //fhlowk: WithdrawKey
@@ -54,6 +58,9 @@ namespace AS.WithdrawApi.Controllers
                     _logger.Error("fhlowk is invalid.", new { fhlowk = fhlowk });
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
                 }
+
+                await _lifeLogBotWithdrawService.Add(ServiceKeys.WithdrawCryptoBotKey);
+                _lifeLogBotWithdrawService.CheckLifeAllBots();
 
                 var cryptoWithdrawModel = _withdrawCryptoService.GetPendingWithdraw(WithdrawCryptoStatus.Pending);
                 if (cryptoWithdrawModel is null)

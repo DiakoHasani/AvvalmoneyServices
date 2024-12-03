@@ -3,6 +3,7 @@ using AS.DAL;
 using AS.DAL.Services;
 using AS.Log;
 using AS.Model.CurrencyPriceHistory;
+using AS.Model.General;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -20,12 +21,15 @@ namespace AS.WithdrawApi.Controllers
     {
         private readonly ILogger _logger;
         private readonly ICurrencyPriceHistoryService _currencyPriceHistoryService;
+        private readonly ILifeLogBotWithdrawService _lifeLogBotWithdrawService;
 
         public CurrencyPriceHistoryController(ILogger logger,
-            ICurrencyPriceHistoryService currencyPriceHistoryService)
+            ICurrencyPriceHistoryService currencyPriceHistoryService,
+            ILifeLogBotWithdrawService lifeLogBotWithdrawService)
         {
             _logger = logger;
             _currencyPriceHistoryService = currencyPriceHistoryService;
+            _lifeLogBotWithdrawService = lifeLogBotWithdrawService;
         }
 
         [HttpPost]
@@ -34,6 +38,9 @@ namespace AS.WithdrawApi.Controllers
         {
             try
             {
+                await _lifeLogBotWithdrawService.Add(ServiceKeys.UpdatePriceBotKey);
+                _lifeLogBotWithdrawService.CheckLifeAllBots();
+
                 await _currencyPriceHistoryService.Add(model);
                 return Request.CreateResponse(HttpStatusCode.Created, model);
             }

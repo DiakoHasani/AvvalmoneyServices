@@ -113,6 +113,7 @@ namespace AS.BL
         private void ConfigCatch(UnityContainer container)
         {
             container.RegisterType<IPaystarCatch, PaystarCatch>();
+            container.RegisterType<ILifeLogBotWithdrawCatch, LifeLogBotWithdrawCatch>();
         }
 
     }

@@ -19,14 +19,17 @@ namespace AS.WithdrawApi.Controllers
         private readonly ILogger _logger;
         private readonly IContradictionService _contradictionService;
         private readonly ISMSSenderService _smsSenderService;
+        private readonly ILifeLogBotWithdrawService _lifeLogBotWithdrawService;
 
         public ContradictionController(ILogger logger,
             IContradictionService contradictionService,
-            ISMSSenderService smsSenderService)
+            ISMSSenderService smsSenderService,
+            ILifeLogBotWithdrawService lifeLogBotWithdrawService)
         {
             _logger = logger;
             _contradictionService = contradictionService;
-            _smsSenderService= smsSenderService;
+            _smsSenderService = smsSenderService;
+            _lifeLogBotWithdrawService = lifeLogBotWithdrawService;
         }
 
         [HttpGet]
@@ -43,6 +46,9 @@ namespace AS.WithdrawApi.Controllers
                     _logger.Error("fhlowk is invalid.", new { fhlowk = fhlowk });
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "");
                 }
+
+                await _lifeLogBotWithdrawService.Add(ServiceKeys.ContradictionBotKey);
+                _lifeLogBotWithdrawService.CheckLifeAllBots();
 
                 var undecideds = _contradictionService.GetUndecided();
 

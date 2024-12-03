@@ -22,18 +22,21 @@ namespace AS.WithdrawApi.Controllers
         private readonly IUserService _userService;
         private readonly ITransactionService _transactionService;
         private readonly IMenuNotificationService _menuNotificationService;
+        private readonly ISMSSenderService _smsSenderService;
 
         public DealRequestController(ILogger logger,
             IDealRequestService dealRequestService,
             IUserService userService,
             ITransactionService transactionService,
-            IMenuNotificationService menuNotificationService)
+            IMenuNotificationService menuNotificationService,
+            ISMSSenderService smsSenderService)
         {
             _logger = logger;
             _dealRequestService = dealRequestService;
             _userService = userService;
             _transactionService = transactionService;
             _menuNotificationService = menuNotificationService;
+            _smsSenderService = smsSenderService;
         }
 
         [HttpGet]
@@ -120,6 +123,7 @@ namespace AS.WithdrawApi.Controllers
                 _logger.Information("updated userBalance");
 
                 await _menuNotificationService.PushTransaction();
+                _smsSenderService.SendToSupports($"کیف پول {user.Usr_FullName} به مبلغ {transaction.Tns_After} تومان شارژ شد");
                 return true;
             }
             catch (Exception ex)

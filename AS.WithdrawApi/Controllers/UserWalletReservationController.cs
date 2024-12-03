@@ -1,6 +1,8 @@
-﻿using AS.BL.Services;
+﻿using AS.BL.Catches;
+using AS.BL.Services;
 using AS.Log;
 using AS.Model.Enums;
+using AS.Model.General;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,18 +19,23 @@ namespace AS.WithdrawApi.Controllers
     {
         private readonly ILogger _logger;
         private readonly IUserWalletReservationService _userWalletReservationService;
+        private readonly ILifeLogBotWithdrawService _lifeLogBotWithdrawService;
         public UserWalletReservationController(ILogger logger,
-            IUserWalletReservationService userWalletReservationService)
+            IUserWalletReservationService userWalletReservationService,
+            ILifeLogBotWithdrawService lifeLogBotWithdrawService)
         {
             _logger = logger;
             _userWalletReservationService = userWalletReservationService;
+            _lifeLogBotWithdrawService = lifeLogBotWithdrawService;
         }
 
         [Route("GetUserWalletReservations/{currencyType}")]
-        public HttpResponseMessage GetUserWalletReservations(CurrencyType currencyType)
+        public async Task<HttpResponseMessage> GetUserWalletReservations(CurrencyType currencyType)
         {
             try
             {
+                await _lifeLogBotWithdrawService.Add(ServiceKeys.CryptoGatewayReservationKey);
+                _lifeLogBotWithdrawService.CheckLifeAllBots();
                 return Request.CreateResponse(HttpStatusCode.OK, _userWalletReservationService.GetUserWalletReservations(currencyType));
             }
             catch (Exception ex)

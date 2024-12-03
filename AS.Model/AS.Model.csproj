@@ -51,6 +51,7 @@
     <Compile Include="DealRequest\DealRequestGatewayModel.cs" />
     <Compile Include="DealRequest\DealRequestModel.cs" />
     <Compile Include="DealRequest\RequestDealModel.cs" />
+    <Compile Include="Enums\BotType.cs" />
     <Compile Include="Enums\CheckWithdrawPaymentStatus.cs" />
     <Compile Include="Enums\CryptoType.cs" />
     <Compile Include="Enums\CurrencyType.cs" />

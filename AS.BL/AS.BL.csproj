@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="AutoMapperConfig.cs" />
     <Compile Include="BaseApi.cs" />
+    <Compile Include="Catches\LifeLogBotWithdrawCatch.cs" />
     <Compile Include="Catches\NovinpalCatch.cs" />
     <Compile Include="Catches\PaystarCatch.cs" />
     <Compile Include="DependencyInjection.cs" />
