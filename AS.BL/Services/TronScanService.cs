@@ -58,6 +58,37 @@ namespace AS.BL.Services
             return response.Data.First();
         }
 
+        public async Task<ResponseTronScanTrxModel> GetTransfered(string walletAddress, int take)
+        {
+            var response =await Get($"{TronScanUrl}api/trx/transfer?sort=-timestamp&count=true&limit=20&start=0&address={walletAddress}&filterTokenValue=0");
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseTronScanTrxModel>(await response.Content.ReadAsStringAsync());
+            if (result is null)
+            {
+                _logger.Error("response is null");
+                return null;
+            }
+
+            if (result.Data.Count == 0)
+            {
+                _logger.Error("response.Data.Count == 0");
+                return null;
+            }
+
+            foreach (var item in result.Data)
+            {
+                item.Amount = item.Amount.DivisionBy6Zero();
+            }
+
+            result.Data.RemoveAll(o => o.Amount <= 0.1);
+
+            result.Data = result.Data.Where(o => o.TransferFromAddress == walletAddress).Take(take).ToList();
+            return result;
+        }
+
         public async Task<RessponseTronScanTrc20Model> GetTRC20(string walletAddress)
         {
             try
@@ -95,6 +126,7 @@ namespace AS.BL.Services
                 return null;
             }
         }
+
     }
     public interface ITronScanService
     {
@@ -102,5 +134,6 @@ namespace AS.BL.Services
         Task<TronScanTrc20TokenTransferModel> GetLastTRC20(string walletAddress);
         Task<ResponseTronScanTrxModel> GetTRX(string walletAddress);
         Task<ResponseTronScanTrxDataModel> GetLastTRX(string walletAddress);
+        Task<ResponseTronScanTrxModel> GetTransfered(string walletAddress,int take);
     }
 }

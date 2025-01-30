@@ -108,9 +108,12 @@
   <ItemGroup>
     <Compile Include="AutoMapperConfig.cs" />
     <Compile Include="BaseApi.cs" />
+    <Compile Include="Catches\CryptoWithdrawCatch.cs" />
     <Compile Include="Catches\LifeLogBotWithdrawCatch.cs" />
     <Compile Include="Catches\NovinpalCatch.cs" />
     <Compile Include="Catches\PaystarCatch.cs" />
+    <Compile Include="Catches\SepalCatch.cs" />
+    <Compile Include="Catches\ZarinPalCatch.cs" />
     <Compile Include="DependencyInjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
@@ -139,6 +142,7 @@
     <Compile Include="Services\RangePriceService.cs" />
     <Compile Include="Services\ReservationWalletApiService.cs" />
     <Compile Include="Services\ReservationWalletService.cs" />
+    <Compile Include="Services\SepalService.cs" />
     <Compile Include="Services\SMSSenderService.cs" />
     <Compile Include="Services\TetherBankService.cs" />
     <Compile Include="Services\TetherlandService.cs" />
@@ -146,6 +150,7 @@
     <Compile Include="Services\TransactionIdApiService.cs" />
     <Compile Include="Services\TransactionIdService.cs" />
     <Compile Include="Services\TransactionService.cs" />
+    <Compile Include="Services\TronGridServices.cs" />
     <Compile Include="Services\TronScanService.cs" />
     <Compile Include="Services\UserBankCardService.cs" />
     <Compile Include="Services\UserService.cs" />
@@ -154,9 +159,11 @@
     <Compile Include="Services\UserWithdrawService.cs" />
     <Compile Include="Services\WalletApiService.cs" />
     <Compile Include="Services\WalletService.cs" />
+    <Compile Include="Services\WebhookApiService.cs" />
     <Compile Include="Services\WithdrawApiService.cs" />
     <Compile Include="Services\WithdrawCryptoApiService.cs" />
     <Compile Include="Services\WithdrawCryptoService.cs" />
+    <Compile Include="Services\ZarinpalService.cs" />
     <Compile Include="Services\ZibalService.cs" />
   </ItemGroup>
   <ItemGroup>

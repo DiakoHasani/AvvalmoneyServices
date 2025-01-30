@@ -60,10 +60,30 @@ namespace AS.BL.Services
                 return false;
             }
         }
+
+        public async Task<List<TransactionIdModel>> GetTransactionIds(int Wal_Id, int limit, string token)
+        {
+            try
+            {
+                var response =await Get($"{WithdrawApiUrl}api/TransactionId/GetTransactionIds/{Wal_Id}/{limit}",token);
+                if (response.IsSuccessStatusCode)
+                {
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<TransactionIdModel>>(await response.Content.ReadAsStringAsync());
+                }
+                _logger.Error(await response.Content.ReadAsStringAsync());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return null;
+            }
+        }
     }
     public interface ITransactionIdApiService
     {
         Task<bool> CheckExistTransactionIdCode(string Txid, string token);
         Task<TransactionIdModel> Add(TransactionIdModel model, string token);
+        Task<List<TransactionIdModel>> GetTransactionIds(int Wal_Id, int limit,string token);
     }
 }

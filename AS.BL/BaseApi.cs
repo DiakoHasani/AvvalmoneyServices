@@ -25,6 +25,9 @@ namespace AS.BL
         protected const string TonScanUrl = "https://tonapi.io/v2/";
         protected const string PaystarUrl = "https://core.paystar.ir/api/pardakht";
         protected const string NovinpalUrl = "https://gw.novinpal.ir";
+        protected const string SepalUrl = "https://sepal.ir/";
+        protected const string TronGridV1Url = "https://api.trongrid.io/v1/";
+        protected const string ZarinPalUrl = "https://payment.zarinpal.com/pg/v4/";
 
         protected async Task<HttpResponseMessage> Post(string url, Dictionary<string, string> parameters)
         {
@@ -81,6 +84,19 @@ namespace AS.BL
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 
+                return await client.PostAsync(url, data);
+            }
+        }
+
+        protected async Task<HttpResponseMessage> Post(string url, string parameters)
+        {
+            using (var client = new HttpClient())
+            {
+                var data = new StringContent(parameters, Encoding.UTF8, "application/json");
+
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                 return await client.PostAsync(url, data);
             }
         }

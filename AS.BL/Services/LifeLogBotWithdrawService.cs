@@ -44,10 +44,10 @@ namespace AS.BL.Services
         public List<BotType> CheckLifeAllBots()
         {
             var result = new List<BotType>();
-            if (!CheckLife(ServiceKeys.BotSamanHabibiKey))
+            /*if (!CheckLife(ServiceKeys.BotSamanHabibiKey))
             {
                 result.Add(BotType.Withdraw);
-            }
+            }*/
 
             if (!CheckLife(ServiceKeys.WithdrawCryptoBotKey))
             {

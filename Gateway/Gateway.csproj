@@ -161,6 +161,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NovinpalController.cs" />
     <Compile Include="Controllers\PaystarController.cs" />
+    <Compile Include="Controllers\SepallController.cs" />
+    <Compile Include="Controllers\ZarinpalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -174,6 +176,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Novinpal\Payment.cshtml" />
     <Content Include="Views\Novinpal\Verify.cshtml" />
+    <Content Include="Views\Sepall\Create.cshtml" />
+    <Content Include="Views\Zarinpal\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

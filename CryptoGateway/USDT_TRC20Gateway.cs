@@ -8,6 +8,7 @@ using AS.Model.PaymentWithdrawBot;
 using AS.Model.ReservationWallet;
 using AS.Model.Transaction;
 using AS.Model.TransactionId;
+using AS.Model.TronGrid;
 using AS.Model.Wallet;
 using AS.Utility.Helpers;
 using AutoMapper;
@@ -28,17 +29,24 @@ namespace CryptoGateway
         private readonly ITransactionIdApiService _transactionIdApiService;
         private readonly IDealRequestApiService _dealRequestApiService;
         private readonly IMapper _mapper;
+        private readonly ITronGridServices _tronGridServices;
+        private readonly IWebhookApiService _webhookApiService;
+        private readonly IAESServices _aesServices;
 
         List<ReservationWalletModel> reservationWallets;
-        WalletModel wallet;
         DealRequestModel dealRequest;
+        ResponseTrc20TronGridModel responseTrc20;
+        List<TransactionIdModel> transactonIds;
         public USDT_TRC20Gateway(ILogger logger,
             ITronScanService tronScanService,
             IReservationWalletApiService reservationWalletApiService,
             IWalletApiService walletApiService,
             ITransactionIdApiService transactionIdApiService,
             IDealRequestApiService dealRequestApiService,
-            IMapper mapper)
+            IMapper mapper,
+            ITronGridServices tronGridServices,
+            IWebhookApiService webhookApiService,
+            IAESServices aesServices)
         {
             _logger = logger;
             _reservationWalletApiService = reservationWalletApiService;
@@ -47,83 +55,49 @@ namespace CryptoGateway
             _transactionIdApiService = transactionIdApiService;
             _dealRequestApiService = dealRequestApiService;
             _mapper = mapper;
+            _tronGridServices = tronGridServices;
+            _webhookApiService = webhookApiService;
+            _aesServices = aesServices;
         }
 
         public async Task Call(string token)
         {
-            try
+            reservationWallets = await _reservationWalletApiService.GetReservations(DateTime.Now.AddMinutes(-20), DateTime.Now, CryptoType.Tron, token);
+            foreach (var reservationWallet in reservationWallets)
             {
-                reservationWallets = await _reservationWalletApiService.GetReservations(DateTime.Now.AddMinutes(-20), DateTime.Now, CryptoType.Tron, token);
-
-                foreach (var reservationWallet in reservationWallets)
+                try
                 {
                     await Task.Delay(ServiceKeys.DelayCryptoGateway);
-
                     _logger.Information("get reservationWallet", new { reservationWallet = reservationWallet });
 
-                    wallet = await _walletApiService.GetWalletById(reservationWallet.Wal_Id, token);
+                    responseTrc20 = await _tronGridServices.GetTrc20(reservationWallet.WalletAddress);
 
-                    if (wallet is null)
+                    responseTrc20.Data = responseTrc20.Data.Where(o => o.TokenInfo.Symbol == "USDT").ToList();
+                    responseTrc20.Data = responseTrc20.Data.Where(o => o.To == reservationWallet.WalletAddress).Take(5).ToList();
+
+                    transactonIds = await _transactionIdApiService.GetTransactionIds(reservationWallet.Wal_Id, 5, token);
+
+                    foreach (var transaction in responseTrc20.Data)
                     {
-                        _logger.Error($"this wallet id {reservationWallet.Wal_Id} is null");
-                        continue;
-                    }
-
-                    var lastTRC20 = await _tronScanService.GetLastTRC20(wallet.Address);
-                    if (lastTRC20 is null)
-                    {
-                        _logger.Error("lastTRC20 is null");
-                        continue;
-                    }
-                    _logger.Information("get lastTRC20", lastTRC20);
-
-                    if (await _transactionIdApiService.CheckExistTransactionIdCode(lastTRC20.TransactionIdCode, token))
-                    {
-                        continue;
-                    }
-
-                    var resultAddTransactionId = await _transactionIdApiService.Add(new TransactionIdModel { TransactionIdCode = lastTRC20.TransactionIdCode, Wal_Id = wallet.Wal_Id }, token);
-
-                    dealRequest = await _dealRequestApiService.DepositDealRequest(lastTRC20.Quant.DivisionBy6Zero(), wallet.Wal_Id, ServiceKeys.AmountDifferenceTether, token);
-
-                    if (dealRequest is null)
-                    {
-                        _logger.Error("dealRequest is null");
-                        continue;
-                    }
-                    _logger.Information("get dealRequest", new { dealRequestId = dealRequest.Drq_Id });
-
-                    if (lastTRC20.FinalResult != "SUCCESS")
-                    {
-                        continue;
-                    }
-
-                    dealRequest.Drq_Status = DealRequestStatus.Done;
-                    dealRequest.Txid = lastTRC20.TransactionIdCode;
-                    dealRequest.Drq_Amount = lastTRC20.Quant.DivisionBy6Zero();
-                    var resultUpdateDealRequest = await _dealRequestApiService.UpdateGateway(_mapper.Map<DealRequestGatewayModel>(dealRequest), token);
-                    if (resultUpdateDealRequest is null)
-                    {
-                        continue;
-                    }
-                    _logger.Information("updated dealRequest");
-
-                    var resultUpdateWallet = await _walletApiService.UpdateLastTransaction(wallet.Wal_Id, token);
-                    if (resultUpdateWallet)
-                    {
-                        _logger.Information("updated wallet");
-                    }
-
-                    var resultApproveStatus = await _reservationWalletApiService.ApproveStatus(reservationWallet.Rw_Id, token);
-                    if (resultApproveStatus)
-                    {
-                        _logger.Information("updated reservationWallet");
+                        if (!transactonIds.Any(o => o.TransactionIdCode == transaction.TransactionId))
+                        {
+                            var response = await _webhookApiService.Usdt(ServiceKeys.WithdrawKey, transaction.TransactionId, transaction.Value.ToDouble(), reservationWallet.Wal_Id, reservationWallet.Rw_Id, token);
+                            if (response.IsValid)
+                            {
+                                _logger.Information(response.Message);
+                            }
+                            else
+                            {
+                                _logger.Error(response.Message);
+                            }
+                            await Task.Delay(ServiceKeys.DelayCryptoGateway);
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex.Message, ex);
+                catch (Exception ex)
+                {
+                    _logger.Error(ex.Message, ex);
+                }
             }
         }
     }

@@ -108,12 +108,19 @@ namespace AS.BL
             container.RegisterType<INovinpalCatch, NovinpalCatch>();
             container.RegisterType<IContradictionService, ContradictionService>();
             container.RegisterType<IContradictionApiService, ContradictionApiService>();
+            container.RegisterType<ISepalService, SepalService>();
+            container.RegisterType<ITronGridServices, TronGridServices>();
+            container.RegisterType<IWebhookApiService, WebhookApiService>();
+            container.RegisterType<IZarinpalService, ZarinpalService>();
         }
 
         private void ConfigCatch(UnityContainer container)
         {
             container.RegisterType<IPaystarCatch, PaystarCatch>();
             container.RegisterType<ILifeLogBotWithdrawCatch, LifeLogBotWithdrawCatch>();
+            container.RegisterType<ISepalCatch, SepalCatch>();
+            container.RegisterType<IZarinPalCatch, ZarinPalCatch>();
+            container.RegisterType<ICryptoWithdrawCatch, CryptoWithdrawCatch>();
         }
 
     }

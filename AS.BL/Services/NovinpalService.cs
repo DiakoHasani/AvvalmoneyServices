@@ -36,12 +36,20 @@ namespace AS.BL.Services
                 {
                     return Newtonsoft.Json.JsonConvert.DeserializeObject<NovinpalResponseModel>(await response.Content.ReadAsStringAsync());
                 }
-                return null;
+                return new NovinpalResponseModel
+                {
+                    ErrorCode = 500,
+                    ErrorDescription = await response.Content.ReadAsStringAsync()
+                };
             }
             catch (Exception ex)
             {
                 _logger.Error(ex.Message, ex);
-                return null;
+                return new NovinpalResponseModel
+                {
+                    ErrorCode = 500,
+                    ErrorDescription = ex.Message
+                };
             }
         }
 
@@ -51,7 +59,7 @@ namespace AS.BL.Services
             param.Add("api_key", keyNovinPal);
             param.Add("ref_id", refId);
 
-            var response =await Post($"{NovinpalUrl}/invoice/verify", new FormUrlEncodedContent(param));
+            var response = await Post($"{NovinpalUrl}/invoice/verify", new FormUrlEncodedContent(param));
             return await response.Content.ReadAsStringAsync();
         }
 

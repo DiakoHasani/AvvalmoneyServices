@@ -39,11 +39,22 @@ namespace AS.BL.Services
         {
             return _transactionIdRepository.GetAll(o => o.Wal_Id == walletId).OrderByDescending(o => o.Tx_Id)?.FirstOrDefault().TransactionIdCode ?? null;
         }
+
+        public List<TransactionIdModel> GetTransactionIds(int Wal_Id, int limit)
+        {
+            return _transactionIdRepository.GetAll(o => o.Wal_Id == Wal_Id).OrderByDescending(o => o.Tx_Id).Skip(0).Take(limit).Select(o => new TransactionIdModel
+            {
+                TransactionIdCode = o.TransactionIdCode,
+                Tx_Id = o.Tx_Id,
+                Wal_Id = o.Wal_Id
+            }).ToList();
+        }
     }
     public interface ITransactionIdService
     {
         string GetLastTxIdCodeByWalletId(int walletId);
         Task<TransactionIdModel> Add(TransactionIdModel model);
         bool CheckExistTransactionIdCode(string transactionIdCode);
+        List<TransactionIdModel> GetTransactionIds(int Wal_Id, int limit);
     }
 }

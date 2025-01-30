@@ -16,5 +16,6 @@ namespace AS.Model.ReservationWallet
         public double RW_Amount { get; set; }
         public CryptoType CryptoType { get; set; }
         public int Aff_Id { get; set; }
+        public string WalletAddress { get; set; }
     }
 }

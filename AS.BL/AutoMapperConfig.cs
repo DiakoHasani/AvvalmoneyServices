@@ -27,7 +27,7 @@ namespace AS.BL
                 cfg.CreateMap<Currency, CurrencyModel>();
                 cfg.CreateMap<CurrencyModel, Currency>();
 
-                cfg.CreateMap<ReservationWallet, ReservationWalletModel>();
+                cfg.CreateMap<ReservationWallet, ReservationWalletModel>().ForMember(o => o.WalletAddress, o => o.MapFrom(src => src.Wallet.Address));
                 cfg.CreateMap<ReservationWalletModel, ReservationWallet>();
 
                 cfg.CreateMap<WalletModel, Wallet>();

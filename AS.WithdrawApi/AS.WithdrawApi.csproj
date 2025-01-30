@@ -195,6 +195,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserWalletReservationController.cs" />
     <Compile Include="Controllers\WalletController.cs" />
+    <Compile Include="Controllers\WebhookController.cs" />
     <Compile Include="Controllers\WithdrawController.cs" />
     <Compile Include="ErrorHandling\GlobalExceptionHandler.cs" />
     <Compile Include="Global.asax.cs">

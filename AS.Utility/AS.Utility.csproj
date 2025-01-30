@@ -44,6 +44,7 @@
     <Compile Include="FileUtility.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\NumberHelper.cs" />
+    <Compile Include="Helpers\TronHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

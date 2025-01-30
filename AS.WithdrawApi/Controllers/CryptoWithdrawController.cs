@@ -1,4 +1,5 @@
-﻿using AS.BL.Services;
+﻿using AS.BL.Catches;
+using AS.BL.Services;
 using AS.Log;
 using AS.Model.DealRequest;
 using AS.Model.Enums;
@@ -26,6 +27,8 @@ namespace AS.WithdrawApi.Controllers
         private readonly IAESServices _aesServices;
         private readonly ISMSSenderService _smsSenderService;
         private readonly ILifeLogBotWithdrawService _lifeLogBotWithdrawService;
+        private readonly ITronScanService _tronScanService;
+        private readonly ICryptoWithdrawCatch _cryptoWithdrawCatch;
 
         public CryptoWithdrawController(ILogger logger,
             IWithdrawCryptoService withdrawCryptoService,
@@ -33,7 +36,9 @@ namespace AS.WithdrawApi.Controllers
             IMapper mapper,
             IAESServices aesServices,
             ISMSSenderService smsSenderService,
-            ILifeLogBotWithdrawService lifeLogBotWithdrawService)
+            ILifeLogBotWithdrawService lifeLogBotWithdrawService,
+            ITronScanService tronScanService,
+            ICryptoWithdrawCatch cryptoWithdrawCatch)
         {
             _logger = logger;
             _withdrawCryptoService = withdrawCryptoService;
@@ -42,6 +47,8 @@ namespace AS.WithdrawApi.Controllers
             _aesServices = aesServices;
             _smsSenderService = smsSenderService;
             _lifeLogBotWithdrawService = lifeLogBotWithdrawService;
+            _tronScanService = tronScanService;
+            _cryptoWithdrawCatch= cryptoWithdrawCatch;
         }
 
         //fhlowk: WithdrawKey
@@ -102,6 +109,22 @@ namespace AS.WithdrawApi.Controllers
                 }
 
                 var withdrawCrypto = await _withdrawCryptoService.GetById(cryptoWithdrawModel.WC_Id);
+
+                if ((CryptoType)withdrawCrypto.WC_CryptoType == CryptoType.Tron)
+                {
+                    var tronTransaction = await _tronScanService.GetTransfered(ServiceKeys.TronWallet, 5);
+                    if (await _withdrawCryptoService.CheckRepeated(tronTransaction.Data, withdrawCrypto.WC_Id))
+                    {
+                        if (_cryptoWithdrawCatch.AccessToSend())
+                        {
+                            _smsSenderService.SendToSupports("تراکنشی با مبلغ تکراری برای انتقال وجود دارد لطفا چک کنید");
+                        }
+                        
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                }
+
+
                 withdrawCrypto.WC_Status = (int)WithdrawCryptoStatus.RobotInProgress;
                 await _withdrawCryptoService.Update(withdrawCrypto);
 
@@ -112,12 +135,12 @@ namespace AS.WithdrawApi.Controllers
 
                 return Request.CreateResponse(HttpStatusCode.OK, new ResponseWithdrawCryptoEncryptedModel
                 {
-                    WC_Id=_aesServices.BotEncrypt(withdrawCrypto.WC_Id.ToString(),ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
-                    WC_Address=_aesServices.BotEncrypt(withdrawCrypto.WC_Address,ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
-                    WC_Amount=_aesServices.BotEncrypt(withdrawCrypto.WC_Amount.ToString(),ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
-                    WC_CryptoType=_aesServices.BotEncrypt(withdrawCrypto.WC_CryptoType.ToString(),ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
-                    WC_CreateDate=_aesServices.BotEncrypt($"{createDate.Year}-{createDate.Month}-{createDate.Day} {createDate.Hour}:{createDate.Minute}:{createDate.Second}",ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
-                    WC_Sign=withdrawCrypto.WC_Sign
+                    WC_Id = _aesServices.BotEncrypt(withdrawCrypto.WC_Id.ToString(), ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_Address = _aesServices.BotEncrypt(withdrawCrypto.WC_Address, ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_Amount = _aesServices.BotEncrypt(withdrawCrypto.WC_Amount.ToString(), ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_CryptoType = _aesServices.BotEncrypt(withdrawCrypto.WC_CryptoType.ToString(), ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_CreateDate = _aesServices.BotEncrypt($"{createDate.Year}-{createDate.Month}-{createDate.Day} {createDate.Hour}:{createDate.Minute}:{createDate.Second}", ServiceKeys.BotEncriptionKey, ServiceKeys.BotEncriptionIv),
+                    WC_Sign = withdrawCrypto.WC_Sign
                 });
             }
             catch (Exception ex)

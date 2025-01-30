@@ -112,6 +112,10 @@
     <Compile Include="Ramzinex\ResponseRamzinexDataModel.cs" />
     <Compile Include="Ramzinex\ResponseRamzinexModel.cs" />
     <Compile Include="ReservationWallet\ReservationWalletModel.cs" />
+    <Compile Include="Sepal\ResponseSepalModel.cs" />
+    <Compile Include="Sepal\SepalCatchModel.cs" />
+    <Compile Include="Sepal\SepalRequestModel.cs" />
+    <Compile Include="Sepal\SepalVerifyModel.cs" />
     <Compile Include="TetherBank\ResponseTetherBankCurrencyModel.cs" />
     <Compile Include="TetherBank\ResponseTetherBankModel.cs" />
     <Compile Include="Tetherland\ResponseTetherlandDataModel.cs" />
@@ -126,6 +130,16 @@
     <Compile Include="TonScan\TonScanModel.cs" />
     <Compile Include="TransactionId\TransactionIdModel.cs" />
     <Compile Include="Transaction\RequestTransactionModel.cs" />
+    <Compile Include="TronGrid\ResponseTrc20DataTokenInfoTronGridModel.cs" />
+    <Compile Include="TronGrid\ResponseTrc20DataTronGridModel.cs" />
+    <Compile Include="TronGrid\ResponseTrc20TronGridModel.cs" />
+    <Compile Include="TronGrid\ResponseTrxDataRawDataContractParameterTronGridModel.cs" />
+    <Compile Include="TronGrid\ResponseTrxDataRawDataContractParameterValueTronGridModel.cs" />
+    <Compile Include="TronGrid\ResponseTrxDataRawDataContractTronGridModel.cs" />
+    <Compile Include="TronGrid\ResponseTrxDataRawDataTronGridModel.cs" />
+    <Compile Include="TronGrid\ResponseTrxDataTronGridModel.cs" />
+    <Compile Include="TronGrid\ResponseTrxTronGridModel.cs" />
+    <Compile Include="TronGrid\SummaryResponseTrxTronGridModel.cs" />
     <Compile Include="TronScan\ResponseTronScanTrxDataModel.cs" />
     <Compile Include="TronScan\ResponseTronScanTrxModel.cs" />
     <Compile Include="TronScan\RessponseTronScanTrc20Model.cs" />
@@ -147,6 +161,14 @@
     <Compile Include="WithdrawCrypto\RequestPayWithdrawCryptoModel.cs" />
     <Compile Include="WithdrawCrypto\ResponseWithdrawCryptoEncryptedModel.cs" />
     <Compile Include="WithdrawCrypto\ResponseWithdrawCryptoModel.cs" />
+    <Compile Include="ZarinPal\ZarinPalCatchModel.cs" />
+    <Compile Include="ZarinPal\ZarinPalErrorModel.cs" />
+    <Compile Include="ZarinPal\ZarinPalPaymentDataResponseModel.cs" />
+    <Compile Include="ZarinPal\ZarinPalPaymentRequestModel.cs" />
+    <Compile Include="ZarinPal\ZarinPalPaymentResponseModel.cs" />
+    <Compile Include="ZarinPal\ZarinPalVerifyDataResponseModel.cs" />
+    <Compile Include="ZarinPal\ZarinPalVerifyRequestModel.cs" />
+    <Compile Include="ZarinPal\ZarinPalVerifyResponseModel.cs" />
     <Compile Include="Zibal\ZibalCheckoutModel.cs" />
   </ItemGroup>
   <ItemGroup>

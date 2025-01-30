@@ -48,6 +48,7 @@ namespace AS.Model.General
         public static double RestartCunterPaymentCryptoBot { get; } = 18;
         public static int ExpireCatchByMinute { get; } = 10;
         public static int ExpireCatchByMinuteLifeLogBot { get; } = 60;
+        public static int ExpireCatchByMinuteCryptoWithdraw { get; } = 20;
         public static string GatewayEncriptionKey { get; } = "bGCw4YmGZNYp1VKw8Z/BYh2BtvlVtSpg";
         public static string PaystarKey { get; } = "gnk388d50kw3lq";
         public static string PaystarSignKey { get; } = "8617E135530BA16994437C2D9BD93B6B9B8B2FEF2A50D0BCDFCBCF60812E8968BBD47F776F30ECBD36A4D15F72BBD5303E65AE37E8278E21B7788A202D4D3245F3C79EAAA3DB725C950F11C2FFA93735A506A5D037AC538F3059A4266C6EABCD95288EC8C1AF29E4C5161390D3CD6860C87D9C5C20F9A63DF162280EF92A670B";
@@ -62,5 +63,9 @@ namespace AS.Model.General
         public static string CryptoGatewayReservationKey { get; } = "932d9b29-8bcd-4bd3-b17f-c8e3a181eee7";
         public static string ContradictionBotKey { get; } = "4cc6e5e4-4daf-4c98-9e7d-811bc77416f6";
         public static int LifeLogBotTime { get; } = -20;
+        public static string SepalKey { get; } = "bbb03ee37a36c03f619adedc61dbd8e6";
+        public static string WebhookEncriptionKey { get; } = "fIPJHgga569@$sNMx1(LKLSJDSOIJFSSOIjIA";
+        public static string ZarinpalMerchantId { get; } = "0544949e-06b3-429a-8212-0f01d7ccc4b9";
+        public static string TronWallet { get; } = "TWM6qS3EQSA8FHZ874FSgo2L99yhBVheag";
     }
 }

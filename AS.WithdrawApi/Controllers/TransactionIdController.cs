@@ -40,6 +40,21 @@ namespace AS.WithdrawApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetTransactionIds/{Wal_Id}/{limit}")]
+        public HttpResponseMessage GetTransactionIds(int Wal_Id, int limit)
+        {
+            try
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, _transactionIdService.GetTransactionIds(Wal_Id, limit));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "");
+            }
+        }
+
         [HttpPost]
         [Route("Add")]
         public async Task<HttpResponseMessage> Add([FromBody] TransactionIdModel model)

@@ -25,7 +25,7 @@ namespace AS.BL.Services
         public async Task<bool> ApproveStatus(int Rw_Id)
         {
             var reservationWallet = await _reservationWalletRepository.GetByIdAsync(Rw_Id);
-            if(reservationWallet is null)
+            if (reservationWallet is null)
             {
                 return false;
             }
@@ -38,10 +38,7 @@ namespace AS.BL.Services
 
         public List<ReservationWalletModel> GetReservations(DateTime fromDate, DateTime toDate, CryptoType cryptoType)
         {
-            return _mapper.Map<List<ReservationWalletModel>>(_reservationWalletRepository.GetAll(o => o.RW_CreateDate >= fromDate &&
-            o.RW_CreateDate <= toDate &&
-            o.RW_Status == false &&
-            o.CryptoType == (int)cryptoType).ToList());
+            return _mapper.Map<List<ReservationWalletModel>>(_reservationWalletRepository.GetReservations(fromDate, toDate, (int)cryptoType)).ToList();
         }
 
         public async Task<ReservationWallet> Update(ReservationWallet reservationWallet)

@@ -48,9 +48,10 @@ namespace Gateway.Controllers
                 ApiKey = ServiceKeys.NovinpalKey
             });
 
-            if (createResponse is null)
+            if (createResponse.ErrorCode==500)
             {
-                ViewBag.Message = "خطای رخ داده است به پشتیبانی اطلاع دهید";
+                //ViewBag.Message = "خطای رخ داده است به پشتیبانی اطلاع دهید";
+                ViewBag.Message = createResponse.ErrorDescription;
                 return View();
             }
 
@@ -66,14 +67,16 @@ namespace Gateway.Controllers
 
                 if (catchResult is null)
                 {
-                    ViewBag.Message = "خطای رخ داده است به پشتیبانی اطلاع دهید";
+                    //ViewBag.Message = "خطای رخ داده است به پشتیبانی اطلاع دهید";
+                    ViewBag.Message = "catchResult is null";
                     return View();
                 }
 
                 return Redirect($"https://gw.novinpal.ir/invoice/start/{createResponse.RefId}");
             }
 
-            ViewBag.Message = "خطای رخ داده است به پشتیبانی اطلاع دهید";
+            //ViewBag.Message = "خطای رخ داده است به پشتیبانی اطلاع دهید";
+            ViewBag.Message = createResponse.ErrorDescription;
             return View();
         }
 
