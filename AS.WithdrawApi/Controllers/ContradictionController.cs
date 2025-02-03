@@ -48,7 +48,7 @@ namespace AS.WithdrawApi.Controllers
                 }
 
                 await _lifeLogBotWithdrawService.Add(ServiceKeys.ContradictionBotKey);
-                _lifeLogBotWithdrawService.CheckLifeAllBots();
+                await _lifeLogBotWithdrawService.CheckLifeAllBots();
 
                 var undecideds = _contradictionService.GetUndecided();
 

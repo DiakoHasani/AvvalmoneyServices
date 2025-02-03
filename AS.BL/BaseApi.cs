@@ -28,6 +28,7 @@ namespace AS.BL
         protected const string SepalUrl = "https://sepal.ir/";
         protected const string TronGridV1Url = "https://api.trongrid.io/v1/";
         protected const string ZarinPalUrl = "https://payment.zarinpal.com/pg/v4/";
+        protected const string SmartPeckUrl = "http://s1-smartpek.ir/";
 
         protected async Task<HttpResponseMessage> Post(string url, Dictionary<string, string> parameters)
         {

@@ -16,13 +16,16 @@ namespace AS.BL.Services
         private readonly ILifeLogBotWithdrawRepository _lifeLogBotWithdrawRepository;
         private readonly ISMSSenderService _smsSenderService;
         private readonly ILifeLogBotWithdrawCatch _lifeLogBotWithdrawCatch;
+        private readonly ISmartPekService _smartPekService;
         public LifeLogBotWithdrawService(ILifeLogBotWithdrawRepository lifeLogBotWithdrawRepository,
             ISMSSenderService smsSenderService,
-            ILifeLogBotWithdrawCatch lifeLogBotWithdrawCatch)
+            ILifeLogBotWithdrawCatch lifeLogBotWithdrawCatch,
+            ISmartPekService smartPekService)
         {
             _lifeLogBotWithdrawRepository = lifeLogBotWithdrawRepository;
             _smsSenderService = smsSenderService;
             _lifeLogBotWithdrawCatch = lifeLogBotWithdrawCatch;
+            _smartPekService = smartPekService;
         }
 
         public async Task Add(string botKey)
@@ -41,7 +44,7 @@ namespace AS.BL.Services
             return _lifeLogBotWithdrawRepository.GetAll(o => o.BotKey == botKey && o.CreateDate >= date).Any();
         }
 
-        public List<BotType> CheckLifeAllBots()
+        public async Task<List<BotType>> CheckLifeAllBots()
         {
             var result = new List<BotType>();
             /*if (!CheckLife(ServiceKeys.BotSamanHabibiKey))
@@ -78,6 +81,12 @@ namespace AS.BL.Services
             {
                 if (_lifeLogBotWithdrawCatch.AccessToSend())
                 {
+                    if (result.Where(o => o == BotType.WithdrawCrypto).Any())
+                    {
+                        await _smartPekService.TurnOffChannel2();
+                        await Task.Delay(ServiceKeys.DelaySmartPeck);
+                        await _smartPekService.TurnOnChannel2();
+                    }
                     SendSms(result);
                 }
             }
@@ -101,6 +110,6 @@ namespace AS.BL.Services
     {
         Task Add(string botKey);
         bool CheckLife(string botKey);
-        List<BotType> CheckLifeAllBots();
+        Task<List<BotType>> CheckLifeAllBots();
     }
 }

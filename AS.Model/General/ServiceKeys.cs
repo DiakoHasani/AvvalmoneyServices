@@ -41,6 +41,7 @@ namespace AS.Model.General
         public static int WithdrawTimeLoginUpdatePriceNumber { get; } = 1;
         public static int WithdrawTimeLoginCryptoGatewayNumber { get; } = 1;
         public static int DelayCryptoGateway { get; } = 5000;
+        public static int DelaySmartPeck { get; } = 2000;
         public static double AmountDifferenceTether { get; } = 5;
         public static double AmountDifferenceTron { get; } = 10;
         public static double AmountDifferenceTon { get; } = 3;
@@ -67,5 +68,6 @@ namespace AS.Model.General
         public static string WebhookEncriptionKey { get; } = "fIPJHgga569@$sNMx1(LKLSJDSOIJFSSOIjIA";
         public static string ZarinpalMerchantId { get; } = "0544949e-06b3-429a-8212-0f01d7ccc4b9";
         public static string TronWallet { get; } = "TWM6qS3EQSA8FHZ874FSgo2L99yhBVheag";
+        public static string SmartPekKey { get; } = "PEK(PSH214B-2)16191391,8e6mrxnj7k1js1f63kkm2wxs7e9agn2a7mo589nb6vtrpwxk36t58d1z95z74hf2vjqbyrcb2q1j2fbovqn7rgcffp";
     }
 }

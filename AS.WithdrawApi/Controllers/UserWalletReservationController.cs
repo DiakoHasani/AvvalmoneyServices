@@ -35,7 +35,7 @@ namespace AS.WithdrawApi.Controllers
             try
             {
                 await _lifeLogBotWithdrawService.Add(ServiceKeys.CryptoGatewayReservationKey);
-                _lifeLogBotWithdrawService.CheckLifeAllBots();
+                await _lifeLogBotWithdrawService.CheckLifeAllBots();
                 return Request.CreateResponse(HttpStatusCode.OK, _userWalletReservationService.GetUserWalletReservations(currencyType));
             }
             catch (Exception ex)

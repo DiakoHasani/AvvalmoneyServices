@@ -39,7 +39,7 @@ namespace AS.WithdrawApi.Controllers
             try
             {
                 await _lifeLogBotWithdrawService.Add(ServiceKeys.UpdatePriceBotKey);
-                _lifeLogBotWithdrawService.CheckLifeAllBots();
+                await _lifeLogBotWithdrawService.CheckLifeAllBots();
 
                 await _currencyPriceHistoryService.Add(model);
                 return Request.CreateResponse(HttpStatusCode.Created, model);

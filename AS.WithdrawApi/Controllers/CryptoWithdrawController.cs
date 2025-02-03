@@ -67,7 +67,7 @@ namespace AS.WithdrawApi.Controllers
                 }
 
                 await _lifeLogBotWithdrawService.Add(ServiceKeys.WithdrawCryptoBotKey);
-                _lifeLogBotWithdrawService.CheckLifeAllBots();
+                await _lifeLogBotWithdrawService.CheckLifeAllBots();
 
                 var cryptoWithdrawModel = _withdrawCryptoService.GetPendingWithdraw(WithdrawCryptoStatus.Pending);
                 if (cryptoWithdrawModel is null)

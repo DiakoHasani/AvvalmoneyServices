@@ -63,6 +63,7 @@ namespace AS.BL
         private void ConfigBusiness(UnityContainer container)
         {
             container.RegisterType<ISMSSenderService, SMSSenderService>();
+            container.RegisterType<ISmartPekService, SmartPekService>();
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<IAccountService, AccountService>();
             container.RegisterType<IUserWithdrawService, UserWithdrawService>();

@@ -65,7 +65,7 @@ namespace AS.WithdrawApi.Controllers
                 }
 
                 await _lifeLogBotWithdrawService.Add(ServiceKeys.BotSamanHabibiKey);
-                _lifeLogBotWithdrawService.CheckLifeAllBots();
+                await _lifeLogBotWithdrawService.CheckLifeAllBots();
 
                 double amount = 0;
                 var withdraw = _userWithdrawService.GetLastWaitingWithdraw();

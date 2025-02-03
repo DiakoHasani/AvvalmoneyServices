@@ -143,6 +143,7 @@
     <Compile Include="Services\ReservationWalletApiService.cs" />
     <Compile Include="Services\ReservationWalletService.cs" />
     <Compile Include="Services\SepalService.cs" />
+    <Compile Include="Services\SmartPekService.cs" />
     <Compile Include="Services\SMSSenderService.cs" />
     <Compile Include="Services\TetherBankService.cs" />
     <Compile Include="Services\TetherlandService.cs" />

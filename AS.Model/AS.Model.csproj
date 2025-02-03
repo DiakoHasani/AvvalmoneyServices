@@ -116,6 +116,7 @@
     <Compile Include="Sepal\SepalCatchModel.cs" />
     <Compile Include="Sepal\SepalRequestModel.cs" />
     <Compile Include="Sepal\SepalVerifyModel.cs" />
+    <Compile Include="SmartPeck\RequestSmartPeckHookModel.cs" />
     <Compile Include="TetherBank\ResponseTetherBankCurrencyModel.cs" />
     <Compile Include="TetherBank\ResponseTetherBankModel.cs" />
     <Compile Include="Tetherland\ResponseTetherlandDataModel.cs" />
