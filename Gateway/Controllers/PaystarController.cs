@@ -142,5 +142,10 @@ namespace Gateway.Controllers
                 return View();
             }
         }
+
+        public async Task<ActionResult> Settlement()
+        {
+
+        }
     }
 }

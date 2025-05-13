@@ -76,6 +76,21 @@ namespace AS.WithdrawApi.Controllers
                 }
 
                 var withdrawCrypto = await _withdrawCryptoService.GetById(cryptoWithdrawModel.WC_Id);
+
+                if ((CryptoType)withdrawCrypto.WC_CryptoType == CryptoType.Tron)
+                {
+                    var tronTransaction = await _tronScanService.GetTransfered(ServiceKeys.TronWallet, 5);
+                    if (await _withdrawCryptoService.CheckRepeated(tronTransaction.Data, withdrawCrypto.WC_Id))
+                    {
+                        if (_cryptoWithdrawCatch.AccessToSend())
+                        {
+                            _smsSenderService.SendToSupports("تراکنشی با مبلغ تکراری برای انتقال وجود دارد لطفا چک کنید");
+                        }
+
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                }
+
                 withdrawCrypto.WC_Status = (int)WithdrawCryptoStatus.PassToRobot;
                 await _withdrawCryptoService.Update(withdrawCrypto);
                 return Request.CreateResponse(HttpStatusCode.OK, true);
@@ -109,21 +124,6 @@ namespace AS.WithdrawApi.Controllers
                 }
 
                 var withdrawCrypto = await _withdrawCryptoService.GetById(cryptoWithdrawModel.WC_Id);
-
-                if ((CryptoType)withdrawCrypto.WC_CryptoType == CryptoType.Tron)
-                {
-                    var tronTransaction = await _tronScanService.GetTransfered(ServiceKeys.TronWallet, 5);
-                    if (await _withdrawCryptoService.CheckRepeated(tronTransaction.Data, withdrawCrypto.WC_Id))
-                    {
-                        if (_cryptoWithdrawCatch.AccessToSend())
-                        {
-                            _smsSenderService.SendToSupports("تراکنشی با مبلغ تکراری برای انتقال وجود دارد لطفا چک کنید");
-                        }
-                        
-                        return Request.CreateResponse(HttpStatusCode.OK);
-                    }
-                }
-
 
                 withdrawCrypto.WC_Status = (int)WithdrawCryptoStatus.RobotInProgress;
                 await _withdrawCryptoService.Update(withdrawCrypto);

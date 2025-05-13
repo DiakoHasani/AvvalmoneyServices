@@ -91,7 +91,7 @@ namespace AS.WithdrawApi.Controllers
 
                 if (dealRequest is null)
                 {
-                    _smsSenderService.SendToSupports($"یک تراکنش {value} ترون به کیف پول واریز شده است ولی درخواست آن یافت نشد");
+                    //_smsSenderService.SendToSupports($"یک تراکنش {value} ترون به کیف پول واریز شده است ولی درخواست آن یافت نشد");
                     return Request.CreateResponse(HttpStatusCode.OK, "Added txid");
                 }
 
@@ -147,7 +147,7 @@ namespace AS.WithdrawApi.Controllers
 
                 if (dealRequest is null)
                 {
-                    _smsSenderService.SendToSupports($"یک تراکنش {value} تتری به کیف پول واریز شده است ولی درخواست آن یافت نشد");
+                    //_smsSenderService.SendToSupports($"یک تراکنش {value} تتری به کیف پول واریز شده است ولی درخواست آن یافت نشد");
                     return Request.CreateResponse(HttpStatusCode.OK, "Added txid");
                 }
 

@@ -35,14 +35,13 @@ namespace AS.BL.Services
                 return false;
             }
 
-            var dateTime = DateTime.Now.AddHours(-1);
+            var dateTime = DateTime.Now.AddHours(-3);
 
             var withdrawCryptos = _withdrawCryptoRepository.GetAll(o => o.WC_Id != WC_Id &&
             o.WC_CreateDate >= dateTime && o.WC_Amount == withdrawCrypto.WC_Amount &&
-            (o.WC_Status==(int)WithdrawCryptoStatus.Pending || o.WC_Status == (int)WithdrawCryptoStatus.PassToRobot ||
-            o.WC_Status == (int)WithdrawCryptoStatus.RobotInProgress)).ToList();
+            o.WC_Status==(int)WithdrawCryptoStatus.Pending).OrderByDescending(o=>o.WC_Id).Take(5).ToList();
 
-            if (!withdrawCryptos.Any())
+            if (!withdrawCryptos.Any() && !checkTrons.Any())
             {
                 return false;
             }
