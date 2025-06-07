@@ -68,7 +68,7 @@ namespace Gateway.Controllers
                         OrderId = orderId,
                         RefNum = createResponse.Data.RefNum,
                         Amount = amount,
-                        GatewayTransactionType= gatewayTransactionType
+                        GatewayTransactionType = gatewayTransactionType
                     });
 
                     if (catchResult is null)
@@ -145,7 +145,34 @@ namespace Gateway.Controllers
 
         public async Task<ActionResult> Settlement()
         {
+            var refreshApiKeyResponse = await _paystarService.RefreshApiKey(new RequestRefreshApiKeyPaystarModel
+            {
+                ApplicationId = ServiceKeys.PaystarApplicationId,
+                AccessPassword = ServiceKeys.PaystarAccessPassword,
+                RefreshToken = ServiceKeys.PaystarRefreshToken
+            });
 
+            if (refreshApiKeyResponse is null || refreshApiKeyResponse.Status != "1" || refreshApiKeyResponse.Data is null)
+            {
+                throw new Exception();
+            }
+
+            var settlementResponse = await _paystarService.Settlement(new RequestPaystarSettlementModel
+            {
+                AccessPassword = ServiceKeys.PaystarAccessPassword,
+                ApplicationId = ServiceKeys.PaystarApplicationId,
+                Transfers = new List<RequestPaystarSettlementTransferModel>
+                {
+                    new RequestPaystarSettlementTransferModel
+                    {
+                        Amount=100000,
+                        Deposit="0304040371001",
+                        TrackId=Guid.NewGuid().ToString()
+                    }
+                }
+            }, refreshApiKeyResponse.Data.ApiKey);
+
+            throw new Exception();
         }
     }
 }

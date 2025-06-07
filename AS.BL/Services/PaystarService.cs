@@ -78,9 +78,41 @@ namespace AS.BL.Services
             }
         }
 
-        public string GenerateVerifyResult(bool result, string message, string response,string orderId)
+        public string GenerateVerifyResult(bool result, string message, string response, string orderId)
         {
             return $"{result}#{message ?? ""}#{response ?? ""}#{orderId}";
+        }
+
+        public async Task<ResponseRefreshApiKeyPaystarModel> RefreshApiKey(RequestRefreshApiKeyPaystarModel model)
+        {
+            try
+            {
+                var parameters = Newtonsoft.Json.JsonConvert.SerializeObject(model);
+                var response = await Post($"{PaystarUrl2}application/refresh-api-key", parameters);
+
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseRefreshApiKeyPaystarModel>(await response.Content.ReadAsStringAsync());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return null;
+            }
+        }
+
+        public async Task<ResponsePaystarSettlementModel> Settlement(RequestPaystarSettlementModel model, string apiKey)
+        {
+            try
+            {
+                var parameters = Newtonsoft.Json.JsonConvert.SerializeObject(model);
+                var response = await Post($"{PaystarUrl2}bank-transfer/v2/settlement", parameters,apiKey);
+                var text = await response.Content.ReadAsStringAsync();
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponsePaystarSettlementModel>(await response.Content.ReadAsStringAsync());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return null;
+            }
         }
     }
 
@@ -91,5 +123,7 @@ namespace AS.BL.Services
         string GenerateVerifySign(long amount, string refNum, string cardNumber, string trackingCode);
         Task<string> Verify(VerifyRequestPaystarModel model);
         string GenerateVerifyResult(bool result, string message, string response, string orderId);
+        Task<ResponseRefreshApiKeyPaystarModel> RefreshApiKey(RequestRefreshApiKeyPaystarModel model);
+        Task<ResponsePaystarSettlementModel> Settlement(RequestPaystarSettlementModel model,string apiKey);
     }
 }

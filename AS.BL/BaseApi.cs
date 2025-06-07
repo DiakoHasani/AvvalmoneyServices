@@ -24,6 +24,7 @@ namespace AS.BL
         //protected const string WithdrawApiUrl = "https://localhost:44304/";
         protected const string TonScanUrl = "https://tonapi.io/v2/";
         protected const string PaystarUrl = "https://core.paystar.ir/api/pardakht";
+        protected const string PaystarUrl2 = "https://core.paystar.ir/api/";
         protected const string NovinpalUrl = "https://gw.novinpal.ir";
         protected const string SepalUrl = "https://sepal.ir/";
         protected const string TronGridV1Url = "https://api.trongrid.io/v1/";

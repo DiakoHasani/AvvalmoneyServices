@@ -29,6 +29,7 @@ namespace AS.Model.General
         public static double ContradictionBotInterval { get; } = 60000;
         public static double PaymentWithdrawInterval { get; } = 20000;
         public static double PaymentCryptoInterval { get; } = 20000;
+        public static double CardToCardInterval { get; } = 30000;
         public static double DelayRunCryptoBot { get; } = 60;
         public static double DepositTransactionTime { get; } = -20;
         public static string KavenegarApiKey { get; } = "57566D423532347844614D47442B6D666146325A6337737331574157305A65373844367467576A723971633D";
@@ -69,5 +70,10 @@ namespace AS.Model.General
         public static string ZarinpalMerchantId { get; } = "0544949e-06b3-429a-8212-0f01d7ccc4b9";
         public static string TronWallet { get; } = "TWM6qS3EQSA8FHZ874FSgo2L99yhBVheag";
         public static string SmartPekKey { get; } = "PEK(PSH214B-2)16191391,8e6mrxnj7k1js1f63kkm2wxs7e9agn2a7mo589nb6vtrpwxk36t58d1z95z74hf2vjqbyrcb2q1j2fbovqn7rgcffp";
+        public static string PaystarApplicationId { get; } = "rd1xr";
+        public static string PaystarAccessPassword { get; } = "WVFdVpAO5qSBgMXZoU4Fe2Rn3yTOOq3awi3qth5UdtvdUc3YlR";
+        public static string PaystarRefreshToken { get; } = "yocmjQC25WIaf8aaxBYZRp9wmoWyvGZ7feiyk8qa7m230cGQlC38TIsX7vyUgQJpILsMGl3E9sqLb4nz48ZkPUKrp9TsPExzKwum";
+        public static string PaystarDepositAccountNumber { get; } = "0340631489006";
+        public static string PaystarDepositShaba { get; } = "IR520190000000340631489006";
     }
 }

@@ -105,6 +105,13 @@
     <Compile Include="Paystar\PardakhtCreateDataPaystarModel.cs" />
     <Compile Include="Paystar\PardakhtVerifyResponsePaystarModel.cs" />
     <Compile Include="Paystar\PaystarCatchModel.cs" />
+    <Compile Include="Paystar\RequestPaystarSettlementModel.cs" />
+    <Compile Include="Paystar\RequestPaystarSettlementTransferModel.cs" />
+    <Compile Include="Paystar\RequestRefreshApiKeyPaystarModel.cs" />
+    <Compile Include="Paystar\ResponsePaystarSettlementDataModel.cs" />
+    <Compile Include="Paystar\ResponsePaystarSettlementModel.cs" />
+    <Compile Include="Paystar\ResponseRefreshApiKeyDataPaystarModel.cs" />
+    <Compile Include="Paystar\ResponseRefreshApiKeyPaystarModel.cs" />
     <Compile Include="Paystar\VerifyRequestPaystarModel.cs" />
     <Compile Include="Paystar\VerifyResponsePaystarModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -162,6 +169,7 @@
     <Compile Include="WithdrawCrypto\RequestPayWithdrawCryptoModel.cs" />
     <Compile Include="WithdrawCrypto\ResponseWithdrawCryptoEncryptedModel.cs" />
     <Compile Include="WithdrawCrypto\ResponseWithdrawCryptoModel.cs" />
+    <Compile Include="WithdrawWebhook\RequestWebhookWithdrawCryptoModel.cs" />
     <Compile Include="ZarinPal\ZarinPalCatchModel.cs" />
     <Compile Include="ZarinPal\ZarinPalErrorModel.cs" />
     <Compile Include="ZarinPal\ZarinPalPaymentDataResponseModel.cs" />

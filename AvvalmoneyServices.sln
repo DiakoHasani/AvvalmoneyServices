@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContradictionBot", "ContradictionBot\ContradictionBot.csproj", "{779C7B70-BA24-4FE8-9276-0D33036F6054}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AS.WithdrawWebhook", "AS.WithdrawWebhook\AS.WithdrawWebhook.csproj", "{22D6D9A0-F573-4384-9CA5-12312F697434}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{779C7B70-BA24-4FE8-9276-0D33036F6054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{779C7B70-BA24-4FE8-9276-0D33036F6054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{779C7B70-BA24-4FE8-9276-0D33036F6054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22D6D9A0-F573-4384-9CA5-12312F697434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D6D9A0-F573-4384-9CA5-12312F697434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D6D9A0-F573-4384-9CA5-12312F697434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D6D9A0-F573-4384-9CA5-12312F697434}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
