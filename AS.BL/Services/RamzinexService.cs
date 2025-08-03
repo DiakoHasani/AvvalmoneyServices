@@ -25,7 +25,9 @@ namespace AS.BL.Services
                 if (response.IsSuccessStatusCode)
                 {
                     responseRamzinex = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseRamzinexModel>(await response.Content.ReadAsStringAsync());
-                    responseRamzinex.Data = responseRamzinex.Data.Where(o => o.BaseCurrencySymbol.EN == "usdt" || o.BaseCurrencySymbol.EN == "trx").ToList();
+                    responseRamzinex.Data = responseRamzinex.Data.Where(o => o.Name.EN == "tether/rial" || o.Name.EN == "tron/rial" ||
+                    o.Name.EN == "toncoin/rial" || o.Name.EN == "notcoin/rial").ToList();
+                    
                     return responseRamzinex;
                 }
                 _logger.Error("response.IsSuccessStatusCode is false", await response.Content.ReadAsStringAsync());

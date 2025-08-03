@@ -27,10 +27,18 @@ namespace AS.BL.Services
 
         public async Task<CurrencyPriceHistoryModel> Add(CurrencyPriceHistoryModel model)
         {
-            var currencyPriceHistory = _mapper.Map<CurrencyPriceHistory>(model);
+            var currencyPriceHistory = new CurrencyPriceHistory
+            {
+                AdmUsr_Id=model.AdmUsr_Id,
+                CPH_BuyPrice=(long)model.CPH_BuyPrice,
+                CPH_CreateDate=model.CPH_CreateDate,
+                CPH_SellPrice=(long)model.CPH_SellPrice,
+                Cur_Id=model.Cur_Id,
+            };
             _currencyPriceHistoryRepository.Add(currencyPriceHistory);
             await _currencyPriceHistoryRepository.SaveChangeAsync();
-            return _mapper.Map<CurrencyPriceHistoryModel>(currencyPriceHistory);
+            model.CPH_Id = currencyPriceHistory.CPH_Id;
+            return model;
         }
 
         public CurrencyPriceHistoryModel GetByCur_Id(int cur_id)

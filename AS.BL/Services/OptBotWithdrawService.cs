@@ -31,6 +31,12 @@ namespace AS.BL.Services
             await _optBotWithdrawRepository.SaveChangeAsync();
         }
 
+        public OptBotWithraw GetLastOpt()
+        {
+            var date= ServiceKeys.GetOptDate;
+            return _optBotWithdrawRepository.GetAll(o => o.CreateDate >= date).OrderByDescending(o => o.Obw_Id).FirstOrDefault();
+        }
+
         public OptBotWithraw GetLastOptByAmount(double amount)
         {
             var dt = ServiceKeys.GetOptDate;
@@ -41,5 +47,6 @@ namespace AS.BL.Services
     {
         Task Add(PostOptRequestModel model);
         OptBotWithraw GetLastOptByAmount(double amount);
+        OptBotWithraw GetLastOpt();
     }
 }

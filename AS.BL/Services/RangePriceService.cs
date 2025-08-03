@@ -336,13 +336,14 @@ namespace AS.BL.Services
                 return null;
             }
 
-            return new CryptoPricesModel
-            {
-                BuyTether = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "usdt").Buy.RialToToman().RemoveDecimalNumber(),
-                SellTether = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "usdt").Sell.RialToToman().RemoveDecimalNumber(),
-                BuyTron = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "trx").Buy.RialToToman().RemoveDecimalNumber(),
-                SellTron = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "trx").Sell.RialToToman().RemoveDecimalNumber()
-            };
+            //return new CryptoPricesModel
+            //{
+            //    BuyTether = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "usdt").Buy.RialToToman().RemoveDecimalNumber(),
+            //    SellTether = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "usdt").Sell.RialToToman().RemoveDecimalNumber(),
+            //    BuyTron = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "trx").Buy.RialToToman().RemoveDecimalNumber(),
+            //    SellTron = responseRamzinex.Data.FirstOrDefault(o => o.BaseCurrencySymbol.EN == "trx").Sell.RialToToman().RemoveDecimalNumber()
+            //};
+            return new CryptoPricesModel();
         }
 
         public async Task<CryptoPricesModel> GetTetherBank()

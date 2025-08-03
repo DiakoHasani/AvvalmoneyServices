@@ -2,35 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AS.BL
+namespace BankCheckBot
 {
-    public abstract class BaseApi
+    internal abstract class BaseApi
     {
-        protected const string NobitexUrl = "https://api.nobitex.ir/";
-        protected const string HdPayUrl = "https://hdpay.ir/";
-        protected const string Ex4IrUrl = "https://ex4ir.net";
-        protected const string IraniCardUrl = "https://www.iranicard.ir/";
-        protected const string RamzinexUrl = "https://publicapi.ramzinex.com/";
-        protected const string TetherBankUrl = "https://api.tether-bank.com/";
-        protected const string Pay98Url = "https://pay98.app/";
-        protected const string TetherlandUrl = "https://service.tetherland.com/";
-        protected const string TronScanUrl = "https://apilist.tronscan.org/";
-        protected const string TronScanUrl2 = "https://apilist.tronscanapi.com/";
         protected const string WithdrawApiUrl = "https://avvalex.panel.avvalmoney.co/";
-        //protected const string WithdrawApiUrl = "https://localhost:44304/";
-        protected const string TonScanUrl = "https://tonapi.io/v2/";
-        protected const string PaystarUrl = "https://core.paystar.ir/api/pardakht";
-        protected const string PaystarUrl2 = "https://core.paystar.ir/api/";
-        protected const string NovinpalUrl = "https://gw.novinpal.ir";
-        protected const string SepalUrl = "https://sepal.ir/";
-        protected const string TronGridV1Url = "https://api.trongrid.io/v1/";
-        protected const string ZarinPalUrl = "https://payment.zarinpal.com/pg/v4/";
-        protected const string SmartPeckUrl = "http://s1-smartpek.ir/";
-
         protected async Task<HttpResponseMessage> Post(string url, Dictionary<string, string> parameters)
         {
             using (var client = new HttpClient())
@@ -120,19 +99,6 @@ namespace AS.BL
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
-                return await client.GetAsync(url);
-            }
-        }
-        protected async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers)
-        {
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                foreach (var header in headers)
-                {
-                    client.DefaultRequestHeaders.Add(header.Key, header.Value);
-                }
                 return await client.GetAsync(url);
             }
         }

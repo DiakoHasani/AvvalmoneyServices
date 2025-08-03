@@ -115,6 +115,7 @@
     <Compile Include="Paystar\VerifyRequestPaystarModel.cs" />
     <Compile Include="Paystar\VerifyResponsePaystarModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ramzinex\RamzinexNameModel.cs" />
     <Compile Include="Ramzinex\RamzinexSymbolModel.cs" />
     <Compile Include="Ramzinex\ResponseRamzinexDataModel.cs" />
     <Compile Include="Ramzinex\ResponseRamzinexModel.cs" />
@@ -124,6 +125,8 @@
     <Compile Include="Sepal\SepalRequestModel.cs" />
     <Compile Include="Sepal\SepalVerifyModel.cs" />
     <Compile Include="SmartPeck\RequestSmartPeckHookModel.cs" />
+    <Compile Include="SmsReceiver\RequestReceiveSmsModel.cs" />
+    <Compile Include="SmsReceiver\ResponseReceiveSmsModel.cs" />
     <Compile Include="TetherBank\ResponseTetherBankCurrencyModel.cs" />
     <Compile Include="TetherBank\ResponseTetherBankModel.cs" />
     <Compile Include="Tetherland\ResponseTetherlandDataModel.cs" />

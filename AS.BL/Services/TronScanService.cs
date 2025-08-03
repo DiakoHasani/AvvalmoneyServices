@@ -60,7 +60,7 @@ namespace AS.BL.Services
 
         public async Task<ResponseTronScanTrxModel> GetTransfered(string walletAddress, int take)
         {
-            var response =await Get($"{TronScanUrl}api/trx/transfer?sort=-timestamp&count=true&limit=20&start=0&address={walletAddress}&filterTokenValue=0");
+            var response = await Get($"{TronScanUrl}api/trx/transfer?sort=-timestamp&count=true&limit=20&start=0&address={walletAddress}&filterTokenValue=0");
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -112,7 +112,9 @@ namespace AS.BL.Services
         {
             try
             {
-                var response = await Get($"{TronScanUrl}api/trx/transfer?sort=-timestamp&count=true&limit=20&start=0&toAddress={walletAddress}&relatedAddress={walletAddress}");
+                var headers = new Dictionary<string, string>();
+                headers.Add("secret", "ZWNkMzlhZTNhYzk1NDhhZmQwOWQ1YjFjZDE0YzViZTQ1NzRlZmI5ZDE1ZDU3ODE5ZTEzYjQwNjA4YzAxNWNlYg==");
+                var response = await Get($"{TronScanUrl}api/trx/transfer?sort=-timestamp&count=true&limit=20&start=0&toAddress={walletAddress}&relatedAddress={walletAddress}", headers);
                 if (response.IsSuccessStatusCode)
                 {
                     return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseTronScanTrxModel>(await response.Content.ReadAsStringAsync());
@@ -134,6 +136,6 @@ namespace AS.BL.Services
         Task<TronScanTrc20TokenTransferModel> GetLastTRC20(string walletAddress);
         Task<ResponseTronScanTrxModel> GetTRX(string walletAddress);
         Task<ResponseTronScanTrxDataModel> GetLastTRX(string walletAddress);
-        Task<ResponseTronScanTrxModel> GetTransfered(string walletAddress,int take);
+        Task<ResponseTronScanTrxModel> GetTransfered(string walletAddress, int take);
     }
 }

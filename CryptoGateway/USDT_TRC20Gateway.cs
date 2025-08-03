@@ -23,7 +23,6 @@ namespace CryptoGateway
     public class USDT_TRC20Gateway : IUSDT_TRC20Gateway
     {
         private readonly ILogger _logger;
-        private readonly ITronScanService _tronScanService;
         private readonly IReservationWalletApiService _reservationWalletApiService;
         private readonly IWalletApiService _walletApiService;
         private readonly ITransactionIdApiService _transactionIdApiService;
@@ -38,7 +37,6 @@ namespace CryptoGateway
         ResponseTrc20TronGridModel responseTrc20;
         List<TransactionIdModel> transactonIds;
         public USDT_TRC20Gateway(ILogger logger,
-            ITronScanService tronScanService,
             IReservationWalletApiService reservationWalletApiService,
             IWalletApiService walletApiService,
             ITransactionIdApiService transactionIdApiService,
@@ -50,7 +48,6 @@ namespace CryptoGateway
         {
             _logger = logger;
             _reservationWalletApiService = reservationWalletApiService;
-            _tronScanService = tronScanService;
             _walletApiService = walletApiService;
             _transactionIdApiService = transactionIdApiService;
             _dealRequestApiService = dealRequestApiService;
@@ -71,6 +68,11 @@ namespace CryptoGateway
                     _logger.Information("get reservationWallet", new { reservationWallet = reservationWallet });
 
                     responseTrc20 = await _tronGridServices.GetTrc20(reservationWallet.WalletAddress);
+                    if(responseTrc20 is null)
+                    {
+                        _logger.Error("responseTrc20 is null");
+                        continue;
+                    }
 
                     responseTrc20.Data = responseTrc20.Data.Where(o => o.TokenInfo.Symbol == "USDT").ToList();
                     responseTrc20.Data = responseTrc20.Data.Where(o => o.To == reservationWallet.WalletAddress).Take(5).ToList();

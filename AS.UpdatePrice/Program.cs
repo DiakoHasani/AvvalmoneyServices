@@ -27,8 +27,10 @@ namespace AS.UpdatePrice
     {
         public GetPrices(UnityContainer container)
         {
-            var nobitexScheduling = container.Resolve<NobitexScheduling>();
-            nobitexScheduling.SetPrint(this);
+            var ramzinexScheduling = container.Resolve<RamzinexScheduling>();
+            ramzinexScheduling.SetPrint(this);
+            //var nobitexScheduling = container.Resolve<NobitexScheduling>();
+            //nobitexScheduling.SetPrint(this);
 
             //var schedule = container.Resolve<RangeScheduling>();
             //schedule.SetPrint(this);

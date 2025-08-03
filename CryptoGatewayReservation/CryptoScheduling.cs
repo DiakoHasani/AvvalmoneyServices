@@ -59,7 +59,9 @@ namespace CryptoGatewayReservation
                     } while (string.IsNullOrWhiteSpace(token));
                 }
                 await _usdtTRC20Gateway.Call(token);
+                //await _usdtTRC20Gateway.FillWallets(token);
                 await _tronGateway.Call(token);
+                //await _tronGateway.FillWallets(token);
             }
             catch (Exception ex)
             {

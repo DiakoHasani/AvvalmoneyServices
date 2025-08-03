@@ -13,9 +13,12 @@ namespace AS.Model.Ramzinex
         public RamzinexSymbolModel BaseCurrencySymbol { get; set; }
 
         [JsonProperty("buy")]
-        public double Buy { get; set; }
+        public string Buy { get; set; }
         
         [JsonProperty("sell")]
-        public double Sell { get; set; }
+        public string Sell { get; set; }
+
+        [JsonProperty("name")]
+        public RamzinexNameModel Name { get; set; }
     }
 }
