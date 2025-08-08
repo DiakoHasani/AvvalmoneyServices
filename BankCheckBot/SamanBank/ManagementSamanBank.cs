@@ -11,7 +11,9 @@ namespace BankCheckBot.SamanBank
     internal class ManagementSamanBank(ILogger<ManagementSamanBank> logger,
         ISamanLoginPage samanLoginPage, ILoginService loginService,
         ISamanVerificationCodePage samanVerificationCodePage,
-        ISamanHomePage samanHomePage) : BaseOptions, IManagementSamanBank
+        ISamanHomePage samanHomePage,
+        ISamanUserCustomHomePage samanUserCustomHomePage,
+        ISamanBillStatementPage samanBillStatementPage) : BaseOptions, IManagementSamanBank
     {
         private const string _url = "https://ib.sb24.ir/webbank/index";
 
@@ -19,6 +21,8 @@ namespace BankCheckBot.SamanBank
         private bool responseVerificationCodePage = false;
         private bool responseHomePage = false;
         private bool responseUserActivitiesHistoryPage = false;
+        private bool responseUserCustomHomePage = false;
+        private bool responseSamanBillStatementPage = false;
         public async Task StartAsync()
         {
             try
@@ -29,7 +33,7 @@ namespace BankCheckBot.SamanBank
                 driver.Manage().Window.Size = new System.Drawing.Size(1920, 1080);
 
                 #region در اینجا عملیات صفحه لاگین را انجام میدهد
-                responseLoginPage = samanLoginPage.Start(driver);
+                responseLoginPage = await samanLoginPage.StartAsync(driver);
                 if (!responseLoginPage)
                 {
                     logger.LogError("responseLoginPage is false");
@@ -51,6 +55,24 @@ namespace BankCheckBot.SamanBank
                 if (!responseHomePage)
                 {
                     logger.LogError("responseHomePage is false");
+                    return;
+                }
+                #endregion
+
+                #region در اینجا عملیات UserCustomeHome انجام می شود
+                responseUserCustomHomePage = await samanUserCustomHomePage.StartAsync(driver);
+                if (!responseUserCustomHomePage)
+                {
+                    logger.LogError("responseUserCustomHomePage is false");
+                    return;
+                }
+                #endregion
+
+                #region در اینجا عملیات صفحه billStatements انجام می شود
+                responseSamanBillStatementPage = await samanBillStatementPage.StartAsync(driver, withdrawApiToken);
+                if (!responseSamanBillStatementPage)
+                {
+                    logger.LogError("responseSamanBillStatementPage is false");
                     return;
                 }
                 #endregion

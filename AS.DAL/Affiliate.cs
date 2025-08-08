@@ -25,6 +25,7 @@ namespace AS.DAL
             this.UserBankCards = new HashSet<UserBankCard>();
             this.UserWithdraws = new HashSet<UserWithdraw>();
             this.Wallets = new HashSet<Wallet>();
+            this.CardToCardRequests = new HashSet<CardToCardRequest>();
         }
     
         public int Aff_Id { get; set; }
@@ -64,5 +65,7 @@ namespace AS.DAL
         public virtual ICollection<UserWithdraw> UserWithdraws { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Wallet> Wallets { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CardToCardRequest> CardToCardRequests { get; set; }
     }
 }

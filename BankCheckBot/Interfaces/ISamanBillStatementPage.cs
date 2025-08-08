@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BankCheckBot.Interfaces
 {
-    public interface ISamanLoginPage
+    public interface ISamanBillStatementPage
     {
-        Task<bool> StartAsync(IWebDriver driver);
+        Task<bool> StartAsync(IWebDriver driver,string token);
     }
 }

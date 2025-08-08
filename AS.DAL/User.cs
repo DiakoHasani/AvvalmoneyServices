@@ -29,6 +29,7 @@ namespace AS.DAL
             this.WebhockHisories = new HashSet<WebhockHisory>();
             this.LogUserWallets = new HashSet<LogUserWallet>();
             this.Wallets = new HashSet<Wallet>();
+            this.CardToCardRequests = new HashSet<CardToCardRequest>();
         }
     
         public long Usr_Id { get; set; }
@@ -81,5 +82,7 @@ namespace AS.DAL
         public virtual ICollection<LogUserWallet> LogUserWallets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Wallet> Wallets { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CardToCardRequest> CardToCardRequests { get; set; }
     }
 }

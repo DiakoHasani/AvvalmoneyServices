@@ -80,6 +80,12 @@
     <Compile Include="BotWithrawType.cs">
       <DependentUpon>DataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="CardToCardRequest.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CardToCardTransaction.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Currency.cs">
       <DependentUpon>DataContext.tt</DependentUpon>
     </Compile>
@@ -144,6 +150,9 @@
     <Compile Include="ReservationWallet.cs">
       <DependentUpon>DataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="SamanBankTransaction.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Services\BaseRepository.cs" />
     <Compile Include="Services\BotCardsWithdrawRepository.cs" />
     <Compile Include="Services\BotInfoWithdrawRepository.cs" />
@@ -155,6 +164,7 @@
     <Compile Include="Services\MenuNotificationRepository.cs" />
     <Compile Include="Services\OptBotWithdrawRepository.cs" />
     <Compile Include="Services\ReservationWalletRepository.cs" />
+    <Compile Include="Services\SamanBankTransactionRepository.cs" />
     <Compile Include="Services\SMSSenderRepository.cs" />
     <Compile Include="Services\TransactionIdRepository.cs" />
     <Compile Include="Services\TransactionRepository.cs" />

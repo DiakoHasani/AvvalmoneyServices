@@ -25,7 +25,14 @@ namespace BankCheckBot.SamanBank
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
                 var verificationCodeBox = wait.Until(ExpectedConditions.ElementIsVisible(By.Id(_verificationCodeBoxId)));
                 await Task.Delay(10000);
-                var opt = await smsVerificationCodeService.GetOptAsync(bearerToken);
+                var opt = "";
+                var checkGetOpt = 3;
+                do
+                {
+                    opt = await smsVerificationCodeService.GetOptAsync(bearerToken);
+                    checkGetOpt--;
+                } while (checkGetOpt > 0 && string.IsNullOrWhiteSpace(opt));
+
                 if (string.IsNullOrWhiteSpace(opt))
                 {
                     logger.LogError("opt is null");

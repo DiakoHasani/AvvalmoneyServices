@@ -191,6 +191,7 @@
     <Compile Include="Controllers\DealRequestController.cs" />
     <Compile Include="Controllers\HamzehController.cs" />
     <Compile Include="Controllers\ReservationWalletController.cs" />
+    <Compile Include="Controllers\SamanBankController.cs" />
     <Compile Include="Controllers\SmsReceiverController.cs" />
     <Compile Include="Controllers\TransactionIdController.cs" />
     <Compile Include="Controllers\UserController.cs" />

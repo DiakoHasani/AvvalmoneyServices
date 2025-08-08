@@ -142,6 +142,8 @@
     <Compile Include="Services\RangePriceService.cs" />
     <Compile Include="Services\ReservationWalletApiService.cs" />
     <Compile Include="Services\ReservationWalletService.cs" />
+    <Compile Include="Services\SamanBankApiService.cs" />
+    <Compile Include="Services\SamanBankService.cs" />
     <Compile Include="Services\SepalService.cs" />
     <Compile Include="Services\SmartPekService.cs" />
     <Compile Include="Services\SMSSenderService.cs" />

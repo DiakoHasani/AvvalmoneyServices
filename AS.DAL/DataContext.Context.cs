@@ -71,5 +71,8 @@ namespace AS.DAL
         public virtual DbSet<AdminSMSVerification> AdminSMSVerifications { get; set; }
         public virtual DbSet<Gateway> Gateways { get; set; }
         public virtual DbSet<AdminUser> AdminUsers { get; set; }
+        public virtual DbSet<CardToCardRequest> CardToCardRequests { get; set; }
+        public virtual DbSet<CardToCardTransaction> CardToCardTransactions { get; set; }
+        public virtual DbSet<SamanBankTransaction> SamanBankTransactions { get; set; }
     }
 }

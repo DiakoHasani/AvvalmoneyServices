@@ -59,6 +59,7 @@
     <Compile Include="Enums\DealRequestType.cs" />
     <Compile Include="Enums\DealRequestVerificationStatus.cs" />
     <Compile Include="Enums\DealRequestVerificationType.cs" />
+    <Compile Include="Enums\DepositBankType.cs" />
     <Compile Include="Enums\GatewayTransactionType.cs" />
     <Compile Include="Enums\ISOCode.cs" />
     <Compile Include="Enums\DealType.cs" />
@@ -120,6 +121,8 @@
     <Compile Include="Ramzinex\ResponseRamzinexDataModel.cs" />
     <Compile Include="Ramzinex\ResponseRamzinexModel.cs" />
     <Compile Include="ReservationWallet\ReservationWalletModel.cs" />
+    <Compile Include="SamanBank\BillStatementTransactionModel.cs" />
+    <Compile Include="SamanBank\ResponseBillStatementModel.cs" />
     <Compile Include="Sepal\ResponseSepalModel.cs" />
     <Compile Include="Sepal\SepalCatchModel.cs" />
     <Compile Include="Sepal\SepalRequestModel.cs" />

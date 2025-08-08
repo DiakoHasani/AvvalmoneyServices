@@ -33,8 +33,8 @@ namespace AS.BL.Services
 
         public OptBotWithraw GetLastOpt()
         {
-            var date= ServiceKeys.GetOptDate;
-            return _optBotWithdrawRepository.GetAll(o => o.CreateDate >= date).OrderByDescending(o => o.Obw_Id).FirstOrDefault();
+            var dt = ServiceKeys.GetOptDate;
+            return _optBotWithdrawRepository.GetAll(o => o.CreateDate > dt).OrderByDescending(o => o.Obw_Id).FirstOrDefault();
         }
 
         public OptBotWithraw GetLastOptByAmount(double amount)

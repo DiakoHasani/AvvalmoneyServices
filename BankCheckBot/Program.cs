@@ -10,11 +10,14 @@ var host = Host.CreateDefaultBuilder(args)
     {
         services.AddScoped<ISmsVerificationCodeService, SmsVerificationCodeService>();
         services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<ISamanBankApiService, SamanBankApiService>();
 
         services.AddScoped<ISamanLoginPage, SamanLoginPage>();
         services.AddScoped<ISamanVerificationCodePage, SamanVerificationCodePage>();
         services.AddScoped<ISamanHomePage, SamanHomePage>();
         services.AddScoped<IUserActivitiesHistoryPage, UserActivitiesHistoryPage>();
+        services.AddScoped<ISamanUserCustomHomePage, SamanUserCustomHomePage>();
+        services.AddScoped<ISamanBillStatementPage, SamanBillStatementPage>();
 
         services.AddScoped<IManagementSamanBank, ManagementSamanBank>();
     }).Build();

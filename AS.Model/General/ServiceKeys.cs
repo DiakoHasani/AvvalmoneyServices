@@ -15,7 +15,7 @@ namespace AS.Model.General
         public static string WithdrawJwtSecretKey { get; } = "j!dieAK4^598_5532a#0lISisdJuP8)foM-MM@#$12";
 
         public static DateTime GetLastWaitingWithdrawTime { get; } = DateTime.Now.AddDays(-2);
-        public static DateTime GetOptDate { get; } = DateTime.Now.AddMinutes(-5);
+        public static DateTime GetOptDate { get; } = DateTime.Now.AddMinutes(-3);
         public static double MaximumAmountCardTransfer { get; } = 10000000;
         public static int MaximumTryWithdraw { get; } = 3;
         public static int ChangeNumberBot { get; } = 2;
@@ -41,7 +41,7 @@ namespace AS.Model.General
         public static int WithdrawTimeLoginNumber { get; } = 60;
         public static int WithdrawTimeLoginUpdatePriceNumber { get; } = 1;
         public static int WithdrawTimeLoginCryptoGatewayNumber { get; } = 1;
-        public static int DelayCryptoGateway { get; } = 5000;
+        public static int DelayCryptoGateway { get; } = 15000;
         public static int DelaySmartPeck { get; } = 2000;
         public static double AmountDifferenceTether { get; } = 5;
         public static double AmountDifferenceTron { get; } = 10;

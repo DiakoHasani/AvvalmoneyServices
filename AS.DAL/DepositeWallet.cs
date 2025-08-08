@@ -18,6 +18,7 @@ namespace AS.DAL
         public DepositeWallet()
         {
             this.Gateways = new HashSet<Gateway>();
+            this.CardToCardRequests = new HashSet<CardToCardRequest>();
         }
     
         public System.Guid Dpw_Id { get; set; }
@@ -32,5 +33,7 @@ namespace AS.DAL
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Gateway> Gateways { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CardToCardRequest> CardToCardRequests { get; set; }
     }
 }

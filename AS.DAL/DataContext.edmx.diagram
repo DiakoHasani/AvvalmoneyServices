@@ -101,6 +101,13 @@
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserBankCards_AdminUsers" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserVerificationDoc_AdminUser" />
         <AssociationConnector Association="AvvalMoneyOriginalModel.FK_UserWithdraws_AdminUsers" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.CardToCardRequest" Width="1.5" PointX="13.5" PointY="28.75" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.CardToCardTransaction" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="AvvalMoneyOriginalModel.SamanBankTransaction" Width="2.125" PointX="9.375" PointY="4.75" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_CardToCardRequests_Affiliates" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_CardToCardRequests_DealRequests" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_CardToCardRequests_DepositeWallets" />
+        <AssociationConnector Association="AvvalMoneyOriginalModel.FK_CardToCardRequests_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

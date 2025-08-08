@@ -58,6 +58,7 @@ namespace AS.BL
             container.RegisterType<IMenuNotificationRepository, MenuNotificationRepository>();
             container.RegisterType<IWithdrawCryptoRepository, WithdrawCryptoRepository>();
             container.RegisterType<IUserWalletReservationRepository, UserWalletReservationRepository>();
+            container.RegisterType<ISamanBankTransactionRepository, SamanBankTransactionRepository>();
         }
 
         private void ConfigBusiness(UnityContainer container)
@@ -113,6 +114,8 @@ namespace AS.BL
             container.RegisterType<ITronGridServices, TronGridServices>();
             container.RegisterType<IWebhookApiService, WebhookApiService>();
             container.RegisterType<IZarinpalService, ZarinpalService>();
+            container.RegisterType<ISamanBankService, SamanBankService>();
+            container.RegisterType<ISamanBankApiService, SamanBankApiService>();
         }
 
         private void ConfigCatch(UnityContainer container)

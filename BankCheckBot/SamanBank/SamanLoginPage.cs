@@ -21,10 +21,11 @@ namespace BankCheckBot.SamanBank
         const string _password = "S32_dll1@@@@";
         //9271-800-1390115-1
 
-        public bool Start(IWebDriver driver)
+        public async Task<bool> StartAsync(IWebDriver driver)
         {
             try
             {
+                await Task.Delay(10000);
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
 
                 var userNameBox = wait.Until(ExpectedConditions.ElementIsVisible(By.Id(_userNameBoxId)));

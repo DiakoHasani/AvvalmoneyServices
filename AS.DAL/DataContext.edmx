@@ -54,6 +54,35 @@
           <Property Name="Wit_Id" Type="bigint" />
           <Property Name="Repeat" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="CardToCardRequests">
+          <Key>
+            <PropertyRef Name="CR_Id" />
+          </Key>
+          <Property Name="CR_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CR_Amount" Type="bigint" Nullable="false" />
+          <Property Name="CR_Status" Type="int" Nullable="false" />
+          <Property Name="CR_CreateDate" Type="datetime" />
+          <Property Name="Usr_Id" Type="bigint" Nullable="false" />
+          <Property Name="Drq_Id" Type="uniqueidentifier" />
+          <Property Name="Dpw_Id" Type="uniqueidentifier" />
+          <Property Name="Aff_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CardToCardTransactions">
+          <Key>
+            <PropertyRef Name="CT_Id" />
+          </Key>
+          <Property Name="CT_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CT_DebitAmount" Type="bigint" Nullable="false" />
+          <Property Name="CT_CreditAmount" Type="bigint" Nullable="false" />
+          <Property Name="CT_Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CT_Balance" Type="bigint" Nullable="false" />
+          <Property Name="CT_TransactionTrace" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CT_StatementStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CT_DestinationAccount" Type="nvarchar" MaxLength="150" />
+          <Property Name="CT_AdditionalInfo1" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CT_AdditionalInfo2" Type="nvarchar" MaxLength="500" />
+          <Property Name="CT_CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="DepositeWallets">
           <Key>
             <PropertyRef Name="Dpw_Id" />
@@ -143,6 +172,15 @@
           <Property Name="RW_Amount" Type="float" Nullable="false" />
           <Property Name="CryptoType" Type="int" Nullable="false" />
           <Property Name="Aff_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SamanBankTransactions">
+          <Key>
+            <PropertyRef Name="Sbt_Id" />
+          </Key>
+          <Property Name="Sbt_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sbt_DocumentNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sbt_Detail" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Sbt_Amount" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="SMSSender">
           <Key>
@@ -686,6 +724,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CardToCardRequests_Affiliates">
+          <End Role="Affiliates" Type="Self.Affiliates" Multiplicity="1" />
+          <End Role="CardToCardRequests" Type="Self.CardToCardRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Affiliates">
+              <PropertyRef Name="Aff_Id" />
+            </Principal>
+            <Dependent Role="CardToCardRequests">
+              <PropertyRef Name="Aff_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CardToCardRequests_DealRequests">
+          <End Role="DealRequests" Type="Self.DealRequests" Multiplicity="0..1" />
+          <End Role="CardToCardRequests" Type="Self.CardToCardRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DealRequests">
+              <PropertyRef Name="Drq_Id" />
+            </Principal>
+            <Dependent Role="CardToCardRequests">
+              <PropertyRef Name="Drq_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CardToCardRequests_DepositeWallets">
+          <End Role="DepositeWallets" Type="Self.DepositeWallets" Multiplicity="0..1" />
+          <End Role="CardToCardRequests" Type="Self.CardToCardRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepositeWallets">
+              <PropertyRef Name="Dpw_Id" />
+            </Principal>
+            <Dependent Role="CardToCardRequests">
+              <PropertyRef Name="Dpw_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CardToCardRequests_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="CardToCardRequests" Type="Self.CardToCardRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Usr_Id" />
+            </Principal>
+            <Dependent Role="CardToCardRequests">
+              <PropertyRef Name="Usr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CurrencyPriceHistory_AdminUser">
           <End Role="AdminUsers" Type="Self.AdminUsers" Multiplicity="0..1" />
           <End Role="CurrencyPriceHistories" Type="Self.CurrencyPriceHistories" Multiplicity="*" />
@@ -1219,6 +1305,8 @@
           <EntitySet Name="BotCardsWithraw" EntityType="Self.BotCardsWithraw" Schema="avval" store:Type="Tables" />
           <EntitySet Name="BotInfoWithraw" EntityType="Self.BotInfoWithraw" Schema="avval" store:Type="Tables" />
           <EntitySet Name="BotWithrawType" EntityType="Self.BotWithrawType" Schema="avval" store:Type="Tables" />
+          <EntitySet Name="CardToCardRequests" EntityType="Self.CardToCardRequests" Schema="avval" store:Type="Tables" />
+          <EntitySet Name="CardToCardTransactions" EntityType="Self.CardToCardTransactions" Schema="avval" store:Type="Tables" />
           <EntitySet Name="DepositeWallets" EntityType="Self.DepositeWallets" Schema="avval" store:Type="Tables" />
           <EntitySet Name="Gateways" EntityType="Self.Gateways" Schema="avval" store:Type="Tables" />
           <EntitySet Name="LifeLogBotWithraw" EntityType="Self.LifeLogBotWithraw" Schema="avval" store:Type="Tables" />
@@ -1227,6 +1315,7 @@
           <EntitySet Name="OptBotWithraw" EntityType="Self.OptBotWithraw" Schema="avval" store:Type="Tables" />
           <EntitySet Name="RefralCommisions" EntityType="Self.RefralCommisions" Schema="avval" store:Type="Tables" />
           <EntitySet Name="ReservationWallet" EntityType="Self.ReservationWallet" Schema="avval" store:Type="Tables" />
+          <EntitySet Name="SamanBankTransactions" EntityType="Self.SamanBankTransactions" Schema="avval" store:Type="Tables" />
           <EntitySet Name="SMSSender" EntityType="Self.SMSSender" Schema="avval" store:Type="Tables" />
           <EntitySet Name="TransactionIds" EntityType="Self.TransactionIds" Schema="avval" store:Type="Tables" />
           <EntitySet Name="UserWalletReservations" EntityType="Self.UserWalletReservations" Schema="avval" store:Type="Tables" />
@@ -1284,6 +1373,22 @@
           <AssociationSet Name="FK_BotWithrawType_UserWithdraws" Association="Self.FK_BotWithrawType_UserWithdraws">
             <End Role="UserWithdraws" EntitySet="UserWithdraws" />
             <End Role="BotWithrawType" EntitySet="BotWithrawType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CardToCardRequests_Affiliates" Association="Self.FK_CardToCardRequests_Affiliates">
+            <End Role="Affiliates" EntitySet="Affiliates" />
+            <End Role="CardToCardRequests" EntitySet="CardToCardRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CardToCardRequests_DealRequests" Association="Self.FK_CardToCardRequests_DealRequests">
+            <End Role="DealRequests" EntitySet="DealRequests" />
+            <End Role="CardToCardRequests" EntitySet="CardToCardRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CardToCardRequests_DepositeWallets" Association="Self.FK_CardToCardRequests_DepositeWallets">
+            <End Role="DepositeWallets" EntitySet="DepositeWallets" />
+            <End Role="CardToCardRequests" EntitySet="CardToCardRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CardToCardRequests_Users" Association="Self.FK_CardToCardRequests_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CardToCardRequests" EntitySet="CardToCardRequests" />
           </AssociationSet>
           <AssociationSet Name="FK_CurrencyPriceHistory_AdminUser" Association="Self.FK_CurrencyPriceHistory_AdminUser">
             <End Role="AdminUsers" EntitySet="AdminUsers" />
@@ -1480,6 +1585,7 @@
           <NavigationProperty Name="Affiliate" Relationship="Self.FK_DepositeWallets_Affiliates" FromRole="DepositeWallets" ToRole="Affiliates" />
           <NavigationProperty Name="User" Relationship="Self.FK_DepositeWallets_Users" FromRole="DepositeWallets" ToRole="Users" />
           <NavigationProperty Name="Gateways" Relationship="AvvalMoneyOriginalModel.FK_Gateways_DepositeWallets" FromRole="DepositeWallet" ToRole="Gateway" />
+          <NavigationProperty Name="CardToCardRequests" Relationship="AvvalMoneyOriginalModel.FK_CardToCardRequests_DepositeWallets" FromRole="DepositeWallet" ToRole="CardToCardRequest" />
         </EntityType>
         <EntityType Name="MenuNotification">
           <Key>
@@ -1606,6 +1712,7 @@
           <NavigationProperty Name="UserBankCards" Relationship="Self.FK_UserBankCards_Affiliates" FromRole="Affiliates" ToRole="UserBankCards" />
           <NavigationProperty Name="UserWithdraws" Relationship="Self.FK_UserWithdraws_Affiliates" FromRole="Affiliates" ToRole="UserWithdraws" />
           <NavigationProperty Name="Wallets" Relationship="Self.FK_Wallets_Affiliates" FromRole="Affiliates" ToRole="Wallets" />
+          <NavigationProperty Name="CardToCardRequests" Relationship="AvvalMoneyOriginalModel.FK_CardToCardRequests_Affiliates" FromRole="Affiliate" ToRole="CardToCardRequest" />
         </EntityType>
         <EntityType Name="Currency">
           <Key>
@@ -1666,6 +1773,7 @@
           <NavigationProperty Name="WithdrawCryptoes" Relationship="AvvalMoneyOriginalModel.FK_WithdrawCrypto_DealRequests" FromRole="DealRequest" ToRole="WithdrawCrypto" />
           <NavigationProperty Name="Gateways" Relationship="AvvalMoneyOriginalModel.FK_Gateways_DealRequests" FromRole="DealRequest" ToRole="Gateway" />
           <NavigationProperty Name="AdminUser" Relationship="AvvalMoneyOriginalModel.FK_DealRequest_AdminUser" FromRole="DealRequest" ToRole="AdminUser" />
+          <NavigationProperty Name="CardToCardRequests" Relationship="AvvalMoneyOriginalModel.FK_CardToCardRequests_DealRequests" FromRole="DealRequest" ToRole="CardToCardRequest" />
         </EntityType>
         <EntityType Name="Domain">
           <Key>
@@ -1911,6 +2019,7 @@
           <NavigationProperty Name="WebhockHisories" Relationship="Self.FK_WebhockHisory_WebhockHisory" FromRole="Users" ToRole="WebhockHisory" />
           <NavigationProperty Name="LogUserWallets" Relationship="AvvalMoneyOriginalModel.FK_LogUserWallet_Users" FromRole="User" ToRole="LogUserWallet" />
           <NavigationProperty Name="Wallets" Relationship="AvvalMoneyOriginalModel.FK_Wallets_Users" FromRole="User" ToRole="Wallet" />
+          <NavigationProperty Name="CardToCardRequests" Relationship="AvvalMoneyOriginalModel.FK_CardToCardRequests_Users" FromRole="User" ToRole="CardToCardRequest" />
         </EntityType>
         <EntityType Name="UserVerificationDoc">
           <Key>
@@ -2589,6 +2698,25 @@
             <End Role="AdminUser" EntitySet="AdminUsers" />
             <End Role="UserWithdraw" EntitySet="UserWithdraws" />
           </AssociationSet>
+          <EntitySet Name="CardToCardRequests" EntityType="AvvalMoneyOriginalModel.CardToCardRequest" />
+          <EntitySet Name="CardToCardTransactions" EntityType="AvvalMoneyOriginalModel.CardToCardTransaction" />
+          <EntitySet Name="SamanBankTransactions" EntityType="AvvalMoneyOriginalModel.SamanBankTransaction" />
+          <AssociationSet Name="FK_CardToCardRequests_Affiliates" Association="AvvalMoneyOriginalModel.FK_CardToCardRequests_Affiliates">
+            <End Role="Affiliate" EntitySet="Affiliates" />
+            <End Role="CardToCardRequest" EntitySet="CardToCardRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CardToCardRequests_DealRequests" Association="AvvalMoneyOriginalModel.FK_CardToCardRequests_DealRequests">
+            <End Role="DealRequest" EntitySet="DealRequests" />
+            <End Role="CardToCardRequest" EntitySet="CardToCardRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CardToCardRequests_DepositeWallets" Association="AvvalMoneyOriginalModel.FK_CardToCardRequests_DepositeWallets">
+            <End Role="DepositeWallet" EntitySet="DepositeWallets" />
+            <End Role="CardToCardRequest" EntitySet="CardToCardRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CardToCardRequests_Users" Association="AvvalMoneyOriginalModel.FK_CardToCardRequests_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="CardToCardRequest" EntitySet="CardToCardRequests" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="BotCardsWithraw">
           <Key>
@@ -3020,6 +3148,96 @@
             </Principal>
             <Dependent Role="UserWithdraw">
               <PropertyRef Name="AdmUsr_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CardToCardRequest">
+          <Key>
+            <PropertyRef Name="CR_Id" />
+          </Key>
+          <Property Name="CR_Id" Type="Guid" Nullable="false" />
+          <Property Name="CR_Amount" Type="Int64" Nullable="false" />
+          <Property Name="CR_Status" Type="Int32" Nullable="false" />
+          <Property Name="CR_CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Usr_Id" Type="Int64" Nullable="false" />
+          <Property Name="Drq_Id" Type="Guid" />
+          <Property Name="Dpw_Id" Type="Guid" />
+          <Property Name="Aff_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Affiliate" Relationship="AvvalMoneyOriginalModel.FK_CardToCardRequests_Affiliates" FromRole="CardToCardRequest" ToRole="Affiliate" />
+          <NavigationProperty Name="DealRequest" Relationship="AvvalMoneyOriginalModel.FK_CardToCardRequests_DealRequests" FromRole="CardToCardRequest" ToRole="DealRequest" />
+          <NavigationProperty Name="DepositeWallet" Relationship="AvvalMoneyOriginalModel.FK_CardToCardRequests_DepositeWallets" FromRole="CardToCardRequest" ToRole="DepositeWallet" />
+          <NavigationProperty Name="User" Relationship="AvvalMoneyOriginalModel.FK_CardToCardRequests_Users" FromRole="CardToCardRequest" ToRole="User" />
+        </EntityType>
+        <EntityType Name="CardToCardTransaction">
+          <Key>
+            <PropertyRef Name="CT_Id" />
+          </Key>
+          <Property Name="CT_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CT_DebitAmount" Type="Int64" Nullable="false" />
+          <Property Name="CT_CreditAmount" Type="Int64" Nullable="false" />
+          <Property Name="CT_Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CT_Balance" Type="Int64" Nullable="false" />
+          <Property Name="CT_TransactionTrace" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CT_StatementStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CT_DestinationAccount" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CT_AdditionalInfo1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CT_AdditionalInfo2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CT_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SamanBankTransaction">
+          <Key>
+            <PropertyRef Name="Sbt_Id" />
+          </Key>
+          <Property Name="Sbt_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sbt_DocumentNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sbt_Detail" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Sbt_Amount" Type="Int64" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CardToCardRequests_Affiliates">
+          <End Type="AvvalMoneyOriginalModel.Affiliate" Role="Affiliate" Multiplicity="1" />
+          <End Type="AvvalMoneyOriginalModel.CardToCardRequest" Role="CardToCardRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Affiliate">
+              <PropertyRef Name="Aff_Id" />
+            </Principal>
+            <Dependent Role="CardToCardRequest">
+              <PropertyRef Name="Aff_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CardToCardRequests_DealRequests">
+          <End Type="AvvalMoneyOriginalModel.DealRequest" Role="DealRequest" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.CardToCardRequest" Role="CardToCardRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DealRequest">
+              <PropertyRef Name="Drq_Id" />
+            </Principal>
+            <Dependent Role="CardToCardRequest">
+              <PropertyRef Name="Drq_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CardToCardRequests_DepositeWallets">
+          <End Type="AvvalMoneyOriginalModel.DepositeWallet" Role="DepositeWallet" Multiplicity="0..1" />
+          <End Type="AvvalMoneyOriginalModel.CardToCardRequest" Role="CardToCardRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepositeWallet">
+              <PropertyRef Name="Dpw_Id" />
+            </Principal>
+            <Dependent Role="CardToCardRequest">
+              <PropertyRef Name="Dpw_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CardToCardRequests_Users">
+          <End Type="AvvalMoneyOriginalModel.User" Role="User" Multiplicity="1" />
+          <End Type="AvvalMoneyOriginalModel.CardToCardRequest" Role="CardToCardRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Usr_Id" />
+            </Principal>
+            <Dependent Role="CardToCardRequest">
+              <PropertyRef Name="Usr_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3681,6 +3899,47 @@
                 <ScalarProperty Name="AdmRole_Id" ColumnName="AdmRole_Id" />
                 <ScalarProperty Name="AdmUsr_CreateDate" ColumnName="AdmUsr_CreateDate" />
                 <ScalarProperty Name="AdmUsr_Id" ColumnName="AdmUsr_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CardToCardRequests">
+            <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.CardToCardRequest">
+              <MappingFragment StoreEntitySet="CardToCardRequests">
+                <ScalarProperty Name="Aff_Id" ColumnName="Aff_Id" />
+                <ScalarProperty Name="Dpw_Id" ColumnName="Dpw_Id" />
+                <ScalarProperty Name="Drq_Id" ColumnName="Drq_Id" />
+                <ScalarProperty Name="Usr_Id" ColumnName="Usr_Id" />
+                <ScalarProperty Name="CR_CreateDate" ColumnName="CR_CreateDate" />
+                <ScalarProperty Name="CR_Status" ColumnName="CR_Status" />
+                <ScalarProperty Name="CR_Amount" ColumnName="CR_Amount" />
+                <ScalarProperty Name="CR_Id" ColumnName="CR_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CardToCardTransactions">
+            <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.CardToCardTransaction">
+              <MappingFragment StoreEntitySet="CardToCardTransactions">
+                <ScalarProperty Name="CT_CreateDate" ColumnName="CT_CreateDate" />
+                <ScalarProperty Name="CT_AdditionalInfo2" ColumnName="CT_AdditionalInfo2" />
+                <ScalarProperty Name="CT_AdditionalInfo1" ColumnName="CT_AdditionalInfo1" />
+                <ScalarProperty Name="CT_DestinationAccount" ColumnName="CT_DestinationAccount" />
+                <ScalarProperty Name="CT_StatementStatus" ColumnName="CT_StatementStatus" />
+                <ScalarProperty Name="CT_TransactionTrace" ColumnName="CT_TransactionTrace" />
+                <ScalarProperty Name="CT_Balance" ColumnName="CT_Balance" />
+                <ScalarProperty Name="CT_Description" ColumnName="CT_Description" />
+                <ScalarProperty Name="CT_CreditAmount" ColumnName="CT_CreditAmount" />
+                <ScalarProperty Name="CT_DebitAmount" ColumnName="CT_DebitAmount" />
+                <ScalarProperty Name="CT_Id" ColumnName="CT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SamanBankTransactions">
+            <EntityTypeMapping TypeName="AvvalMoneyOriginalModel.SamanBankTransaction">
+              <MappingFragment StoreEntitySet="SamanBankTransactions">
+                <ScalarProperty Name="Sbt_Amount" ColumnName="Sbt_Amount" />
+                <ScalarProperty Name="Sbt_Detail" ColumnName="Sbt_Detail" />
+                <ScalarProperty Name="Sbt_DocumentNumber" ColumnName="Sbt_DocumentNumber" />
+                <ScalarProperty Name="Sbt_Id" ColumnName="Sbt_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
